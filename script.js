@@ -133,6 +133,10 @@ const I18N = {
     ssRestart: "LAST RESTART",
     ssUptime: "UPTIME",
     ssRegion: "REGION",
+    ssNotConnected: "Live data not connected",
+    serverDemoNote: "This page is showing pre-launch demo values. Real server status, players and address will appear once the FiveM API is connected.",
+    connectSoon: "CONNECT SOON",
+    connectNotReady: "Server address not configured yet.",
     jobsTitle: "Jobs & Departments",
     comEyebrow: "COMMUNITY",
     comTitle: "Join Our Community",
@@ -152,6 +156,8 @@ const I18N = {
     lbEyebrow: "LEADERBOARDS",
     lbTitle: "Leaderboards",
     lbSub: "Top players and rankings from the city.",
+    lbComingSoon: "COMING SOON",
+    lbNoBackend: "Leaderboards will appear here once connected to the live server database.",
     supEyebrow: "SUPPORT",
     supTitle: "Support Center",
     supSub: "Get help with purchases, technical issues and your account.",
@@ -271,6 +277,10 @@ const I18N = {
     ssRestart: "آخر إعادة تشغيل",
     ssUptime: "وقت التشغيل",
     ssRegion: "المنطقة",
+    ssNotConnected: "البيانات الحية غير متصلة",
+    serverDemoNote: "هذه الصفحة تعرض قيماً تجريبية قبل الإطلاق. ستظهر حالة السيرفر واللاعبون والعنوان الحقيقي بعد ربط واجهة FiveM.",
+    connectSoon: "الاتصال قريباً",
+    connectNotReady: "عنوان السيرفر غير مُهيأ بعد.",
     jobsTitle: "الوظائف والأقسام",
     comEyebrow: "المجتمع",
     comTitle: "انضم لمجتمعنا",
@@ -290,6 +300,8 @@ const I18N = {
     lbEyebrow: "لوحة الصدارة",
     lbTitle: "لوحة الصدارة",
     lbSub: "أفضل اللاعبين والترتيبات في المدينة.",
+    lbComingSoon: "قريباً",
+    lbNoBackend: "ستظهر لوحة الصدارة هنا بعد ربطها بقاعدة بيانات السيرفر الحية.",
     supEyebrow: "الدعم",
     supTitle: "مركز الدعم",
     supSub: "احصل على مساعدة بشأن المشتريات والمشاكل التقنية وحسابك.",
@@ -1429,18 +1441,47 @@ function renderSitePage(id) {
 /* ---------- صفحة السيرفر ---------- */
 function fillServer() {
   const s = SITE.server || {};
+  const isMock = s.mock === true;
   $("ssOnline").textContent = s.online ? translate("on") : translate("off");
   $("ssOnline").parentElement.classList.toggle("ss-online", !!s.online);
-  $("ssPlayers").textContent = (s.playersOnline ?? "?") + " / " + (s.playerLimit ?? "?");
-  $("ssIp").textContent = s.ipFull || s.ip || "connect.example.com:30120";
-  $("ssVersion").textContent = s.version || "—";
-  $("ssRestart").textContent = s.lastRestart || "—";
-  $("ssUptime").textContent = s.uptime || "—";
-  $("ssRegion").textContent = s.region || "—";
+  /* صادقية البيانات: ما نعرضش قيم وهمية كأنها حقيقية وقت الديڤ */
+  $("ssPlayers").textContent = isMock ? "— / —" : ((s.playersOnline ?? "?") + " / " + (s.playerLimit ?? "?"));
+  $("ssIp").textContent = isMock ? "—" : (s.ipFull || s.ip || "—");
+  $("ssVersion").textContent = isMock ? "—" : (s.version || "—");
+  $("ssRestart").textContent = isMock ? "—" : (s.lastRestart || "—");
+  $("ssUptime").textContent = isMock ? "—" : (s.uptime || "—");
+  $("ssRegion").textContent = isMock ? "—" : (s.region || "—");
+
+  /* شريط تحذير للبيانات الحية غير المتصلة */
+  const dev = $("serverDevBanner");
+  if (dev) {
+    if (isMock) {
+      dev.hidden = false;
+      dev.innerHTML = `⚠️ <b>${esc(translate("ssNotConnected"))}</b> — ${esc(translate("serverDemoNote"))}`;
+    } else {
+      dev.hidden = true;
+    }
+  }
+
   const con = $("connectBtn");
   con.onclick = null;
-  if (SITE.links && SITE.links.play) { con.onclick = () => window.open(SITE.links.play, "_blank"); }
-  else if (SITE.links && SITE.links.ip) { con.onclick = () => window.open("fivem://connect/" + SITE.links.ip, "_blank"); }
+  con.classList.remove("is-disabled");
+  con.removeAttribute("title");
+  const play = SITE.links && SITE.links.play;
+  const ip = s.ip || (SITE.links && SITE.links.ip);
+  if (play) {
+    con.onclick = () => window.open(play, "_blank");
+  } else if (ip && !isMock) {
+    const addr = (s.ipFull || s.ip).replace(/^fivem:\/\/connect\//, "");
+    con.onclick = () => window.open("fivem://connect/" + addr, "_blank");
+  } else {
+    /* لا يوجد عنوان حقيقي بعد — حالة صافية بدون قيم مزيفة */
+    con.classList.add("is-disabled");
+    con.textContent = translate("connectSoon");
+    con.setAttribute("title", translate("connectNotReady"));
+  }
+  /* إعادة نص الزر عبر الترجمة إن لم يكن محجوب */
+  if (!con.classList.contains("is-disabled")) con.textContent = translate("connectBtn");
   const disc = $("serverDiscordBtn");
   if (SITE.links && SITE.links.discord) disc.href = SITE.links.discord;
   /* الوظائف */
@@ -1557,6 +1598,19 @@ function renderNewsPage() {
 function renderLeaderboards() {
   const grid = $("lbGrid");
   grid.innerHTML = "";
+  /* صادقية البيانات: لا نعرض قوائم وهمية كأنها حقيقية.
+     حتى يربط Backend حقيقي (قاعدة بيانات السيرفر)، نعرض حالة فارغة صريحة. */
+  const mock = SITE.leaderboardMock === true;
+  if (mock) {
+    const empty = document.createElement("div");
+    empty.className = "lb-empty";
+    empty.innerHTML = `
+      <div class="lb-empty-icon">🏆</div>
+      <h3>${esc(translate("lbComingSoon"))}</h3>
+      <p>${esc(translate("lbNoBackend"))}</p>`;
+    grid.appendChild(empty);
+    return;
+  }
   (SITE.leaderboards || []).forEach((lb) => {
     const card = document.createElement("article");
     card.className = "lb-card";
@@ -1922,22 +1976,24 @@ function renderHomeStatus() {
   const wrap = $("homeStatus");
   if (!wrap) return;
   const s = SITE.server || {};
-  const mock = s.mock;
+  const isMock = s.mock === true;
   const on = s.online;
   const play = SITE.links && SITE.links.play;
+  const ip = s.ip || (SITE.links && SITE.links.ip);
   const connect = () => {
     if (play) window.open(play, "_blank");
-    else if (SITE.links && SITE.links.ip) window.open("fivem://connect/" + SITE.links.ip, "_blank");
+    else if (ip) window.open("fivem://connect/" + String(s.ipFull || s.ip).replace(/^fivem:\/\/connect\//, ""), "_blank");
   };
+  const ready = !!(play || (ip && !isMock));
   wrap.innerHTML = `
     <div class="hs-card">
       <div class="hs-state ${on ? "on" : "off"}"><span class="hs-dot"></span><span>${on ? translate("on") : translate("off")}</span></div>
-      <div class="hs-item"><span class="hs-label">${translate("ssPlayers")}</span><span class="hs-val">${s.playersOnline ?? "?"} / ${s.playerLimit ?? "?"}</span></div>
-      <div class="hs-item"><span class="hs-label">${translate("ssIp")}</span><span class="hs-val hs-code">${s.ipFull || s.ip || "—"}</span></div>
-      <div class="hs-item"><span class="hs-label">${translate("ssRegion")}</span><span class="hs-val">${s.region || "—"}</span></div>
-      <button class="btn btn-primary btn-sm hs-connect" id="homeConnectBtn">${translate("connectBtn")}</button>
+      <div class="hs-item"><span class="hs-label">${translate("ssPlayers")}</span><span class="hs-val">${isMock ? "— / —" : ((s.playersOnline ?? "?") + " / " + (s.playerLimit ?? "?"))}</span></div>
+      <div class="hs-item"><span class="hs-label">${translate("ssIp")}</span><span class="hs-val hs-code">${isMock ? "—" : (s.ipFull || s.ip || "—")}</span></div>
+      <div class="hs-item"><span class="hs-label">${translate("ssRegion")}</span><span class="hs-val">${isMock ? "—" : (s.region || "—")}</span></div>
+      <button class="btn btn-primary btn-sm hs-connect ${ready ? "" : "is-disabled"}" id="homeConnectBtn">${ready ? translate("connectBtn") : translate("connectSoon")}</button>
     </div>
-    ${mock ? `<div class="hs-dev">${translate("devBadge")}</div>` : ""}`;
+    ${isMock ? `<div class="hs-dev">${translate("devBadge")}</div>` : ""}`;
   const btn = $("homeConnectBtn");
   if (btn) btn.addEventListener("click", connect);
 }

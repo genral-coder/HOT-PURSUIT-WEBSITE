@@ -42,6 +42,15 @@
 .ss-meta-item { display: flex; flex-direction: column; gap: 4px; }
 .ss-meta .ss-value { font-size: 16px; }
 
+/* شريط "البيانات الحية غير متصلة" + زر الاتصال غير الجاهز */
+.server-dev {
+  max-width: 860px; margin: 0 auto 18px; padding: 13px 16px;
+  background: rgba(240, 173, 78, .10); border: 1px solid rgba(240, 173, 78, .35);
+  border-radius: var(--radius); color: #f0ad4e; font-size: 13.5px; line-height: 1.6;
+}
+.server-dev b { color: #f0ad4e; }
+.btn.is-disabled { opacity: .55; cursor: not-allowed; filter: saturate(.6); }
+
 /* ---------- شبكات الوظائف / التقديمات ---------- */
 .jobs-grid, .apply-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
 .job-card, .apply-card {
@@ -124,6 +133,10 @@
 .lb-val { color: var(--gold); font-weight: 700; }
 .lb-rank { color: var(--muted); margin-right: 8px; width: 22px; display: inline-block; }
 .lb-card.lb-placeholder { border-style: dashed; opacity: .7; }
+.lb-empty { grid-column: 1/-1; text-align: center; padding: 48px 24px; border: 1px dashed var(--border); border-radius: var(--radius); color: var(--muted); }
+.lb-empty-icon { font-size: 44px; margin-bottom: 12px; }
+.lb-empty h3 { font-size: 18px; color: var(--gold); margin-bottom: 8px; letter-spacing: .12em; }
+.lb-empty p { max-width: 460px; margin: 0 auto; font-size: 14px; line-height: 1.7; }
 
 /* ---------- صفحة الدعم ---------- */
 .support-cta { display: flex; justify-content: center; margin: 0 0 30px; }
@@ -178,47 +191,62 @@ html[dir="rtl"] .ss-actions .btn { text-align: center; }
   top: 123px;
   z-index: 94;
   width: 100%;
-  background: #14141f;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 8px 20px;
+  background: rgba(18, 18, 26, 0.86);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 9px 20px;
   overflow-x: auto;
-  scrollbar-width: thin;
-  gap: 4px;
+  scrollbar-width: none;
+  gap: 6px;
 }
+.store-subnav::-webkit-scrollbar { display: none; }
 .store-subnav.show { display: flex; }
 .store-nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   white-space: nowrap;
-  padding: 7px 14px;
-  border-radius: 10px;
+  padding: 8px 15px;
+  border-radius: 999px;
   font-size: 13.5px;
   font-weight: 600;
-  color: #c7c7d1;
-  background: transparent;
-  border: 1px solid transparent;
+  color: #c9c9d4;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: color .18s ease, background .18s ease, border-color .18s ease;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
-.store-nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+.store-nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.14);
+}
 .store-nav-link.active {
   color: #fff;
-  background: var(--accent, #ff2d3f);
+  background: linear-gradient(180deg, rgba(255, 45, 63, 0.32), rgba(255, 45, 63, 0.16));
   border-color: var(--accent, #ff2d3f);
-  box-shadow: 0 4px 14px rgba(255, 45, 63, 0.35);
+  box-shadow: 0 0 0 1px rgba(255, 45, 63, 0.35) inset, 0 6px 18px rgba(255, 45, 63, 0.22);
 }
 .store-nav-link.active .cat-emoji { filter: none; }
-.store-nav-link .cat-emoji { filter: saturate(0.9); }
+.store-nav-link .cat-emoji {
+  font-size: 16px;
+  line-height: 1;
+  filter: saturate(0.85);
+}
+.store-nav-link.active .cat-emoji { transform: scale(1.05); }
 .store-nav-link .nl-count {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e2ea;
   border-radius: 99px;
   padding: 1px 8px;
   font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
 }
-.store-nav-link .nl-count.soon { color: #ffb74d; }
-.store-nav-link.active .nl-count { background: rgba(0, 0, 0, 0.22); }
+.store-nav-link .nl-count.soon { color: #ffb74d; background: rgba(255, 183, 77, 0.12); }
+.store-nav-link.active .nl-count { background: rgba(0, 0, 0, 0.28); color: #fff; }
 html[dir="rtl"] .store-subnav { flex-direction: row; }
 
 /* ═══════════ روابط الفوتر ═══════════ */
