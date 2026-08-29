@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HOT PURSUIT RP | FiveM Roleplay Server" />
+  <meta property="og:title" content="HOT PURSUIT RP | FiveM Roleplay Server" />
+  <meta property="og:description" content="Official website for the HOT PURSUIT RP FiveM roleplay server." />
+  <meta property="og:image" content="images/Asset_2.webp" />
+  <meta property="og:url" content="https://genral-coder.github.io/Hot-store/" />
+  <link rel="icon" type="image/webp" href="images/Asset_2.webp" />
+  <title>HOT PURSUIT RP | FiveM Roleplay Server</title>
+
+  <!-- الخطوط -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+
+  <div id="topBar"></div>
+
+  <!-- خلفية متحركة -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- ═══════════ الهيدر العلوي ═══════════ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <button id="menuBtn" class="icon-btn nav-menu-btn" aria-label="Open menu">☰</button>
+
+      <button class="nav-brand" data-action="home" aria-label="Go to home">
+        <span class="logo-wrap">
+          <img src="images/Asset_2.webp" id="navLogo" alt="logo" onerror="this.style.display='none'" />
+        </span>
+        <span class="nav-text">
+          <span id="navName">HOT PURSUIT</span>
+          <span id="navTagline">Premium FiveM Store</span>
+        </span>
+      </button>
+
+      <!-- التصنيفات: يتضمّن روابط الأقسام + تصنيفات الستور -->
+      <nav id="categoryNav" class="nav-links"></nav>
+
+      <div class="nav-actions">
+        <div class="nav-stack">
+          <button id="rulesBtn" class="btn btn-outline btn-sm"></button>
+          <button id="langBtn" class="btn btn-outline btn-sm lang-short" aria-label="Change language"></button>
+          <button id="likedBtn" class="btn btn-outline btn-sm liked-btn-nav" aria-label="Favorites"><span class="lk-heart">❤️</span><span class="lk-label"></span></button>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm nav-login-btn" id="navLoginBtn" data-i18n="loginShort">LOGIN</button>
+        <a href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" class="btn btn-discord btn-sm discord-ico" id="navDiscord" aria-label="Discord"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.37-.44.85-.6 1.22a18.27 18.27 0 0 0-5.5 0 12.6 12.6 0 0 0-.61-1.22.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.89 1.52.07.07 0 0 0-.04.04C.53 9.57-.32 14.6.1 19.6c0 .03.02.05.05.07a19.9 19.9 0 0 0 6.16 3.12c.03 0 .07 0 .09-.02a14.3 14.3 0 0 0 1.23-2 .09.09 0 0 0-.05-.12 13.1 13.1 0 0 1-1.87-.9.09.09 0 0 1-.01-.14c.13-.1.25-.2.38-.3a.07.07 0 0 1 .08 0c3.93 1.8 8.18 1.8 12.06 0a.07.07 0 0 1 .08 0c.12.11.25.21.38.3a.09.09 0 0 1 0 .14c-.6.36-1.22.66-1.87.9a.09.09 0 0 0-.05.12c.37.72.79 1.4 1.23 2a.11.11 0 0 0 .09.03 19.8 19.8 0 0 0 6.2-3.12c.03-.02.04-.04.04-.07.5-5.72-.84-10.7-3.54-15.19a.07.07 0 0 0-.04-.05zM8.02 16.4c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.33-.96 2.42-2.16 2.42zm7.96 0c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.33-.95 2.42-2.16 2.42z"/></svg></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- خلفية معتمة عند فتح قائمة الموبايل -->
+  <div id="overlay"></div>
+
+  <!-- ═══════════ شريط تصنيفات الستور (يظهر داخل قسم الستور فقط) ═══════════ -->
+  <nav id="storeSubNav" class="store-subnav" aria-label="Store categories"></nav>
+
+  <!-- ═══════════ المحتوى الرئيسي ═══════════ -->
+  <main>
+    <header class="topbar">
+      <h2 id="pageTitle">Home</h2>
+      <!-- البحث (يظهر في أقسام الستور) -->
+      <div class="search-box" id="searchBox">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search products, categories..." autocomplete="off" />
+      </div>
+    </header>
+
+    <!-- ▸ الصفحة الرئيسية -->
+    <section id="view-home">
+      <div class="hero">
+        <img src="images/Asset_2.webp" alt="logo" class="hero-logo" id="heroLogo" onerror="this.style.display='none'" />
+        <h1 id="heroName">HOT PURSUIT</h1>
+        <p class="hero-tagline" id="heroTagline">Premium FiveM Roleplay Store</p>
+        <p class="hero-desc" id="heroDesc">Your one-stop shop for vehicles, weapons, scripts and more. Donate fast, get it in-game instantly.</p>
+        <div class="hero-actions">
+          <a href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" class="btn btn-discord btn-lg" id="joinDiscord">Join Discord</a>
+        </div>
+        <div class="hero-chips">
+          <span id="chipSupport">⏱ 24/7 Support</span>
+          <span id="chipSafe">🛡 Safe & Secure</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title" id="secPopular">Popular Products <span class="title-badge">⭐</span></h3>
+        <div id="popularGrid" class="grid"></div>
+      </div>
+
+      <div class="section" id="newSection">
+        <h3 class="section-title sec-new-title" id="secNew">New <span class="title-badge">✨</span></h3>
+        <div id="newGrid" class="grid"></div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title" id="secCategories">Categories</h3>
+        <div id="catShortcuts" class="cat-shortcuts"></div>
+      </div>
+    </section>
+
+    <!-- ▸ الستور -->
+    <section id="view-store" hidden>
+      <div class="store-head">
+        <button class="btn btn-ghost btn-sm" id="backHomeBtn">← <span data-i18n="homeBack">Home</span></button>
+        <h3 id="storeTitle">Vehicles</h3>
+        <span id="storeCount" class="store-count"></span>
+      </div>
+      <div id="storeFilters" class="store-filters" hidden>
+        <span class="filters-label"><span class="fl-icon">⚙️</span> <span id="filterLabel">Filters</span></span>
+        <div id="filterBtns" class="filter-btns"></div>
+        <div id="bizSelect" class="biz-select">
+          <button type="button" id="bizFilterBtn" class="biz-select-btn"><span id="bizFilterValue">All</span><span class="biz-caret">▾</span></button>
+          <div id="bizFilterMenu" class="biz-select-menu" role="listbox"></div>
+        </div>
+        <select id="filterClass" hidden></select>
+        <label class="filter-sold"><input type="checkbox" id="filterHideSold" /> <span id="filterHideSoldTxt">Hide sold</span></label>
+      </div>
+      <div id="productGrid" class="grid"></div>
+    </section>
+
+    <!-- ▸ السيرفر -->
+    <section id="view-server" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="serverEyebrow">SERVER</span>
+        <h2 id="serverTitle">Server Status</h2>
+        <p class="page-sub" id="serverSub">Live information about the HOT PURSUIT RP server.</p>
+      </div>
+      <div class="server-status-card">
+        <div class="ss-row">
+          <div class="ss-item">
+            <span class="ss-label" data-i18n="serverStatus">SERVER STATUS</span>
+            <span class="ss-value ss-online"><span class="dot"></span> <span id="ssOnline">ONLINE</span></span>
+          </div>
+          <div class="ss-item">
+            <span class="ss-label" data-i18n="ssPlayers">PLAYERS</span>
+            <span class="ss-value" id="ssPlayers">127 / 200</span>
+          </div>
+          <div class="ss-item">
+            <span class="ss-label" data-i18n="ssIp">SERVER IP</span>
+            <span class="ss-value ss-code" id="ssIp">connect.example.com:30120</span>
+          </div>
+        </div>
+        <div class="ss-actions">
+          <button class="btn btn-primary" id="connectBtn" data-i18n="connectBtn">CONNECT TO SERVER</button>
+          <a class="btn btn-discord" id="serverDiscordBtn" href="#" target="_blank" rel="noopener" data-i18n="joinDiscord2">JOIN DISCORD</a>
+        </div>
+        <div class="ss-meta">
+          <div class="ss-meta-item"><span class="ss-label" data-i18n="ssVersion">VERSION</span><span class="ss-value" id="ssVersion">1.5.0</span></div>
+          <div class="ss-meta-item"><span class="ss-label" data-i18n="ssRestart">LAST RESTART</span><span class="ss-value" id="ssRestart">30 Aug 2026</span></div>
+          <div class="ss-meta-item"><span class="ss-label" data-i18n="ssUptime">UPTIME</span><span class="ss-value" id="ssUptime">99.9%</span></div>
+          <div class="ss-meta-item"><span class="ss-label" data-i18n="ssRegion">REGION</span><span class="ss-value" id="ssRegion">Global / MENA</span></div>
+        </div>
+      </div>
+
+      <!-- الوظائف -->
+      <div class="section">
+        <h3 class="section-title" data-i18n="jobsTitle">Jobs & Departments</h3>
+        <div id="jobsGrid" class="jobs-grid"></div>
+      </div>
+    </section>
+
+    <!-- ▸ المجتمع -->
+    <section id="view-community" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="comEyebrow">COMMUNITY</span>
+        <h2 data-i18n="comTitle">Join Our Community</h2>
+        <p class="page-sub" id="comSub">Connect with players across all our official platforms.</p>
+      </div>
+      <div class="social-grid" id="socialGrid"></div>
+      <div class="community-links">
+        <button class="btn btn-outline" id="communityRulesBtn" data-i18n="pgRules">Rules</button>
+      </div>
+    </section>
+
+    <!-- ▸ التقديمات -->
+    <section id="view-applications" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="appEyebrow">APPLICATIONS</span>
+        <h2 data-i18n="appTitle">Open Applications</h2>
+        <p class="page-sub" data-i18n="appSub">Apply to join a department or register your business/gang.</p>
+      </div>
+      <div class="apply-grid" id="applyGrid"></div>
+    </section>
+
+    <!-- ▸ الميديا -->
+    <section id="view-media" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="mediaEyebrow">MEDIA</span>
+        <h2 data-i18n="mediaTitle">Media Gallery</h2>
+        <p class="page-sub" data-i18n="mediaSub">Watch and share the best HOT PURSUIT moments.</p>
+      </div>
+      <div class="media-grid" id="mediaGrid"></div>
+    </section>
+
+    <!-- ▸ القوانين -->
+    <section id="view-rules" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="rulesEyebrow">RULES</span>
+        <h2 data-i18n="rulesTitle">Server Rules</h2>
+        <p class="page-sub" data-i18n="rulesSub">Make sure to read and understand all rules before playing.</p>
+      </div>
+      <div class="rules-search"><input type="text" id="rulesSearch" data-i18n-attr="placeholder:rulesSearchPh" /></div>
+      <div class="accordion" id="rulesAccordion"></div>
+    </section>
+
+    <!-- ▸ الأخبار -->
+    <section id="view-news" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="newsEyebrow">NEWS</span>
+        <h2 data-i18n="newsTitle">News & Updates</h2>
+        <p class="page-sub" data-i18n="newsSub">Latest updates, changelogs and announcements.</p>
+      </div>
+      <div class="news-grid" id="newsGrid"></div>
+    </section>
+
+    <!-- ▸ لوحة الصدارة -->
+    <section id="view-leaderboards" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="lbEyebrow">LEADERBOARDS</span>
+        <h2 data-i18n="lbTitle">Leaderboards</h2>
+        <p class="page-sub" data-i18n="lbSub">Top players and rankings from the city.</p>
+      </div>
+      <div class="lb-grid" id="lbGrid"></div>
+    </section>
+
+    <!-- ▸ الدعم -->
+    <section id="view-support" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="supEyebrow">SUPPORT</span>
+        <h2 data-i18n="supTitle">Support Center</h2>
+        <p class="page-sub" data-i18n="supSub">Get help with purchases, technical issues and your account.</p>
+      </div>
+      <div class="support-cta">
+        <a class="btn btn-discord btn-lg" href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" data-i18n="discordSupport">DISCORD SUPPORT</a>
+      </div>
+      <div class="accordion" id="faqAccordion"></div>
+    </section>
+
+    <!-- ▸ تسجيل الدخول / الملف الشخصي -->
+    <section id="view-login" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="loginEyebrow">ACCOUNT</span>
+        <h2 data-i18n="loginTitle">Login</h2>
+      </div>
+      <div class="login-card-site">
+        <p data-i18n="loginSub">Login with your Discord account to access your player profile.</p>
+        <button class="btn btn-discord btn-lg" id="discordLoginBtn" data-i18n="loginDiscord">LOGIN WITH DISCORD</button>
+        <p class="login-note" data-i18n="loginNote">Discord OAuth will be connected soon.</p>
+      </div>
+    </section>
+
+    <!-- ▸ الملف الشخصي -->
+    <section id="view-profile" class="site-page" hidden>
+      <div class="page-hero">
+        <span class="page-eyebrow" data-i18n="profileEyebrow">PROFILE</span>
+        <h2 data-i18n="profileTitle">Player Profile</h2>
+      </div>
+      <div class="profile-empty" data-i18n="profileEmpty">Login to view your player dashboard.</div>
+    </section>
+  </main>
+
+  <!-- ═══════════ الفوتر — طرق الدفع + روابط الموقع ═══════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-links" id="footerLinks"></div>
+      <div class="footer-pay">
+        <span class="pay-label" id="footerPayLabel">Payment Methods:</span>
+        <div id="footerPay" class="footer-pay-chips"></div>
+      </div>
+      <p class="footer-note">© <span id="footerName">HOT PURSUIT</span></p>
+    </div>
+  </footer>
+
+  <!-- ═══════════ مودال تفاصيل المنتج ═══════════ -->
+  <div class="modal" id="productModal" role="dialog" aria-modal="true">
+    <div class="modal-card product-layout">
+      <button class="modal-close" data-close aria-label="Close">✕</button>
+      <div class="m-img"><img id="pmImg" alt="Product" /></div>
+      <div class="m-info">
+        <span id="pmCat" class="p-cat"></span>
+        <h2 id="pmName"></h2>
+        <p id="pmDesc" class="m-desc"></p>
+        <ul id="pmFeatures" class="m-features"></ul>
+        <div class="m-foot">
+          <span id="pmPrice" class="p-price"></span>
+          <div class="m-tools">
+            <button id="pmLike" class="pm-icon like-inline" aria-label="Like">
+              <svg class="pm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.6-9.5-9A5.4 5.4 0 0 1 12 6.3 5.4 5.4 0 0 1 21.5 12C19 16.4 12 21 12 21Z"/></svg>
+            </button>
+            <button id="pmShare" class="pm-icon m-share" title="Share" aria-label="Share">
+              <svg class="pm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"/></svg>
+            </button>
+            <button id="pmDonate" class="btn btn-primary">Donate 💳</button>
+          </div>
+        </div>
+        <div class="m-pay" id="pmPay"><span class="pay-label" id="pmPayLabel">Payment Methods:</span><div id="pmPayChips"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ مودال تأكيد الديسكورد ═══════════ -->
+  <div class="modal" id="donateModal" role="dialog" aria-modal="true">
+    <div class="modal-card donate-layout">
+      <button class="modal-close" data-close aria-label="Close">✕</button>
+      <div class="donate-icon">🎫</div>
+      <h2 id="dmTitle">Purchase Ticket</h2>
+      <p id="dmText">You will be redirected to Discord to open a donation ticket.</p>
+      <div class="donate-actions">
+        <button class="btn btn-outline" id="dmCancel">Cancel</button>
+        <button class="btn btn-discord" id="dmGo">Continue to Discord ↗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ مودال قوانين الشراء ═══════════ -->
+  <div class="modal" id="rulesModal" role="dialog" aria-modal="true">
+    <div class="modal-card rules-modal">
+      <button class="modal-close" data-close aria-label="Close">✕</button>
+      <h2 id="rmTitle">Purchase Rules</h2>
+      <button id="rmLangBtn" class="btn btn-outline btn-sm">العربية</button>
+      <div id="rulesBox" class="rules-panel"></div>
+      <div id="rmAgreeRow" class="rules-agree" hidden>
+        <button id="rmAgreeBtn" class="btn btn-primary">I Agree & Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- رسالة صغيرة أسفل الشاشة -->
+  <div id="toast" class="toast"></div>
+
+  <script src="site-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

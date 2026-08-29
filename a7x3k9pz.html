@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin — HOT PURSUIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- ═══════════ شاشة تسجيل الدخول ═══════════ -->
+  <div id="loginView" class="admin-login">
+    <div class="login-card">
+      <div class="login-logo">🛡️</div>
+      <h1>Admin Panel</h1>
+      <p class="login-sub">HOT PURSUIT</p>
+      <form id="loginForm" autocomplete="off">
+        <label for="loginToken">GitHub Personal Access Token</label>
+        <input type="password" id="loginToken" required placeholder="ghp_••••••••" />
+        <p class="login-hint">التوكن بيتخزن في المتصفح بتاعك بس (sessionStorage) وبيتمسح أول ما تقفل المتصفح.</p>
+        <div id="loginError" class="form-error" hidden></div>
+        <button type="submit" id="loginBtn" class="btn-primary">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════ لوحة التحكم ═══════════ -->
+  <div id="dashView" class="admin-dash" hidden>
+    <header class="dash-top">
+      <div class="dash-title">
+        <span class="dash-logo">🛡️</span>
+        <div>
+          <h1>Admin Panel</h1>
+          <p>HOT PURSUIT</p>
+        </div>
+      </div>
+      <div class="dash-actions">
+        <a href="index.html" target="_blank" class="btn-link">View Store ↗</a>
+        <button id="logoutBtn" class="btn-ghost">Logout</button>
+      </div>
+    </header>
+
+    <div class="dash-toolbar">
+      <div class="toolbar-left">
+        <input type="search" id="adminSearch" placeholder="Search products..." autocomplete="off" />
+        <select id="adminFilter">
+          <option value="">All categories</option>
+          <option value="vehicles">Vehicles</option>
+          <option value="mlo">Business</option>
+          <option value="vip">VIP</option>
+          <option value="bundles">Bundles</option>
+        </select>
+      </div>
+      <div class="toolbar-right">
+        <button id="addBtn" class="btn-primary">＋ Add Product</button>
+      </div>
+    </div>
+
+    <div class="dash-stats" id="dashStats"></div>
+
+    <div id="adminCardWrap">
+      <div id="adminCards" class="admin-cards"></div>
+      <div id="adminEmpty" class="empty-state" hidden>No products found.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ مودال إضافة/تعديل ═══════════ -->
+  <div class="modal" id="editModal" role="dialog" aria-modal="true">
+    <div class="modal-card edit-card">
+      <button class="modal-close" id="editClose" aria-label="Close">✕</button>
+      <h2 id="editTitle">Add Product</h2>
+      <form id="editForm" autocomplete="off">
+        <div class="field-grid">
+          <div class="field">
+            <label>Name (EN)</label>
+            <input type="text" id="f_name" required />
+          </div>
+          <div class="field">
+            <label>Name (AR)</label>
+            <input type="text" id="f_nameAr" />
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="f_category">
+              <option value="vip">VIP</option>
+              <option value="mlo">Business (mlo)</option>
+              <option value="vehicles">Vehicles</option>
+              <option value="bundles">Bundles</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Price</label>
+            <input type="text" id="f_price" placeholder="20$ Monthly" required />
+          </div>
+          <div class="field">
+            <label>Business type (mlo only)</label>
+            <select id="f_type">
+              <option value="">—</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="mechanic">Mechanic</option>
+              <option value="dealership">Dealership</option>
+              <option value="nightclub">Nightclub</option>
+              <option value="cafe">Cafe</option>
+              <option value="hotel">Hotel</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Vehicle class (vehicles only)</label>
+            <select id="f_class">
+              <option value="">—</option>
+              <option value="S">S</option>
+              <option value="S+">S+</option>
+              <option value="S++">S++</option>
+              <option value="X">X</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Short (EN)</label>
+          <input type="text" id="f_short" />
+        </div>
+        <div class="field">
+          <label>Short (AR)</label>
+          <input type="text" id="f_shortAr" />
+        </div>
+        <div class="field">
+          <label>Description (EN)</label>
+          <textarea id="f_desc" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label>Description (AR)</label>
+          <textarea id="f_descAr" rows="2"></textarea>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label>Features (EN) — كل ميزة في سطر</label>
+            <textarea id="f_features" rows="3" placeholder="line 1&#10;line 2"></textarea>
+          </div>
+          <div class="field">
+            <label>Features (AR) — كل ميزة في سطر</label>
+            <textarea id="f_featuresAr" rows="3" placeholder="سطر 1&#10;سطر 2"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Image</label>
+          <div class="img-row">
+            <input type="text" id="f_image" placeholder="images/... أو رابط صورة" />
+            <input type="file" id="f_imageFile" accept="image/*" />
+          </div>
+          <img id="f_imagePreview" class="img-preview" alt="preview" hidden />
+        </div>
+
+        <div class="checkbox-row">
+          <label class="check">
+            <input type="checkbox" id="f_sold" /> <span>Sold / مباع</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="f_popular" /> <span>Popular ⭐</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="f_new" /> <span>New ✨</span>
+          </label>
+        </div>
+
+        <div id="editError" class="form-error" hidden></div>
+        <div class="form-actions">
+          <button type="button" id="editCancel" class="btn-ghost">Cancel</button>
+          <button type="submit" id="editSave" class="btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- رسالة صغيرة -->
+  <div id="toast" class="toast"></div>
+
+  <script src="github-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

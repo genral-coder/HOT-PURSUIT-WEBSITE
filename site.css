@@ -1,0 +1,256 @@
+/* ═══════════════════════════════════════════════════════════════
+   HOT PURSUIT RP — Site Pages (باقي أقسام الموقع)
+   ───────────────────────────────────────────────────────────────
+   أنماط الصفحات الجديدة (Server, Community, Applications, Media,
+   Rules, News, Leaderboards, Support, Login, Profile).
+   يُبنى على ثيم style.css ولا يلغيه.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ---------- تنسيق عام للصفحات الداخلية ---------- */
+.site-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; animation: pageFade .4s ease; }
+
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.page-hero { text-align: center; padding: 30px 0 34px; }
+.page-eyebrow {
+  display: inline-block; font-size: 12px; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; margin-bottom: 12px;
+}
+.page-hero h2 { font-size: clamp(26px, 4vw, 40px); color: var(--text); }
+.page-sub { color: var(--muted); max-width: 620px; margin: 10px auto 0; }
+
+/* ---------- بطاقة السيرفر ---------- */
+.server-status-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 26px; max-width: 860px; margin: 0 auto 40px;
+}
+.ss-row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; }
+.ss-item { display: flex; flex-direction: column; gap: 6px; min-width: 140px; }
+.ss-label { font-size: 11px; letter-spacing: .22em; color: var(--muted); }
+.ss-value { font-size: 22px; font-weight: 700; color: var(--text); }
+.ss-online { color: #3ddc84; }
+.ss-online .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #3ddc84; margin-right: 6px; box-shadow: 0 0 12px #3ddc84; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.ss-code { font-family: ui-monospace, monospace; font-size: 16px; color: var(--gold); }
+.ss-actions { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 6px; }
+.ss-actions .btn { flex: 1; min-width: 200px; }
+.ss-meta { display: flex; flex-wrap: wrap; gap: 24px; border-top: 1px solid var(--border); margin-top: 22px; padding-top: 20px; }
+.ss-meta-item { display: flex; flex-direction: column; gap: 4px; }
+.ss-meta .ss-value { font-size: 16px; }
+
+/* ---------- شبكات الوظائف / التقديمات ---------- */
+.jobs-grid, .apply-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.job-card, .apply-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; transition: transform .2s, border-color .2s, background .2s;
+}
+.job-card:hover, .apply-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--panel-hover); }
+.job-card .job-top, .apply-card .apply-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.job-card .job-emoji, .apply-card .apply-emoji { font-size: 30px; }
+.job-card h3, .apply-card h3 { font-size: 20px; color: var(--text); }
+.job-card p, .apply-card p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+.job-feats, .app-req { list-style: none; margin-bottom: 16px; }
+.job-feats li, .app-req li { padding: 5px 0 5px 22px; position: relative; font-size: 14px; color: var(--text); }
+.job-feats li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+.app-req li::before { content: '•'; position: absolute; left: 4px; color: var(--gold); }
+.req-title, .feat-title { font-size: 11px; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+
+/* ---------- بطاقات السوشيال ---------- */
+.social-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; max-width: 900px; margin: 0 auto; }
+.social-card {
+  display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px 20px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  text-align: center; text-decoration: none; color: var(--text); transition: all .2s;
+}
+.social-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--panel-hover); }
+.social-card.primary { border-color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); }
+.social-card .sc-emoji { font-size: 40px; }
+.social-card .sc-name { font-size: 18px; font-weight: 700; }
+.social-card .sc-cta { font-size: 12px; color: var(--muted); }
+
+/* ---------- أكورديون (قوانين + FAQ) ---------- */
+.accordion { max-width: 860px; margin: 10px auto 0; }
+.acc-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; background: var(--panel); }
+.acc-head {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 20px; background: transparent; border: none; color: var(--text);
+  font-size: 17px; font-weight: 600; cursor: pointer; text-align: left; font-family: var(--font);
+}
+.acc-head .acc-caret { transition: transform .25s; color: var(--accent); }
+.acc-item.open .acc-caret { transform: rotate(180deg); }
+.acc-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.acc-item.open .acc-body { max-height: 600px; }
+.acc-body-inner { padding: 0 20px 18px; color: var(--muted); font-size: 15px; }
+.acc-body-inner ul { list-style: none; }
+.acc-body-inner li { padding: 6px 0 6px 20px; position: relative; }
+.acc-body-inner li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+
+.rules-search { max-width: 860px; margin: 0 auto 16px; }
+.rules-search input {
+  width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--bg-soft); color: var(--text); font-family: var(--font); font-size: 15px;
+}
+.rules-search input:focus { outline: none; border-color: var(--accent); }
+
+/* ---------- الأخبار ---------- */
+.news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.news-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: transform .2s, border-color .2s; display: flex; flex-direction: column;
+}
+.news-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.news-cover { height: 160px; background: linear-gradient(135deg, #1c1c24, #0d0d11); display: flex; align-items: center; justify-content: center; font-size: 44px; color: var(--accent); }
+.news-cover img { width: 100%; height: 100%; object-fit: cover; }
+.news-body { padding: 18px 20px; display: flex; flex-direction: column; flex: 1; }
+.news-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+.news-tag { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); background: rgba(255,194,75,.12); padding: 3px 8px; border-radius: 6px; }
+.news-date { font-size: 12px; color: var(--muted); }
+.news-body h3 { font-size: 19px; margin-bottom: 8px; }
+.news-body p { color: var(--muted); font-size: 14px; }
+.news-feats { margin: 12px 0; padding-left: 18px; }
+.news-feats li { color: var(--text); font-size: 14px; padding: 3px 0; }
+
+/* ---------- لوحة الصدارة ---------- */
+.lb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; max-width: 900px; margin: 0 auto; }
+.lb-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.lb-card h3 { font-size: 17px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.lb-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.04); font-size: 14px; }
+.lb-row:last-child { border-bottom: none; }
+.lb-name { color: var(--text); }
+.lb-val { color: var(--gold); font-weight: 700; }
+.lb-rank { color: var(--muted); margin-right: 8px; width: 22px; display: inline-block; }
+.lb-card.lb-placeholder { border-style: dashed; opacity: .7; }
+
+/* ---------- صفحة الدعم ---------- */
+.support-cta { display: flex; justify-content: center; margin: 0 0 30px; }
+
+/* ---------- صفحة الميديا ---------- */
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; max-width: 1000px; margin: 0 auto; }
+.media-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--panel); aspect-ratio: 16/10; position: relative; }
+.media-embed iframe { width: 100%; height: 100%; border: none; }
+
+/* ---------- صفحة تسجيل الدخول ---------- */
+.login-card-site {
+  max-width: 460px; margin: 20px auto 40px; text-align: center;
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 34px;
+}
+.login-card-site p { color: var(--muted); margin-bottom: 20px; }
+.login-note { font-size: 12px; color: var(--muted); margin-top: 14px; }
+.profile-empty { text-align: center; color: var(--muted); padding: 60px 0; border: 1px dashed var(--border); border-radius: var(--radius); }
+
+/* ---------- إخفاء البحث خارج الستور ---------- */
+.topbar .search-box { transition: opacity .2s; }
+html.theme-hide-search .topbar .search-box { opacity: 0; pointer-events: none; }
+
+/* ---------- RTL ---------- */
+html[dir="rtl"] .site-page { direction: rtl; text-align: right; }
+html[dir="rtl"] .acc-head { text-align: right; }
+html[dir="rtl"] .job-feats li, html[dir="rtl"] .app-req li,
+html[dir="rtl"] .acc-body-inner li { padding: 6px 20px 6px 0; }
+html[dir="rtl"] .job-feats li::before, html[dir="rtl"] .app-req li::before,
+html[dir="rtl"] .acc-body-inner li::before { left: auto; right: 0; }
+html[dir="rtl"] .lb-rank { margin-right: 0; margin-left: 8px; }
+html[dir="rtl"] .ss-online .dot { margin-right: 0; margin-left: 6px; }
+html[dir="rtl"] .ss-actions .btn { text-align: center; }
+
+/* ---------- استجابة ---------- */
+/* روابط إضافية (news, leaderboards, support) — بالديسكتوب تظهر خفيفة، وبالموبايل في القائمة */
+.nav-link.nav-more { display: none; }
+@media (max-width: 900px) {
+  .nav-link.nav-more { display: flex; }
+}
+@media (max-width: 640px) {
+  .nav-login-btn { padding: 6px 9px; font-size: 11px; }
+  .ss-row { flex-direction: column; gap: 16px; }
+  .ss-meta { gap: 16px; }
+  .page-hero { padding: 20px 0 24px; }
+  .site-page { padding: 16px 14px 50px; }
+}
+
+/* ═══════════ شريط تصنيفات الستور (يظهر داخل الستور فقط) ═══════════ */
+.store-subnav {
+  display: none;
+  position: sticky;
+  top: 123px;
+  z-index: 94;
+  width: 100%;
+  background: #14141f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 20px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  gap: 4px;
+}
+.store-subnav.show { display: flex; }
+.store-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #c7c7d1;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: color .18s ease, background .18s ease, border-color .18s ease;
+}
+.store-nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+.store-nav-link.active {
+  color: #fff;
+  background: var(--accent, #ff2d3f);
+  border-color: var(--accent, #ff2d3f);
+  box-shadow: 0 4px 14px rgba(255, 45, 63, 0.35);
+}
+.store-nav-link.active .cat-emoji { filter: none; }
+.store-nav-link .cat-emoji { filter: saturate(0.9); }
+.store-nav-link .nl-count {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-radius: 99px;
+  padding: 1px 8px;
+  font-size: 11px;
+}
+.store-nav-link .nl-count.soon { color: #ffb74d; }
+.store-nav-link.active .nl-count { background: rgba(0, 0, 0, 0.22); }
+html[dir="rtl"] .store-subnav { flex-direction: row; }
+
+/* ═══════════ روابط الفوتر ═══════════ */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  margin-bottom: 12px;
+}
+.footer-link {
+  background: none;
+  border: none;
+  color: #b9b9c6;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 0;
+  transition: color .15s ease;
+}
+.footer-link:hover { color: var(--accent, #ff2d3f); }
+
+/* ═══════════ رابط القوانين في صفحة المجتمع ═══════════ */
+.community-links { display: flex; justify-content: center; margin-top: 26px; }
+.community-links .btn-outline { padding: 10px 26px; }
+
+/* ═══════════ استجابة الشريط ═══════════ */
+@media (max-width: 900px) {
+  .store-subnav { top: 77px; padding: 8px 14px; }
+}
+@media (max-width: 640px) {
+  .store-subnav { padding: 7px 10px; }
+  .store-nav-link { font-size: 12.5px; padding: 6px 11px; }
+  .footer-links { gap: 6px 14px; }
+}
