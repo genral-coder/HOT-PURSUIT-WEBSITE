@@ -5,17 +5,6 @@
    كلها في الجزئين اللي تحت 👇 مفيش داعي تلمس أي حاجة بعدها.
    ═══════════════════════════════════════════════════════════════ */
 
-/* ═══════════ 1) الإعدادات العامة — عدّل من هنا ═══════════ */
-const CONFIG = {
-  serverName: "HOT PURSUIT",                // 👈 اسم السيرفر
-  tagline: "Premium FiveM Roleplay Store",        // 👈 الجملة تحت الاسم
-  description:
-    "Thank you for supporting HOT PURSUIT. Your donations to HOT PURSUIT are highly appreciated.",     // 👈 وصف السيرفر
-  logoImage: "images/Asset_2.webp",                // 👈 صورة اللوجو (سيبها "" لو معندكش صورة)
-  logoText: "HS",                                 // 👈 حرفين بيظهروا لو مفيش لوجو
-  discordUrl: "discord://-/channels/1341426480827203584/1341516123123744881",   // 👈 ⭐ بيفتح تذاكر الشراء في تطبيق الديسكورد
-};
-
 /* ═══════════ 2) التصنيفات — أضف/احذف/عدّل من هنا ═══════════ */
 const CATEGORIES = [
   { id: "vehicles", name: "Vehicles", nameAr: "المركبات", emoji: "🚗", color: "#ff2d3f" },
@@ -38,9 +27,9 @@ const BUSINESS_TYPES = [
 const I18N = {
   en: {
     home: "Home",
-    tagline: CONFIG.tagline,
+    tagline: "YOUR STORY. YOUR RULES.",
     heroChip: "🎮 FiveM Roleplay Server",
-    heroDesc: CONFIG.description,
+    heroDesc: "A premium FiveM roleplay experience where your choices shape your story. Build your reputation, join a department, and live the life you choose.",
     joinDiscord: "Join Discord",
     discord: "Discord ↗",
     chipSupport: "⏱ 24/7 Support",
@@ -97,6 +86,26 @@ const I18N = {
     pgNews: "News",
     pgLeaderboards: "Leaderboards",
     pgSupport: "Support",
+    devBadge: "⚠ Development / demo values",
+    configureConnect: "Set your server IP in site-config.js to enable connection.",
+    secWhy: "Why HOT PURSUIT",
+    secFeatures: "Server Features",
+    secJobsHome: "Jobs & Departments",
+    secFeatured: "Featured in Store",
+    secNewsHome: "Latest News",
+    secMediaHome: "Media",
+    ctaTitle: "Join HOT PURSUIT RP",
+    ctaText: "Create your story. Live by your rules. Join our community today.",
+    viewAllDepts: "View All Departments",
+    viewStore: "View Store",
+    allNews: "All News",
+    viewMedia: "View Media",
+    playNow: "PLAY NOW",
+    footerNav: "Navigation",
+    footerHelp: "Help & Info",
+    footerCommunity: "Community",
+    footerRights: "- All rights reserved.",
+    footerNoSocial: "Social coming soon",
     on: "ONLINE",
     off: "OFFLINE",
     features: "Features",
@@ -156,9 +165,9 @@ const I18N = {
   },
   ar: {
     home: "الرئيسية",
-    tagline: "متجر فايف إم رول بلاي مميز",
+    tagline: "قصتك. قوانينك.",
     heroChip: "🎮 سيرفر رول بلاي فايف إم",
-    heroDesc: "شكراً لدعمكم HOT PURSUIT. تبرعاتكم لـ HOT PURSUIT محل تقدير كبير.",
+    heroDesc: "تجربة رول بلاي فايف إم احترافية حيث تشكّل اختياراتك قصتك. ابنِ سمعتك، انضم لقسم، وعِش الحياة التي تختارها.",
     joinDiscord: "انضم للديسكورد",
     discord: "ديسكورد ↗",
     chipSupport: "⏱ دعم 24/7",
@@ -215,6 +224,26 @@ const I18N = {
     pgNews: "الأخبار",
     pgLeaderboards: "لوحة الصدارة",
     pgSupport: "الدعم",
+    devBadge: "⚠ قيم تجريبية / للعرض التقني",
+    configureConnect: "اضبط آي بي السيرفر في site-config.js لتفعيل الاتصال.",
+    secWhy: "لماذا HOT PURSUIT",
+    secFeatures: "مميزات السيرفر",
+    secJobsHome: "الوظائف والأقسام",
+    secFeatured: "مميز من المتجر",
+    secNewsHome: "آخر الأخبار",
+    secMediaHome: "الميديا",
+    ctaTitle: "انضم إلى HOT PURSUIT RP",
+    ctaText: "اصنع قصتك. عِش بقوانينك. انضم لمجتمعنا اليوم.",
+    viewAllDepts: "عرض كل الأقسام",
+    viewStore: "عرض المتجر",
+    allNews: "كل الأخبار",
+    viewMedia: "عرض الميديا",
+    playNow: "العب الآن",
+    footerNav: "التنقل",
+    footerHelp: "مساعدة ومعلومات",
+    footerCommunity: "المجتمع",
+    footerRights: "- جميع الحقوق محفوظة.",
+    footerNoSocial: "السوشيال قريباً",
     on: "متصل",
     off: "غير متصل",
     features: "المميزات",
@@ -1176,11 +1205,41 @@ function setLang(l) {
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
-/* ---------- الفوتر (طرق الدفع) ---------- */
+/* ---------- الفوتر (هوية + أقسام + مجتمع + دفع) ---------- */
 function renderFooter() {
   $("footerPayLabel").textContent = t("payLabel");
   $("footerPay").innerHTML = PAYMENT_METHODS.map((m) => payChipHtml(m, true)).join("");
-  $("footerName").textContent = CONFIG.serverName;
+  $("footerName").textContent = (SITE.brand && SITE.brand.name) || "HOT PURSUIT";
+  $("footerBrandName").textContent = (SITE.brand && SITE.brand.name) || "HOT PURSUIT";
+  const logo = $("footerLogo");
+  if (logo && SITE.brand && SITE.brand.logo) logo.src = SITE.brand.logo;
+  $("footerDesc").textContent =
+    (SITE.server && SITE.server.description) ||
+    "A premium FiveM roleplay experience. Your story. Your rules.";
+
+  /* سوشيال */
+  const socialEl = $("footerSocial");
+  if (socialEl) {
+    const list = (SITE.social || []).filter((s) => s.url);
+    socialEl.innerHTML = list.length
+      ? list
+          .map(
+            (s) =>
+              `<a class="footer-social-link" href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="${esc(s.name)}"><span class="fs-emoji">${s.emoji}</span><span class="fs-name">${esc(s.name)}</span></a>`
+          )
+          .join("")
+      : `<span class="footer-social-off">${t("footerNoSocial") || "Social coming soon"}</span>`;
+  }
+
+  /* أزرار المجتمع */
+  const comEl = $("footerCommunity");
+  if (comEl) {
+    const disc = (SITE.links && SITE.links.discord) || "";
+    comEl.innerHTML = disc
+      ? `<a class="footer-link" href="${esc(disc)}" target="_blank" rel="noopener">${t("pgCommunity")}</a>` +
+        `<a class="footer-link" href="${esc(disc)}" target="_blank" rel="noopener">${t("joinDiscord")}</a>`
+      : `<span class="footer-social-off">${t("footerNoSocial") || "Coming soon"}</span>`;
+  }
 }
 
 /* ---------- روابط الفوتر (أقسام الموقع) ---------- */
@@ -1188,9 +1247,12 @@ function renderFooterLinks() {
   const el = $("footerLinks");
   if (!el) return;
   const items = [
+    { id: "home", label: t("home"), onClick: () => openCategory("home") },
+    { id: "server", label: t("pgServer"), onClick: () => openPage("server") },
     { id: "store", label: t("pgStore"), onClick: () => openStore() },
-    { id: "rules", label: t("pgRules"), onClick: () => openPage("rules") },
-    { id: "leaderboards", label: t("pgLeaderboards"), onClick: () => openPage("leaderboards") },
+    { id: "community", label: t("pgCommunity"), onClick: () => openPage("community") },
+    { id: "applications", label: t("pgApplications"), onClick: () => openPage("applications") },
+    { id: "media", label: t("pgMedia"), onClick: () => openPage("media") },
     { id: "news", label: t("pgNews"), onClick: () => openPage("news") },
   ];
   el.innerHTML = items
@@ -1200,6 +1262,23 @@ function renderFooterLinks() {
     const d = items.find((x) => x.id === b.dataset.fid);
     b.addEventListener("click", () => d.onClick());
   });
+
+  /* عمود المساعدة */
+  const help = $("footerHelp");
+  if (help) {
+    const rules = $("footerRulesBtn");
+    if (rules) rules.onclick = () => openPage("rules");
+    const support = $("footerSupportBtn");
+    if (support)
+      support.onclick = () => {
+        const url = (SITE.links && (SITE.links.discordTicket || SITE.links.discord)) || "#";
+        window.open(url, "_blank");
+      };
+    const lead = $("footerLeaderBtn");
+    if (lead) lead.onclick = () => openPage("leaderboards");
+    const nw = $("footerNewsBtn");
+    if (nw) nw.onclick = () => openPage("news");
+  }
 }
 
 /* ---------- تطبيق الترجمة على العناصر الثابتة ---------- */
@@ -1209,13 +1288,19 @@ function applyLang() {
   renderAuthButton();
   renderFooterLinks();
   applyStaticI18n();
-  $("navTagline").textContent = L.tagline;
-  $("heroTagline").textContent = L.tagline;
-  $("heroDesc").textContent = L.heroDesc;
+  $("navTagline").textContent = (SITE.hero && SITE.hero.title) || L.tagline;
+  $("heroTagline").textContent = (SITE.hero && SITE.hero.title) || L.tagline;
+  $("heroDesc").textContent = (SITE.hero && SITE.hero.subtitle) || L.heroDesc;
   $("chipSupport").textContent = L.chipSupport;
   $("chipSafe").textContent = L.chipSafe;
-  $("secCategories").textContent = L.secCategories;
-  $("secPopular").innerHTML = L.secPopular + ' <span class="title-badge">⭐</span>';
+  $("secWhy").textContent = L.secWhy;
+  $("secFeatures").textContent = L.secFeatures;
+  $("secJobsHome").textContent = L.secJobsHome;
+  $("secFeatured").textContent = L.secFeatured + ' <span class="title-badge">⭐</span>';
+  $("secNewsHome").textContent = L.secNewsHome;
+  $("secMediaHome").textContent = L.secMediaHome;
+  $("ctaTitle").textContent = L.ctaTitle;
+  $("ctaText").textContent = L.ctaText;
   $("rulesBtn").textContent = L.rulesShort;
   renderFooter();
   $("searchInput").placeholder = L.searchPlaceholder;
@@ -1592,13 +1677,17 @@ function loadSavedState() {
 
 /* ---------- تطبيق الإعدادات على الصفحة ---------- */
 function applyConfig() {
-  document.title = CONFIG.serverName + " — FiveM Store";
-  $("navName").textContent = CONFIG.serverName;
-  $("heroName").textContent = CONFIG.serverName;
+  const b = SITE.brand || {};
+  const name = b.name || "HOT PURSUIT";
+  document.title = SITE.meta && SITE.meta.title ? SITE.meta.title : name;
+  $("navName").textContent = name;
+  $("heroName").textContent = name;
+  $("footerName").textContent = name;
 
+  const logo = b.logo;
   ["navLogo", "heroLogo"].forEach((id) => {
     const el = $(id);
-    if (CONFIG.logoImage) { el.src = CONFIG.logoImage; el.style.display = ""; }
+    if (logo) { el.src = logo; el.style.display = ""; }
     else el.style.display = "none";
   });
 }
@@ -1786,28 +1875,6 @@ function hexToRgba(hex, a) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-/* ---------- اختصارات التصنيفات في الهوم (كروت مميزة) ---------- */
-function renderShortcuts() {
-  const wrap = $("catShortcuts");
-  wrap.innerHTML = "";
-  CATEGORIES.forEach((c, i) => {
-    const count = PRODUCTS.filter((p) => p.category === c.id).length;
-    const btn = document.createElement("button");
-    btn.className = "cat-card";
-    btn.style.animationDelay = (i * 0.08) + "s";
-    btn.style.setProperty("--cc", c.color);
-    btn.style.setProperty("--cc-soft", hexToRgba(c.color, .16));
-    btn.style.setProperty("--cc-glow", hexToRgba(c.color, .38));
-    btn.innerHTML = `
-      <span class="cc-emoji">${c.emoji}</span>
-      <span class="cc-name">${catName(c)}</span>
-      <span class="cc-count${count === 0 ? " soon" : ""}">${count === 0 ? t("soon") : count + " " + (count === 1 ? t("product") : t("products"))}</span>
-      <span class="cc-go">${t("browse")} <span class="cc-arrow">→</span></span>`;
-    btn.addEventListener("click", () => openCategory(c.id));
-    wrap.appendChild(btn);
-  });
-}
-
 /* ---------- إظهار قسم مع أنيميشن سلس ---------- */
 function showView(el) {
   el.hidden = false;
@@ -1816,7 +1883,129 @@ function showView(el) {
   el.classList.add("v-enter");
 }
 
-/* ---------- الصفحة الرئيسية ---------- */
+/* ---------- كارت مميزات "لماذا HOT PURSUIT" ---------- */
+function renderWhyGrid() {
+  const wrap = $("whyGrid");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  (SITE.whyUs || []).forEach((w, i) => {
+    const c = document.createElement("article");
+    c.className = "why-card reveal";
+    c.style.animationDelay = (i * 0.06) + "s";
+    c.innerHTML = `
+      <span class="why-icon">${w.icon}</span>
+      <h4>${lang() === "ar" ? w.titleAr : w.title}</h4>
+      <p>${lang() === "ar" ? w.textAr : w.text}</p>`;
+    wrap.appendChild(c);
+  });
+}
+
+/* ---------- كارت مميزات السيرفر ---------- */
+function renderFeatGrid() {
+  const wrap = $("featGrid");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  (SITE.features || []).forEach((f, i) => {
+    const c = document.createElement("article");
+    c.className = "feat-card reveal";
+    c.style.animationDelay = (i * 0.06) + "s";
+    c.innerHTML = `
+      <span class="feat-icon">${f.icon}</span>
+      <h4>${lang() === "ar" ? f.titleAr : f.title}</h4>
+      <p>${lang() === "ar" ? f.textAr : f.text}</p>`;
+    wrap.appendChild(c);
+  });
+}
+
+/* ---------- شريط حالة السيرفر في الهوم ---------- */
+function renderHomeStatus() {
+  const wrap = $("homeStatus");
+  if (!wrap) return;
+  const s = SITE.server || {};
+  const mock = s.mock;
+  const on = s.online;
+  const play = SITE.links && SITE.links.play;
+  const connect = () => {
+    if (play) window.open(play, "_blank");
+    else if (SITE.links && SITE.links.ip) window.open("fivem://connect/" + SITE.links.ip, "_blank");
+  };
+  wrap.innerHTML = `
+    <div class="hs-card">
+      <div class="hs-state ${on ? "on" : "off"}"><span class="hs-dot"></span><span>${on ? translate("on") : translate("off")}</span></div>
+      <div class="hs-item"><span class="hs-label">${translate("ssPlayers")}</span><span class="hs-val">${s.playersOnline ?? "?"} / ${s.playerLimit ?? "?"}</span></div>
+      <div class="hs-item"><span class="hs-label">${translate("ssIp")}</span><span class="hs-val hs-code">${s.ipFull || s.ip || "—"}</span></div>
+      <div class="hs-item"><span class="hs-label">${translate("ssRegion")}</span><span class="hs-val">${s.region || "—"}</span></div>
+      <button class="btn btn-primary btn-sm hs-connect" id="homeConnectBtn">${translate("connectBtn")}</button>
+    </div>
+    ${mock ? `<div class="hs-dev">${translate("devBadge")}</div>` : ""}`;
+  const btn = $("homeConnectBtn");
+  if (btn) btn.addEventListener("click", connect);
+}
+
+/* ---------- وظائف الأقسام في الهوم ---------- */
+function renderHomeJobs() {
+  const wrap = $("jobsHomeGrid");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  (SITE.jobs || []).slice(0, 3).forEach((j) => {
+    const c = document.createElement("article");
+    c.className = "job-card";
+    c.innerHTML = `
+      <div class="job-top"><span class="job-emoji">${j.emoji}</span><h3>${lang() === "ar" && j.nameAr ? j.nameAr : j.name}</h3></div>
+      <p>${lang() === "ar" && j.descAr ? j.descAr : j.desc}</p>
+      <div class="feat-title">${translate("features")}</div>
+      <ul class="job-feats">${(lang() === "ar" ? j.features : j.features || []).map((f) => `<li>${f}</li>`).join("")}</ul>`;
+    wrap.appendChild(c);
+  });
+}
+
+/* ---------- آخر الأخبار في الهوم ---------- */
+function renderHomeNews() {
+  const wrap = $("newsHomeGrid");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  (SITE.news || []).slice(0, 3).forEach((n) => {
+    const c = document.createElement("article");
+    c.className = "news-card" + (n.sample ? " news-sample" : "");
+    c.innerHTML = `
+      <div class="news-cover">${n.cover ? `<img src="${esc(n.cover)}" alt="" loading="lazy" />` : "📰"}</div>
+      <div class="news-body">
+        <div class="news-meta"><span class="news-tag">${n.tag}</span><span class="news-date">${n.date}</span></div>
+        <h3>${esc(n.title)}</h3>
+        <p>${lang() === "ar" ? n.excerptAr : n.excerpt}</p>`;
+    wrap.appendChild(c);
+  });
+}
+
+/* ---------- معاينة الميديا في الهوم ---------- */
+function renderHomeMedia() {
+  const wrap = $("mediaHomeGrid");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  const media = SITE.media || {};
+  if ((media.screenshots || []).length || (media.videos || []).length) {
+    (media.screenshots || []).slice(0, 3).forEach((s) => {
+      const d = document.createElement("div");
+      d.className = "media-card";
+      d.innerHTML = `<div style="height:100%"><img src="${esc(s.url)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover" /></div>`;
+      wrap.appendChild(d);
+    });
+    (media.videos || []).slice(0, 3).forEach((v) => {
+      const d = document.createElement("div");
+      d.className = "media-card";
+      d.innerHTML = `<div class="media-embed">${v.embed || ""}</div>`;
+      wrap.appendChild(d);
+    });
+  } else {
+    wrap.innerHTML = `
+      <div class="media-card media-placeholder" style="grid-column:1/-1;border:none;background:transparent;aspect-ratio:auto;min-height:120px">
+        <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-size:14px">
+          <span style="font-size:36px">🎬</span><b>${translate("comingSoonTiny")}</b></div>
+      </div>`;
+  }
+}
+
+/* ---------- الصفحة الرئيسية (السيرفر أولاً ثم المتجر) ---------- */
 function renderHome() {
   hideFilters();
   hideAllPages(true);
@@ -1824,28 +2013,55 @@ function renderHome() {
   $("pageTitle").textContent = t("home");
   showView($("view-home"));
   syncStoreSubNav();
-  renderShortcuts();
-  const fillGrid = (id, list) => {
-    const grid = $(id);
-    grid.innerHTML = "";
-    list.forEach((p, i) => grid.appendChild(productCard(p, i)));
-  };
 
-  fillGrid("popularGrid", PRODUCTS.filter((p) => p.popular).slice(0, 6));
-  const newList = PRODUCTS.filter((p) => p.new);
-  const newSec = $("newSection");
-  if (newSec) newSec.hidden = false;
-  const newGrid = $("newGrid");
-  if (newList.length) {
-    fillGrid("newGrid", newList.slice(0, 8));
-  } else if (newGrid) {
-    newGrid.innerHTML = `
-      <div class="empty-state coming-soon">
-        <span class="cs-emoji">✨</span>
-        <b>${t("comingSoon")}</b>
-        <span>${t("comingSoonDesc")}</span>
-      </div>`;
+  /* الهيرو */
+  const h = SITE.hero || {};
+  if (h.video) {
+    const vw = $("heroBgVideo");
+    if (vw) vw.innerHTML = `<video autoplay muted loop playsinline preload="metadata"><source src="${esc(h.video)}" type="video/mp4" /></video>`;
   }
+  if (h.image) {
+    const bg = $("heroBg");
+    if (bg) bg.style.backgroundImage = `url('${esc(h.image)}')`;
+  }
+  if (h.title) $("heroTagline").textContent = h.title;
+  if (h.subtitle) $("heroDesc").textContent = h.subtitle;
+  const pBtn = $("playNowBtn");
+  if (pBtn) pBtn.addEventListener("click", () => {
+    const play = SITE.links && SITE.links.play;
+    if (play) window.open(play, "_blank");
+    else if (SITE.links && SITE.links.ip) window.open("fivem://connect/" + SITE.links.ip, "_blank");
+    else toast(translate("configureConnect"));
+  });
+  if (SITE.links && SITE.links.discord) { const jd = $("joinDiscord"); if (jd) jd.href = SITE.links.discord; }
+
+  /* الأقسام */
+  renderHomeStatus();
+  renderWhyGrid();
+  renderFeatGrid();
+  renderHomeJobs();
+  renderHomeNews();
+  renderHomeMedia();
+
+  /* المنتجات المميزة من المتجر */
+  const feat = $("featuredGrid");
+  if (feat) {
+    feat.innerHTML = "";
+    PRODUCTS.filter((p) => p.popular).slice(0, 6).forEach((p, i) => feat.appendChild(productCard(p, i)));
+  }
+
+  /* أزرار الإجراء */
+  const vs = $("viewStoreBtn"); if (vs) vs.addEventListener("click", openStore);
+  const jm = $("jobsMoreBtn"); if (jm) jm.addEventListener("click", () => openPage("server"));
+  const nm = $("newsMoreBtn"); if (nm) nm.addEventListener("click", () => openPage("news"));
+  const mm = $("mediaMoreBtn"); if (mm) mm.addEventListener("click", () => openPage("media"));
+  const cp = $("ctaPlayBtn"); if (cp) cp.addEventListener("click", () => {
+    const play = SITE.links && SITE.links.play;
+    if (play) window.open(play, "_blank");
+    else if (SITE.links && SITE.links.ip) window.open("fivem://connect/" + SITE.links.ip, "_blank");
+    else toast(translate("configureConnect"));
+  });
+  if (SITE.links && SITE.links.discord) { const cd = $("ctaDiscordBtn"); if (cd) cd.href = SITE.links.discord; }
 
   document.querySelectorAll("#view-home .section").forEach((el) => el.classList.add("reveal"));
   initReveal($("view-home"));
@@ -2411,7 +2627,8 @@ function openDonate(p) {
     .replace("{price}", p.price);
   $("dmGo").onclick = () => {
     toast(t("openingDiscord"));
-    setTimeout(() => window.open(CONFIG.discordUrl, "_blank"), 350);
+    const url = (SITE.links && SITE.links.discordTicket) || (SITE.links && SITE.links.discord) || "#";
+    setTimeout(() => window.open(url, "_blank"), 350);
     closeModal("donateModal");
   };
   confirmRules(() => openModal("donateModal"));

@@ -254,3 +254,84 @@ html[dir="rtl"] .store-subnav { flex-direction: row; }
   .store-nav-link { font-size: 12.5px; padding: 6px 11px; }
   .footer-links { gap: 6px 14px; }
 }
+
+/* ═══════════ الصفحة الرئيسية — السيرفر أولاً ═══════════ */
+/* خلفية الهيرو (فيديو / صورة / تدرج) */
+.hero-bg, .hero-bg-video { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero-bg { background-size: cover; background-position: center; opacity: .35; }
+.hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,9,12,.55), rgba(9,9,12,.9)); }
+.hero-bg-video video { width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+.hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
+/* إعادة ضبط z-index حتى لا تعلو الخلفية */
+.hero-bg, .hero-bg-video { z-index: 0 !important; }
+.hero-inner { z-index: 1 !important; }
+
+/* شريط حالة السيرفر */
+.home-status { max-width: 1200px; margin: 30px auto 0; padding: 0 20px; }
+.hs-card {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 22px;
+  padding: 18px 22px; border-radius: 16px;
+  background: var(--panel); border: 1px solid var(--border);
+}
+.hs-state { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; letter-spacing: .08em; }
+.hs-state.on { color: #3ddc84; }
+.hs-state.off { color: var(--muted); }
+.hs-dot { width: 10px; height: 10px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 12px #3ddc84; animation: pulse 1.6s infinite; }
+.hs-state.off .hs-dot { background: var(--muted); box-shadow: none; animation: none; }
+.hs-item { display: flex; flex-direction: column; gap: 3px; }
+.hs-label { font-size: 11px; letter-spacing: .2em; color: var(--muted); }
+.hs-val { font-size: 18px; font-weight: 700; color: var(--text); }
+.hs-code { font-family: ui-monospace, monospace; font-size: 15px; color: var(--gold); }
+.hs-connect { margin-left: auto; }
+.hs-dev { margin-top: 10px; font-size: 12px; color: var(--gold); text-align: center; }
+
+/* لماذا HOT PURSUIT */
+.why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+.why-card, .feat-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; transition: transform .2s, border-color .2s, background .2s;
+}
+.why-card:hover, .feat-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--panel-hover); }
+.why-icon, .feat-icon { font-size: 34px; display: inline-block; margin-bottom: 12px; }
+.why-card h4, .feat-card h4 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+.why-card p, .feat-card p { color: var(--muted); font-size: 14px; line-height: 1.55; }
+.feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+.feat-card { text-align: center; }
+
+/* أزرار نهاية كل قسم */
+.section-actions { display: flex; justify-content: center; margin-top: 22px; }
+.section-actions .btn { min-width: 200px; }
+
+/* CTA الختامي */
+.home-cta {
+  max-width: 1000px; margin: 54px auto 0; padding: 44px 30px; text-align: center;
+  background: linear-gradient(180deg, rgba(255,45,63,.10), rgba(255,255,255,.02));
+  border: 1px solid var(--border); border-radius: 24px;
+}
+.cta-logo { width: 110px; height: auto; margin: 0 auto 18px; display: block; filter: drop-shadow(0 8px 24px var(--accent-glow)); }
+.home-cta h3 { font-size: 28px; text-transform: uppercase; letter-spacing: .08em; }
+.home-cta p { color: var(--muted); max-width: 540px; margin: 10px auto 22px; }
+.cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* علامة أخبار تجريبية */
+.news-sample .news-cover::after {
+  content: 'SAMPLE'; position: absolute; top: 10px; right: 10px;
+  background: rgba(0,0,0,.55); color: var(--gold); font-size: 10px;
+  letter-spacing: .15em; padding: 3px 8px; border-radius: 6px;
+}
+.news-cover { position: relative; }
+
+/* RTL للهوم */
+html[dir="rtl"] .hs-connect { margin-left: 0; margin-right: auto; }
+
+/* استجابة الهوم */
+@media (max-width: 900px) {
+  .hs-card { gap: 16px; }
+  .hs-connect { margin-left: 0; width: 100%; }
+  html[dir="rtl"] .hs-connect { margin-right: 0; }
+}
+@media (max-width: 640px) {
+  .home-status { margin-top: 22px; padding: 0 14px; }
+  .home-cta { padding: 32px 18px; }
+  .section-actions .btn { width: 100%; }
+}

@@ -3,11 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="HOT PURSUIT RP | FiveM Roleplay Server" />
+  <meta name="description" content="HOT PURSUIT RP | FiveM Roleplay Server — a premium FiveM roleplay city. Create your story, live by your rules. Join the server, browse the store, apply and join our community." />
+  <meta property="og:site_name" content="HOT PURSUIT RP" />
   <meta property="og:title" content="HOT PURSUIT RP | FiveM Roleplay Server" />
-  <meta property="og:description" content="Official website for the HOT PURSUIT RP FiveM roleplay server." />
-  <meta property="og:image" content="images/Asset_2.webp" />
-  <meta property="og:url" content="https://genral-coder.github.io/Hot-store/" />
+  <meta property="og:description" content="A premium FiveM roleplay experience where your choices shape your story. Create your story, live by your rules." />
+  <meta property="og:image" content="https://genral-coder.github.io/HOT-PURSUIT-WEBSITE/images/Asset_2.webp" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://genral-coder.github.io/HOT-PURSUIT-WEBSITE/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="HOT PURSUIT RP | FiveM Roleplay Server" />
+  <meta name="twitter:description" content="A premium FiveM roleplay experience. Your story. Your rules." />
+  <meta name="twitter:image" content="https://genral-coder.github.io/HOT-PURSUIT-WEBSITE/images/Asset_2.webp" />
+  <link rel="canonical" href="https://genral-coder.github.io/HOT-PURSUIT-WEBSITE/" />
+  <meta name="theme-color" content="#0b0b0e" />
   <link rel="icon" type="image/webp" href="images/Asset_2.webp" />
   <title>HOT PURSUIT RP | FiveM Roleplay Server</title>
 
@@ -77,34 +85,81 @@
 
     <!-- ▸ الصفحة الرئيسية -->
     <section id="view-home">
-      <div class="hero">
-        <img src="images/Asset_2.webp" alt="logo" class="hero-logo" id="heroLogo" onerror="this.style.display='none'" />
-        <h1 id="heroName">HOT PURSUIT</h1>
-        <p class="hero-tagline" id="heroTagline">Premium FiveM Roleplay Store</p>
-        <p class="hero-desc" id="heroDesc">Your one-stop shop for vehicles, weapons, scripts and more. Donate fast, get it in-game instantly.</p>
-        <div class="hero-actions">
-          <a href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" class="btn btn-discord btn-lg" id="joinDiscord">Join Discord</a>
+
+      <!-- 1) هيرو سينمائي -->
+      <div class="hero" id="homeHero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-bg-video" id="heroBgVideo"></div>
+        <div class="hero-inner">
+          <img src="images/Asset_2.webp" alt="logo" class="hero-logo" id="heroLogo" onerror="this.style.display='none'" />
+          <span class="hero-chip" id="heroChip">🎮 FiveM Roleplay Server</span>
+          <h1 id="heroName">HOT PURSUIT</h1>
+          <p class="hero-tagline" id="heroTagline">YOUR STORY. YOUR RULES.</p>
+          <p class="hero-desc" id="heroDesc">A premium FiveM roleplay experience where your choices shape your story.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" id="playNowBtn" data-i18n="playNow">PLAY NOW</button>
+            <a href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" class="btn btn-discord btn-lg" id="joinDiscord">Join Discord</a>
+          </div>
+          <div class="hero-chips">
+            <span id="chipSupport">⏱ 24/7 Support</span>
+            <span id="chipSafe">🛡 Safe & Secure</span>
+          </div>
         </div>
-        <div class="hero-chips">
-          <span id="chipSupport">⏱ 24/7 Support</span>
-          <span id="chipSafe">🛡 Safe & Secure</span>
+      </div>
+
+      <!-- 2) حالة السيرفر -->
+      <div class="home-status" id="homeStatus"></div>
+
+      <!-- 3) لماذا HOT PURSUIT -->
+      <section class="section home-section reveal">
+        <h3 class="section-title" id="secWhy">Why HOT PURSUIT</h3>
+        <div id="whyGrid" class="why-grid"></div>
+      </section>
+
+      <!-- 4) مميزات السيرفر -->
+      <section class="section home-section reveal">
+        <h3 class="section-title" id="secFeatures">Server Features</h3>
+        <div id="featGrid" class="feat-grid"></div>
+      </section>
+
+      <!-- 5) الوظائف / الأقسام -->
+      <section class="section home-section reveal">
+        <h3 class="section-title" id="secJobsHome">Jobs & Departments</h3>
+        <div id="jobsHomeGrid" class="jobs-grid"></div>
+        <div class="section-actions"><button class="btn btn-outline" id="jobsMoreBtn" data-i18n="viewAllDepts">View All Departments</button></div>
+      </section>
+
+      <!-- 6) منتجات مميزة من المتجر -->
+      <section class="section home-section reveal">
+        <h3 class="section-title" id="secFeatured">Featured in Store <span class="title-badge">⭐</span></h3>
+        <div id="featuredGrid" class="grid"></div>
+        <div class="section-actions"><button class="btn btn-primary" id="viewStoreBtn" data-i18n="viewStore">View Store</button></div>
+      </section>
+
+      <!-- 7) آخر الأخبار -->
+      <section class="section home-section reveal">
+        <h3 class="section-title" id="secNewsHome">Latest News</h3>
+        <div id="newsHomeGrid" class="news-grid"></div>
+        <div class="section-actions"><button class="btn btn-outline" id="newsMoreBtn" data-i18n="allNews">All News</button></div>
+      </section>
+
+      <!-- 8) معاينة الميديا -->
+      <section class="section home-section reveal">
+        <h3 class="section-title" id="secMediaHome">Media</h3>
+        <div id="mediaHomeGrid" class="media-grid"></div>
+        <div class="section-actions"><button class="btn btn-outline" id="mediaMoreBtn" data-i18n="viewMedia">View Media</button></div>
+      </section>
+
+      <!-- 9) CTA المجتمع / الديسكورد -->
+      <section class="home-cta reveal">
+        <img src="images/Asset_2.webp" alt="logo" class="cta-logo" onerror="this.style.display='none'" />
+        <h3 id="ctaTitle">Join HOT PURSUIT RP</h3>
+        <p id="ctaText">Create your story. Live by your rules. Join our community today.</p>
+        <div class="cta-actions">
+          <button class="btn btn-primary btn-lg" id="ctaPlayBtn" data-i18n="playNow">PLAY NOW</button>
+          <a href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" class="btn btn-discord btn-lg" id="ctaDiscordBtn">JOIN DISCORD</a>
         </div>
-      </div>
-
-      <div class="section">
-        <h3 class="section-title" id="secPopular">Popular Products <span class="title-badge">⭐</span></h3>
-        <div id="popularGrid" class="grid"></div>
-      </div>
-
-      <div class="section" id="newSection">
-        <h3 class="section-title sec-new-title" id="secNew">New <span class="title-badge">✨</span></h3>
-        <div id="newGrid" class="grid"></div>
-      </div>
-
-      <div class="section">
-        <h3 class="section-title" id="secCategories">Categories</h3>
-        <div id="catShortcuts" class="cat-shortcuts"></div>
-      </div>
+      </section>
     </section>
 
     <!-- ▸ الستور -->
@@ -268,15 +323,51 @@
     </section>
   </main>
 
-  <!-- ═══════════ الفوتر — طرق الدفع + روابط الموقع ═══════════ -->
+  <!-- ═══════════ الفوتر ═══════════ -->
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-links" id="footerLinks"></div>
-      <div class="footer-pay">
-        <span class="pay-label" id="footerPayLabel">Payment Methods:</span>
-        <div id="footerPay" class="footer-pay-chips"></div>
+      <div class="footer-cols">
+        <!-- العمود الأول: الهوية -->
+        <div class="footer-col footer-brand">
+          <div class="footer-brand-top">
+            <img src="images/Asset_2.webp" id="footerLogo" alt="logo" onerror="this.style.display='none'" />
+            <span class="footer-brand-name" id="footerBrandName">HOT PURSUIT</span>
+          </div>
+          <p class="footer-desc" id="footerDesc">A premium FiveM roleplay experience. Your story. Your rules.</p>
+          <div class="footer-social" id="footerSocial"></div>
+        </div>
+
+        <!-- العمود الثاني: التنقل -->
+        <div class="footer-col">
+          <h4 class="footer-head" data-i18n="footerNav">Navigation</h4>
+          <div class="footer-links" id="footerLinks"></div>
+        </div>
+
+        <!-- العمود الثالث: مساعدة -->
+        <div class="footer-col">
+          <h4 class="footer-head" data-i18n="footerHelp">Help & Info</h4>
+          <div class="footer-help" id="footerHelp">
+            <button class="footer-link" id="footerRulesBtn" data-i18n="pgRules">Rules</button>
+            <button class="footer-link" id="footerSupportBtn" data-i18n="pgSupport">Support</button>
+            <button class="footer-link" id="footerLeaderBtn" data-i18n="pgLeaderboards">Leaderboards</button>
+            <button class="footer-link" id="footerNewsBtn" data-i18n="pgNews">News</button>
+          </div>
+        </div>
+
+        <!-- العمود الرابع: المجتمع -->
+        <div class="footer-col">
+          <h4 class="footer-head" data-i18n="footerCommunity">Community</h4>
+          <div class="footer-community" id="footerCommunity"></div>
+        </div>
       </div>
-      <p class="footer-note">© <span id="footerName">HOT PURSUIT</span></p>
+
+      <div class="footer-meta">
+        <div class="footer-pay">
+          <span class="pay-label" id="footerPayLabel">Payment Methods:</span>
+          <div id="footerPay" class="footer-pay-chips"></div>
+        </div>
+        <p class="footer-note">© <span id="footerName">HOT PURSUIT</span> <span id="footerRights" data-i18n="footerRights">— All rights reserved.</span></p>
+      </div>
     </div>
   </footer>
 
