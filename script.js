@@ -1192,7 +1192,7 @@ const rl = () => (rulesLang !== null ? rulesLang : lang());
 function setLang(l) {
   currentLang = l;
   localStorage.setItem("hs_lang", l);
-  document.documentElement.setAttribute("dir", l === "ar" ? "rtl" : "ltr");
+  document.documentElement.setAttribute("dir", "ltr");
   applyLang();
   renderNav();
   renderCurrentView();
@@ -1284,7 +1284,7 @@ function renderFooterLinks() {
 /* ---------- تطبيق الترجمة على العناصر الثابتة ---------- */
 function applyLang() {
   const L = I18N[lang()];
-  document.documentElement.setAttribute("dir", lang() === "ar" ? "rtl" : "ltr");
+  document.documentElement.setAttribute("dir", "ltr");
   renderAuthButton();
   renderFooterLinks();
   applyStaticI18n();
