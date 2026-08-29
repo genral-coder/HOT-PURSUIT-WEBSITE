@@ -203,7 +203,8 @@ body::before {
 @keyframes dotBlink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
 
 /* التصنيفات */
-.nav-links { position: relative; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; flex-wrap: wrap; }
+.nav-links { position: relative; display: flex; align-items: center; gap: 4px; flex: 1; justify-content: center; flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
 
 /* المؤشر المنزلق — خط واحد بيتحرك بسلاسة تحت التاب النشط */
 .nav-indicator {
@@ -218,12 +219,12 @@ body::before {
 }
 
 .nav-link {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 15px 8px 8px; border-radius: 12px;
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px 12px 6px 6px; border-radius: 11px;
   border: 1px solid transparent; background: transparent;
   color: var(--muted);
-  font-family: var(--font); font-size: 13.5px; font-weight: 700;
-  cursor: pointer; letter-spacing: .04em;
+  font-family: var(--font); font-size: 13px; font-weight: 700;
+  cursor: pointer; letter-spacing: .03em;
   position: relative;
   white-space: nowrap;
   transition: all .2s ease;
@@ -231,8 +232,8 @@ body::before {
 /* الأيقونة في مربع صغير */
 .nav-link .cat-emoji {
   display: grid; place-items: center;
-  width: 26px; height: 26px; border-radius: 8px;
-  font-size: 13px; line-height: 1;
+  width: 24px; height: 24px; border-radius: 8px;
+  font-size: 12.5px; line-height: 1;
   background: rgba(255, 255, 255, .05);
   border: 1px solid var(--border);
   transition: all .25s ease;
