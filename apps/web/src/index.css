@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-bg text-ink font-body antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(255, 45, 63, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(255, 194, 75, 0.06), transparent 55%);
+  background-attachment: fixed;
+}
+
+/* RTL layout handled by the [dir] attribute on <html>. Tailwind logical
+   properties (ms-/me-/ps-/pe-/start-/end-) are used in components so both
+   languages lay out correctly. */
+
+a {
+  @apply transition-colors;
+}
+
+::selection {
+  @apply bg-accent text-white;
+}
+
+/* Scrollbar (dark theme) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0b0e;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 45, 63, 0.6);
+}
