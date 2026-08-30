@@ -1,27 +1,32 @@
 import { useCallback, useState } from "react";
-import { storage } from "@hotpursuit/shared";
+import { favoritesStore, type FavoritesStore } from "@/services/favorites";
 
-const KEY = "hp_favorites";
+/**
+ * React binding over a FavoritesStore. Defaults to the localStorage store but
+ * accepts any store (e.g. a future API-backed store) for the
+ * Discord → Database → Favorites migration path.
+ */
+export function useFavorites(store: FavoritesStore = favoritesStore) {
+  const [ids, setIds] = useState<number[]>(() => store.list());
 
-export function useFavorites() {
-  const [favorites, setFavorites] = useState<number[]>(() =>
-    storage.get<number[]>(KEY, []),
+  const refresh = useCallback(() => setIds(store.list()), [store]);
+
+  const isFavorite = useCallback((id: number) => ids.includes(id), [ids]);
+
+  const toggleFavorite = useCallback(
+    (id: number) => {
+      const isFav = ids.includes(id);
+      if (isFav) store.remove(id);
+      else store.add(id);
+      refresh();
+    },
+    [ids, store, refresh],
   );
 
-  const isFavorite = useCallback(
-    (id: number) => favorites.includes(id),
-    [favorites],
-  );
-
-  const toggleFavorite = useCallback((id: number) => {
-    setFavorites((prev) => {
-      const next = prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : [...prev, id];
-      storage.set(KEY, next);
-      return next;
-    });
-  }, []);
-
-  return { favorites, isFavorite, toggleFavorite };
+  return {
+    favorites: ids,
+    count: ids.length,
+    isFavorite,
+    toggleFavorite,
+  };
 }

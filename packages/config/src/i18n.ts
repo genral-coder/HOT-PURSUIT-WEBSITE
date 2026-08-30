@@ -56,6 +56,8 @@ const dict: Dict = {
   openingDiscord: { en: "Opening Discord...", ar: "جاري فتح الديسكورد..." },
   agreeRules: { en: "I Agree & Continue", ar: "أوافق وأكمل" },
   rulesNeeded: { en: "You must accept the Purchase Rules before continuing.", ar: "يجب عليك قبول قوانين الشراء قبل المتابعة." },
+  viewFullRules: { en: "View full rules", ar: "عرض القوانين كاملة" },
+  moreRulesHint: { en: "…and more. View the full Purchase Rules before continuing.", ar: "…والمزيد. اطلع على قوانين الشراء الكاملة قبل المتابعة." },
   resultsFor: { en: 'Results for "{q}"', ar: 'نتائج البحث عن "{q}"' },
   noResults: { en: 'No products found for "<b>{q}</b>". Try another search.', ar: 'مفيش منتجات لـ "<b>{q}</b>". جرب بحث تاني.' },
   likedBtn: { en: "Favorites", ar: "المفضلة" },

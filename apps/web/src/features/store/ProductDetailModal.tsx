@@ -10,18 +10,25 @@ import {
   vehicleClassMap,
 } from "@/data/store";
 import { PurchaseModal } from "./PurchaseModal";
+import { PurchaseRulesModal } from "./PurchaseRulesModal";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface ProductDetailModalProps {
   product: Product | null;
   onClose: () => void;
+  favorite?: boolean;
+  onToggleFavorite?: (id: number) => void;
 }
 
 export function ProductDetailModal({
   product,
   onClose,
+  favorite = false,
+  onToggleFavorite,
 }: ProductDetailModalProps) {
   const { t, lang } = useLanguage();
   const [purchasing, setPurchasing] = useState(false);
+  const [rulesOpen, setRulesOpen] = useState(false);
 
   if (!product) return null;
 
@@ -77,8 +84,17 @@ export function ProductDetailModal({
           </div>
 
           <div className="flex flex-col">
-            <div className="mb-1 text-3xl font-bold text-ink">
-              {label ?? product.name}
+            <div className="mb-1 flex items-start justify-between gap-3">
+              <h2 className="text-2xl font-bold leading-tight text-ink sm:text-3xl">
+                {label ?? product.name}
+              </h2>
+              {onToggleFavorite && (
+                <FavoriteButton
+                  active={favorite}
+                  onToggle={() => onToggleFavorite(product.id)}
+                  size="md"
+                />
+              )}
             </div>
             <div className="mb-3 text-xl font-bold text-gold">
               {product.price}
@@ -137,9 +153,17 @@ export function ProductDetailModal({
             <button
               type="button"
               onClick={() => setPurchasing(true)}
-              className="mt-auto w-full rounded-md bg-accent py-3 text-center text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-accent-dark"
+              disabled={product.sold}
+              className="w-full rounded-md bg-accent py-3 text-center text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {t("donateBtn")}
+              {product.sold ? t("soldBadge") : t("donateBtn")}
+            </button>
+            <button
+              type="button"
+              onClick={() => setRulesOpen(true)}
+              className="mt-2 w-full rounded-md border border-line bg-panel py-2.5 text-center text-xs font-semibold text-mute transition-colors hover:border-gold/50 hover:text-gold"
+            >
+              🛡 {t("secRules")}
             </button>
           </div>
         </div>
@@ -149,6 +173,12 @@ export function ProductDetailModal({
         open={purchasing}
         onClose={() => setPurchasing(false)}
         product={product}
+      />
+
+      <PurchaseRulesModal
+        open={rulesOpen}
+        onClose={() => setRulesOpen(false)}
+        includeVehicleRules={product.category === "vehicles"}
       />
     </>
   );

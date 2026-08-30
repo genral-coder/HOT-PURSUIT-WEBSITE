@@ -1,11 +1,8 @@
 import type { Product } from "@hotpursuit/types";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { assetUrl } from "@/utils/media";
-import {
-  businessTypeMap,
-  categoryMap,
-  vehicleClassMap,
-} from "@/data/store";
+import { businessTypeMap, categoryMap, vehicleClassMap } from "@/data/store";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface ProductCardProps {
   product: Product;
@@ -14,13 +11,7 @@ interface ProductCardProps {
   onOpen: (product: Product) => void;
 }
 
-function LocalizedText({
-  en,
-  ar,
-}: {
-  en?: string;
-  ar?: string;
-}) {
+function LocalizedText({ en, ar }: { en?: string; ar?: string }) {
   const { lang } = useLanguage();
   return <>{lang === "ar" && ar ? ar : en ?? ""}</>;
 }
@@ -38,16 +29,20 @@ export function ProductCard({
 
   return (
     <article
-      className="group relative flex flex-col overflow-hidden rounded-md border border-line bg-panel transition-all duration-300 hover:border-[var(--cat-color)] hover:bg-panel-hover"
+      onClick={() => onOpen(product)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen(product);
+        }
+      }}
+      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border border-line bg-panel transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--cat-color)] hover:shadow-lg hover:shadow-black/30"
       style={{ ["--cat-color" as string]: cat?.color ?? "#ff2d3f" }}
     >
       {/* Image */}
-      <button
-        type="button"
-        onClick={() => onOpen(product)}
-        className="relative block aspect-[4/3] w-full overflow-hidden bg-bg-soft"
-        aria-label={product.name}
-      >
+      <div className="relative block aspect-[4/3] w-full overflow-hidden bg-bg-soft">
         {product.image ? (
           <img
             src={assetUrl(product.image)}
@@ -56,14 +51,21 @@ export function ProductCard({
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-4xl">
-            {cat?.emoji}
+          <div className="flex h-full w-full items-center justify-center text-5xl">
+            {vc ? <span>🚗</span> : cat?.emoji}
           </div>
         )}
 
-        <div className="absolute top-2 flex flex-wrap gap-1.5 ps-2">
+        {/* Hover overlay */}
+        <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/70 via-black/10 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="rounded-md bg-white/95 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-black">
+            {t("details")}
+          </span>
+        </div>
+
+        <div className="absolute top-2 start-2 flex flex-wrap gap-1.5">
           {product.popular && (
-            <span className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white shadow-accent-glow">
+            <span className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white">
               {t("popularBadge")}
             </span>
           )}
@@ -78,33 +80,26 @@ export function ProductCard({
             </span>
           )}
         </div>
-      </button>
+      </div>
 
       {/* Body */}
-      <div className="flex flex-1 flex-col p-3">
-        <div className="mb-1 flex items-center justify-between gap-2">
+      <div className="flex flex-1 flex-col p-3.5">
+        <div className="mb-1.5 flex items-center justify-between gap-2">
           <span
-            className="text-[11px] font-semibold uppercase tracking-wider"
+            className="truncate text-[11px] font-semibold uppercase tracking-wider"
             style={{ color: cat?.color }}
           >
             {lang === "ar" ? cat?.nameAr : cat?.name}
             {vc ? ` · ${vc.id}` : ""}
           </span>
-          <button
-            type="button"
-            onClick={() => onToggleFavorite(product.id)}
-            className="text-lg leading-none transition-transform hover:scale-110"
-            aria-label={
-              favorite ? t("likedTitle") : t("likedBtn")
-            }
-          >
-            <span className={favorite ? "text-accent" : "text-mute"}>
-              {favorite ? "❤️" : "🤍"}
-            </span>
-          </button>
+          <FavoriteButton
+            active={favorite}
+            onToggle={() => onToggleFavorite(product.id)}
+            size="sm"
+          />
         </div>
 
-        <h3 className="mb-1 text-base font-bold leading-tight text-ink">
+        <h3 className="mb-1 line-clamp-1 text-base font-bold leading-tight text-ink">
           <LocalizedText en={product.name} ar={product.nameAr} />
         </h3>
 
@@ -115,20 +110,23 @@ export function ProductCard({
         {biz && (
           <div className="mb-2 flex items-center gap-1.5 text-xs text-mute">
             <span>{biz.emoji}</span>
-            <span>{lang === "ar" ? biz.nameAr : biz.name}</span>
+            <span className="truncate">
+              {lang === "ar" ? biz.nameAr : biz.name}
+            </span>
           </div>
         )}
 
-        <div className="mt-auto flex items-center justify-between gap-2">
-          <span className="text-base font-bold text-gold">
-            {lang === "ar" ? product.price : product.price}
-          </span>
+        <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+          <span className="text-base font-bold text-gold">{product.price}</span>
           <button
             type="button"
-            onClick={() => onOpen(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen(product);
+            }}
             className="rounded-md bg-accent px-3 py-1.5 text-sm font-bold text-white transition-colors hover:bg-accent-dark"
           >
-            {t("details")}
+            {t("donate")}
           </button>
         </div>
       </div>

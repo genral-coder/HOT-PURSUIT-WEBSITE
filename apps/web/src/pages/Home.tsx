@@ -6,10 +6,12 @@ import { assetUrl } from "@/utils/media";
 import type { Product } from "@hotpursuit/types";
 import { useState } from "react";
 import { ProductDetailModal } from "@/features/store/ProductDetailModal";
+import { useFavorites } from "@/hooks/useFavorites";
 
 export function HomePage() {
   const { t, lang } = useLanguage();
   const [selected, setSelected] = useState<Product | null>(null);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const popular = [...products]
     .filter((p) => p.popular && !p.sold)
@@ -197,7 +199,12 @@ export function HomePage() {
         </Link>
       </section>
 
-      <ProductDetailModal product={selected} onClose={() => setSelected(null)} />
+      <ProductDetailModal
+        product={selected}
+        onClose={() => setSelected(null)}
+        favorite={selected ? isFavorite(selected.id) : false}
+        onToggleFavorite={toggleFavorite}
+      />
     </div>
   );
 }

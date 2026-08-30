@@ -9,6 +9,10 @@ interface ModalProps {
   wide?: boolean;
 }
 
+/**
+ * Shared modal used across the Store (product details, purchase rules).
+ * Provides Escape/backdrop close, scroll-lock and a sticky header.
+ */
 export function Modal({ open, onClose, title, children, wide }: ModalProps) {
   useEffect(() => {
     if (!open) return;
@@ -16,10 +20,11 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      document.body.style.overflow = prev;
     };
   }, [open, onClose]);
 
@@ -34,7 +39,7 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
     >
       <div
         className={cn(
-          "max-h-[90vh] w-full overflow-y-auto rounded-lg border border-line bg-bg-soft shadow-2xl",
+          "max-h-[88vh] w-full overflow-y-auto rounded-lg border border-line bg-bg-soft shadow-2xl",
           wide ? "max-w-3xl" : "max-w-lg",
         )}
         onClick={(e) => e.stopPropagation()}

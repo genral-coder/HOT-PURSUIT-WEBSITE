@@ -32,6 +32,16 @@ a {
   @apply bg-accent text-white;
 }
 
+/* Hide scrollbars on horizontally-scrolling tab strips (mobile Store nav)
+   without disabling the scroll gesture. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Scrollbar (dark theme) */
 ::-webkit-scrollbar {
   width: 10px;
