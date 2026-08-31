@@ -3,6 +3,8 @@ import { AppLayout } from "./layouts/AppLayout";
 import { HomePage } from "./pages/Home";
 import { StorePage } from "./pages/Store";
 import { PlaceholderPage } from "./pages/Placeholder";
+import { AdminPage } from "./pages/Admin";
+import { RequireAdmin } from "./features/auth/RequireAdmin";
 
 export function App() {
   return (
@@ -19,6 +21,14 @@ export function App() {
         <Route path="leaderboards" element={<PlaceholderPage page="leaderboards" />} />
         <Route path="support" element={<PlaceholderPage page="support" />} />
         <Route path="profile" element={<PlaceholderPage page="profile" />} />
+        <Route
+          path="admin"
+          element={
+            <RequireAdmin>
+              <AdminPage />
+            </RequireAdmin>
+          }
+        />
         <Route path="*" element={<PlaceholderPage page="notfound" />} />
       </Route>
     </Routes>

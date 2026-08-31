@@ -230,17 +230,107 @@ export interface SiteFeature {
   textAr: string;
 }
 
-/* ───────────────────────────── Users / Auth (future backend) ───────────────────────────── */
+/* ───────────────────────────── Users / Auth ───────────────────────────── */
 
+/** Roles supported by the admin authorization foundation (server-enforced). */
+export type RoleName = "OWNER" | "ADMIN" | "MODERATOR" | "CONTENT_MANAGER";
+
+/**
+ * Granular permissions (server-enforced). These may grow over time as future
+ * Admin/Player/Store modules land. Not every role gets every permission —
+ * they are assigned per role in the database seed / admin management and
+ * checked server-side only.
+ */
+export type Permission =
+  | "admin.access"
+  | "players.view"
+  | "players.manage"
+  | "store.view"
+  | "store.manage"
+  | "orders.view"
+  | "orders.manage"
+  | "applications.view"
+  | "applications.manage"
+  | "tickets.view"
+  | "tickets.manage"
+  | "news.view"
+  | "news.manage"
+  | "media.manage"
+  | "server.view"
+  | "admins.manage"
+  | "settings.manage";
+
+/** Default permission set per role (seed data, database). */
+export const ROLE_PERMISSIONS: Record<RoleName, Permission[]> = {
+  OWNER: [
+    "admin.access",
+    "players.view",
+    "players.manage",
+    "store.view",
+    "store.manage",
+    "orders.view",
+    "orders.manage",
+    "applications.view",
+    "applications.manage",
+    "tickets.view",
+    "tickets.manage",
+    "news.view",
+    "news.manage",
+    "media.manage",
+    "server.view",
+    "admins.manage",
+    "settings.manage",
+  ],
+  ADMIN: [
+    "admin.access",
+    "players.view",
+    "players.manage",
+    "store.view",
+    "store.manage",
+    "orders.view",
+    "orders.manage",
+    "applications.view",
+    "applications.manage",
+    "tickets.view",
+    "tickets.manage",
+    "news.view",
+    "news.manage",
+    "media.manage",
+    "server.view",
+  ],
+  MODERATOR: ["admin.access", "players.view", "applications.view", "applications.manage", "tickets.view", "tickets.manage"],
+  CONTENT_MANAGER: ["admin.access", "news.view", "news.manage", "media.manage"],
+};
+
+/** Discord data stored for an authenticated user (safe subset only). */
 export interface DiscordUser {
+  /** Discord user id (server-verified, never trusted from the client). */
   id: string;
   username: string;
-  displayName: string;
+  globalName?: string | null;
   avatar?: string | null;
-  /** True when the account is verified via Discord. */
+  /** True when identity was validated via Discord OAuth. */
   verified: boolean;
 }
 
+export interface AuthRole {
+  name: RoleName;
+}
+
+/**
+ * Authenticated user as returned by the backend (GET /api/auth/me).
+ * `permissions` is the *effective* set after resolving roles + direct grants,
+ * resolved server-side only. Clients use this purely for UI visibility.
+ */
+export interface AuthUser {
+  id: string;
+  discord: DiscordUser;
+  roles: RoleName[];
+  permissions: Permission[];
+  createdAt: string;
+}
+
+/** Full user record (stored shape). `role` is optional — auth is role-based. */
 export interface User {
   id: string;
   discordId: string;
@@ -248,6 +338,13 @@ export interface User {
   createdAt: string;
   player?: Player;
   admin?: Admin;
+}
+
+export interface Admin {
+  id: string;
+  discordId: string;
+  role: RoleName;
+  permissions: Permission[];
 }
 
 export interface Player {
@@ -259,46 +356,6 @@ export interface Player {
   ownedVehicles?: string[];
   vip?: boolean;
   money?: number;
-}
-
-/* ───────────────────────────── Admin / permissions ───────────────────────────── */
-
-export type AdminRole = "OWNER" | "ADMIN" | "MODERATOR" | "CONTENT_MANAGER";
-
-export type Permission =
-  | "store"
-  | "orders"
-  | "applications"
-  | "tickets"
-  | "news"
-  | "media"
-  | "players"
-  | "server"
-  | "settings";
-
-/** Default permission set per role (seed data). */
-export const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
-  OWNER: [
-    "store",
-    "orders",
-    "applications",
-    "tickets",
-    "news",
-    "media",
-    "players",
-    "server",
-    "settings",
-  ],
-  ADMIN: ["store", "orders", "applications", "tickets", "news", "players"],
-  MODERATOR: ["applications", "tickets"],
-  CONTENT_MANAGER: ["news", "media"],
-};
-
-export interface Admin {
-  id: string;
-  discordId: string;
-  role: AdminRole;
-  permissions: Permission[];
 }
 
 /* ───────────────────────────── Orders / Purchases ───────────────────────────── */

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { cn } from "@hotpursuit/shared";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useAuth } from "@/features/auth/AuthContext";
+import { UserMenu } from "@/features/auth/UserMenu";
 import { brand, siteLinks } from "@/data/site";
 
 const NAV_ITEMS = [
@@ -62,12 +64,7 @@ export function AppLayout() {
 
           {/* Right controls */}
           <div className="flex items-center gap-2">
-            <Link
-              to="/profile"
-              className="hidden rounded-md bg-accent px-3 py-1.5 text-sm font-bold text-white transition-colors hover:bg-accent-dark sm:block"
-            >
-              {t("loginShort")}
-            </Link>
+            <UserMenu />
             <button
               type="button"
               onClick={toggle}
@@ -109,13 +106,7 @@ export function AppLayout() {
                   {t(item.key)}
                 </NavLink>
               ))}
-              <Link
-                to="/profile"
-                onClick={() => setMenuOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-semibold text-accent"
-              >
-                {t("loginShort")}
-              </Link>
+              <MobileAuthRow onNavigate={() => setMenuOpen(false)} />
             </div>
           </nav>
         )}
@@ -127,6 +118,57 @@ export function AppLayout() {
 
       <Footer />
     </div>
+  );
+}
+
+function MobileAuthRow({ onNavigate }: { onNavigate: () => void }) {
+  const { t } = useLanguage();
+  const { user, loading, login, logout } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="col-span-2 h-8 animate-pulse rounded-md bg-panel" />
+    );
+  }
+  if (!user) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          onNavigate();
+          login();
+        }}
+        className="rounded-md px-3 py-2 text-start text-sm font-semibold text-accent"
+      >
+        {t("loginShort")}
+      </button>
+    );
+  }
+  return (
+    <>
+      <NavLink
+        to="/profile"
+        onClick={onNavigate}
+        className={({ isActive }) =>
+          cn(
+            "rounded-md px-3 py-2 text-sm font-semibold",
+            isActive ? "bg-accent/15 text-accent" : "text-ink hover:text-accent",
+          )
+        }
+      >
+        {t("pgProfile")}
+      </NavLink>
+      <button
+        type="button"
+        onClick={() => {
+          onNavigate();
+          void logout();
+        }}
+        className="rounded-md px-3 py-2 text-start text-sm font-semibold text-accent"
+      >
+        {t("logout")}
+      </button>
+    </>
   );
 }
 
