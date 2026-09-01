@@ -79,6 +79,7 @@ const I18N = {
     pgStore: "Store",
     pgProfile: "Profile",
     storeAll: "All",
+    browseStore: "Browse Store",
     pgCommunity: "Community",
     pgApplications: "Applications",
     pgMedia: "Media",
@@ -223,6 +224,7 @@ const I18N = {
     pgStore: "المتجر",
     pgProfile: "الملف الشخصي",
     storeAll: "الكل",
+    browseStore: "تصفح المتجر",
     pgCommunity: "المجتمع",
     pgApplications: "التقديمات",
     pgMedia: "الميديا",
@@ -1322,6 +1324,8 @@ function applyLang() {
   $("dmGo").textContent = L.continueDiscord;
   $("langBtn").textContent = lang() === "en" ? "ع" : "E";
   $("likedBtn").querySelector(".lk-label").textContent = L.likedBtn;
+  const r2 = $("rulesBtn2");
+  if (r2) r2.title = L.secRules;
 }
 
 /* ---------- إعادة رسم العرض الحالي ---------- */
@@ -1878,7 +1882,7 @@ function renderStoreSubNav() {
   bar.innerHTML = "";
 
   const allBtn = document.createElement("button");
-  const allActive = ["store", "search", "liked"].includes(state.view);
+  const allActive = ["store", "search"].includes(state.view);
   allBtn.className = "store-nav-link" + (allActive ? " active" : "");
   allBtn.dataset.cat = "all";
   allBtn.innerHTML = t("storeAll");
@@ -1897,6 +1901,7 @@ function renderStoreSubNav() {
     btn.addEventListener("click", () => openCategory(c.id));
     bar.appendChild(btn);
   });
+
 }
 
 /* ---------- إظهار/إخفاء + تحديث شريط تصنيفات الستور ---------- */
@@ -2230,7 +2235,7 @@ function renderLiked() {
   $("pageTitle").textContent = t("likedTitle");
   showView($("view-store"));
   $("storeTitle").textContent = t("likedTitle");
-  const list = PRODUCTS.filter((p) => isLiked(p.id));
+  const list = PRODUCTS.filter((p) => Favorites.isFavorite(p.id));
   $("storeCount").textContent = list.length + " " + (list.length === 1 ? t("product") : t("products"));
   const grid = $("productGrid");
   grid.innerHTML = "";
@@ -2241,7 +2246,10 @@ function renderLiked() {
         <span class="cs-emoji">💔</span>
         <b>${t("likedTitle")}</b>
         <span>${t("likedEmpty")}</span>
+        <button class="btn btn-primary" id="favBrowseBtn">${t("browseStore")}</button>
       </div>`;
+    const b = $("favBrowseBtn");
+    if (b) b.addEventListener("click", openStore);
     markStoreReveal();
     return;
   }
@@ -2609,16 +2617,42 @@ function doSearch(q) {
   saveState();
 }
 
-/* ---------- نظام الإعجابات ❤️ ---------- */
-const likedKey = (id) => "hs_liked_" + id;
-const isLiked = (id) => localStorage.getItem(likedKey(id)) === "1";
-const setLiked = (id, v) => localStorage.setItem(likedKey(id), v ? "1" : "0");
+/* ---------- نظام المفضلة ❤️ (وحدة قابلة لإعادة الاستخدام) ----------
+   يُخزَّن محلياً في localStorage حالياً.
+   عند تفعيل Discord Login لاحقاً، انقل `save()`/`load()` من localStorage إلى
+   حساب اللاعب (Profile → Database → Favorites) دون تغيير واجهات النداء. */
+const Favorites = {
+  key: "hs_liked_",
+  /* هل المنتج في المفضلة؟ */
+  isFavorite(id) {
+    try { return localStorage.getItem(this.key + id) === "1"; } catch (e) { return false; }
+  },
+  /* تبديل حالة المفضلة لمنتج معيّن — يعيد القيمة الجديدة */
+  toggle(id) {
+    const next = !this.isFavorite(id);
+    try { localStorage.setItem(this.key + id, next ? "1" : "0"); } catch (e) {}
+    this.sync(id, next);
+    return next;
+  },
+  /* قائمة ids المفضلة */
+  getIDs() {
+    return PRODUCTS.filter((p) => this.isFavorite(p.id)).map((p) => p.id);
+  },
+  /* عدد المفضلة */
+  count() { return this.getIDs().length; },
+  /* حقل ربط بحساب اللاعب لاحقاً؛ حالياً لا أثر له */
+  sync(id, fav) { /* TODO: ربط مع حساب Discord/قاعدة البيانات */ void id; void fav; },
+};
+
+/* أسماء توافقية مع الاستخدامات القائمة في الكود */
+const likedKey = (id) => Favorites.key + id;
+const isLiked = (id) => Favorites.isFavorite(id);
+const setLiked = (id, v) => { try { localStorage.setItem(Favorites.key + id, v ? "1" : "0"); } catch (e) {} };
 
 async function toggleLike(id, btn) {
   const p = PRODUCTS.find((x) => x.id === id);
   if (!p) return;
-  const liked = !isLiked(id);
-  setLiked(id, liked);
+  const liked = Favorites.toggle(id);
 
   const counter = btn.querySelector(".like-count");
   p.likes = Math.max(0, (p.likes || 0) + (liked ? 1 : -1));
@@ -2789,6 +2823,8 @@ function bindEvents() {
   const comRulesBtn = $("communityRulesBtn");
   if (comRulesBtn) comRulesBtn.addEventListener("click", () => openPage("rules"));
   $("likedBtn").addEventListener("click", openLiked);
+  const rulesBtn2 = $("rulesBtn2");
+  if (rulesBtn2) rulesBtn2.addEventListener("click", openRules);
   $("rmLangBtn").addEventListener("click", () => {
     rulesLang = rl() === "en" ? "ar" : "en";
     renderRules();

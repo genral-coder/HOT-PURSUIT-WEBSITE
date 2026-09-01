@@ -58,7 +58,6 @@
         <div class="nav-stack">
           <button id="rulesBtn" class="btn btn-outline btn-sm"></button>
           <button id="langBtn" class="btn btn-outline btn-sm lang-short" aria-label="Change language"></button>
-          <button id="likedBtn" class="btn btn-outline btn-sm liked-btn-nav" aria-label="Favorites"><span class="lk-heart">❤️</span><span class="lk-label"></span></button>
         </div>
         <button type="button" class="btn btn-outline btn-sm nav-login-btn" id="navLoginBtn" data-i18n="loginShort">LOGIN</button>
         <a href="https://discord.gg/REqWKXnrku" target="_blank" rel="noopener" class="btn btn-discord btn-sm discord-ico" id="navDiscord" aria-label="Discord"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.37-.44.85-.6 1.22a18.27 18.27 0 0 0-5.5 0 12.6 12.6 0 0 0-.61-1.22.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.89 1.52.07.07 0 0 0-.04.04C.53 9.57-.32 14.6.1 19.6c0 .03.02.05.05.07a19.9 19.9 0 0 0 6.16 3.12c.03 0 .07 0 .09-.02a14.3 14.3 0 0 0 1.23-2 .09.09 0 0 0-.05-.12 13.1 13.1 0 0 1-1.87-.9.09.09 0 0 1-.01-.14c.13-.1.25-.2.38-.3a.07.07 0 0 1 .08 0c3.93 1.8 8.18 1.8 12.06 0a.07.07 0 0 1 .08 0c.12.11.25.21.38.3a.09.09 0 0 1 0 .14c-.6.36-1.22.66-1.87.9a.09.09 0 0 0-.05.12c.37.72.79 1.4 1.23 2a.11.11 0 0 0 .09.03 19.8 19.8 0 0 0 6.2-3.12c.03-.02.04-.04.04-.07.5-5.72-.84-10.7-3.54-15.19a.07.07 0 0 0-.04-.05zM8.02 16.4c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.33-.96 2.42-2.16 2.42zm7.96 0c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.33-.95 2.42-2.16 2.42z"/></svg></a>
@@ -80,6 +79,8 @@
       <div class="search-box" id="searchBox">
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" placeholder="Search products, categories..." autocomplete="off" />
+        <button type="button" class="search-tool" id="likedBtn" aria-label="Favorites" title="Favorites"><span class="lk-heart">❤️</span><span class="lk-label"></span></button>
+        <button type="button" class="search-tool" id="rulesBtn2" aria-label="Purchase Rules" title="Purchase Rules">📜</button>
       </div>
     </header>
 
