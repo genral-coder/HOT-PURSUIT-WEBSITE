@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { to: "/", key: "home" },
   { to: "/store", key: "pgStore" },
   { to: "/server", key: "pgServer" },
+  { to: "/rules", key: "pgRules" },
   { to: "/applications", key: "pgApplications" },
   { to: "/community", key: "pgCommunity" },
   { to: "/media", key: "pgMedia" },

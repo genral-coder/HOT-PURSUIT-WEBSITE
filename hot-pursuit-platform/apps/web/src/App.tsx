@@ -2,6 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import { AppLayout } from "./layouts/AppLayout";
 import { HomePage } from "./pages/Home";
 import { StorePage } from "./pages/Store";
+import { ServerPage } from "./pages/Server";
+import { ApplicationsPage } from "./pages/Applications";
+import { CommunityPage } from "./pages/Community";
+import { MediaPage } from "./pages/Media";
+import { RulesPage } from "./pages/Rules";
+import { NewsPage } from "./pages/News";
+import { LeaderboardsPage } from "./pages/Leaderboards";
+import { SupportPage } from "./pages/Support";
 import { PlaceholderPage } from "./pages/Placeholder";
 import { AdminLayout } from "./features/admin/AdminLayout";
 import { AdminDashboard } from "./pages/admin/Dashboard";
@@ -16,13 +24,14 @@ export function App() {
         <Route index element={<HomePage />} />
         <Route path="store" element={<StorePage />} />
         <Route path="store/:category" element={<StorePage />} />
-        <Route path="server" element={<PlaceholderPage page="server" />} />
-        <Route path="applications" element={<PlaceholderPage page="applications" />} />
-        <Route path="community" element={<PlaceholderPage page="community" />} />
-        <Route path="media" element={<PlaceholderPage page="media" />} />
-        <Route path="news" element={<PlaceholderPage page="news" />} />
-        <Route path="leaderboards" element={<PlaceholderPage page="leaderboards" />} />
-        <Route path="support" element={<PlaceholderPage page="support" />} />
+        <Route path="server" element={<ServerPage />} />
+        <Route path="applications" element={<ApplicationsPage />} />
+        <Route path="community" element={<CommunityPage />} />
+        <Route path="media" element={<MediaPage />} />
+        <Route path="rules" element={<RulesPage />} />
+        <Route path="news" element={<NewsPage />} />
+        <Route path="leaderboards" element={<LeaderboardsPage />} />
+        <Route path="support" element={<SupportPage />} />
         <Route path="profile" element={<PlaceholderPage page="profile" />} />
         <Route
           path="admin"

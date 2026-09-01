@@ -240,6 +240,74 @@ const dict: Dict = {
   profileTitle: { en: "Player Profile", ar: "الملف الشخصي" },
   profileSub: { en: "Your player dashboard and purchases.", ar: "لوحة التحكم الخاصة بك ومشترياتك." },
   profileEmpty: { en: "Login to view your player dashboard.", ar: "سجّل الدخول لعرض لوحة التحكم الخاصة بك." },
+
+  /* ── Phase 5: public pages ────────────────────────────────────── */
+  serverIntroTitle: { en: "A City Built For You", ar: "مدينة مبنية من أجلك" },
+  serverIntroText: {
+    en: "HOT PURSUIT RP is a premium FiveM roleplay experience where your choices shape your story. Build your reputation, join a department, and live the life you choose.",
+    ar: "سيرفر HOT PURSUIT RP هو تجربة رول بلاي فايف إم احترافية حيث تشكّل اختياراتك قصتك. ابنِ سمعتك، انضم لقسم، وعِش الحياة التي تختارها.",
+  },
+  howToPlayTitle: { en: "How To Join", ar: "كيف تنضم" },
+  aboutServerTitle: { en: "About The Server", ar: "عن السيرفر" },
+  aboutServerText: {
+    en: "HOT PURSUIT RP is a premium FiveM roleplay experience where your choices shape your story. Build depth, earn reputation and write your own story in the city.",
+    ar: "سيرفر HOT PURSUIT RP هو تجربة رول بلاي فايف إم احترافية حيث تشكّل اختياراتك قصتك. ابنِ عمقاً، اكتسب سمعة، واكتب قصتك الخاصة في المدينة.",
+  },
+  newsEmpty: { en: "No news published yet. Check back soon!", ar: "لا توجد أخبار منشورة بعد. ترقّب قريباً!" },
+  faqTitle: { en: "Frequently Asked Questions", ar: "الأسئلة الشائعة" },
+  discordNotConfigured: { en: "Discord is not configured yet.", ar: "الديسكورد غير مُهيأ بعد." },
+  discordCommunityTitle: { en: "Discord Community", ar: "مجتمع الديسكورد" },
+  discordCommunityText: {
+    en: "Join our Discord for news, support, whitelists, giveaways and the friendliest community in the city.",
+    ar: "انضم إلى ديسكوردنا لتحصل على الأخبار والدعم والتقديمات والسحوبات وألطف مجتمع في المدينة.",
+  },
+  secCommunityLinks: { en: "Official Platforms", ar: "منصاتنا الرسمية" },
+  comOthersSoon: { en: "Our other platforms are coming soon.", ar: "منصاتنا الأخرى ستتوفر قريباً." },
+  comOthersEmpty: { en: "Connect on Discord while we set up the rest.", ar: "تواصل معنا على الديسكورد بينما نجهّز باقي المنصات." },
+  appsEyebrow: { en: "APPLICATIONS", ar: "التقديمات" },
+  appsTitle: { en: "Open Applications", ar: "التقديمات المتاحة" },
+  appsSub: { en: "Apply to join a department or register your business/gang.", ar: "قدّم للانضمام لقسم أو سجّل بيزنس/عصابة." },
+  appsHowToNote: {
+    en: "Applications are currently handled inside our Discord.",
+    ar: "تُدار التقديمات حالياً داخل ديسكوردنا.",
+  },
+  appsTicketLink: { en: "Open an application ticket ↗", ar: "افتح تذكرة تقديم ↗" },
+  appsTicketSoon: { en: "Application tickets coming soon.", ar: "تذاكر التقديم قادمة قريباً." },
+  appsRequirements: { en: "Requirements", ar: "المتطلبات" },
+  mediaEmptyTitle: { en: "Media Coming Soon", ar: "الميديا قادمة قريباً" },
+  mediaEmptyText: {
+    en: "Screenshots and videos will be published here once the server is live.",
+    ar: "سيتم نشر اللقطات والفيديوهات هنا بمجرد تشغيل السيرفر.",
+  },
+  rulesNotice: {
+    en: "These rules apply to all players on the server. Please read them carefully. Violations may result in penalties up to a permanent ban.",
+    ar: "هذه القواعد سارية المفعول على جميع اللاعبين داخل السيرفر. يرجى قراءتها بعناية. المخالفات تؤدي إلى عقوبات تصل إلى الحظر الدائم.",
+  },
+  newsEmptyTitle: { en: "No News Yet", ar: "لا توجد أخبار بعد" },
+  newsEmptyText: {
+    en: "Updates and announcements will be published here. Join our Discord to stay in the loop.",
+    ar: "سيتم نشر التحديثات والإعلانات هنا. انضم إلى ديسكوردنا لتبقى على اطلاع.",
+  },
+  lbEmptyTitle: { en: "Leaderboards Coming Soon", ar: "لوحة الصدارة قادمة قريباً" },
+  lbEmptyText: {
+    en: "Live rankings will appear here once connected to the server database.",
+    ar: "ستظهر الترتيبات الحية هنا بعد ربطها بقاعدة بيانات السيرفر.",
+  },
+  lbCurrent: { en: "Category: {name}", ar: "المجموعة: {name}" },
+  supportEyebrow: { en: "SUPPORT", ar: "الدعم" },
+  supportTitle: { en: "Support Center", ar: "مركز الدعم" },
+  supportSub: { en: "Get help with purchases, technical issues and your account.", ar: "احصل على المساعدة بشأن المشتريات والمشاكل التقنية وحسابك." },
+  supportTicketsTitle: { en: "Support Tickets", ar: "تذاكر الدعم" },
+  supportTicketsText: {
+    en: "Open a ticket for purchases, technical issues or account help. Our team responds fast.",
+    ar: "افتح تذكرة للمشتريات أو المشاكل التقنية أو مساعدة الحساب. فريقنا يرد بسرعة.",
+  },
+  supportOpenTicket: { en: "Open A Ticket", ar: "افتح تذكرة" },
+  supportTicketsSoon: { en: "Support tickets are not configured yet.", ar: "تذاكر الدعم غير مُهيأة بعد." },
+  supportDiscordText: {
+    en: "Reach the whole community and get instant answers in our Discord.",
+    ar: "تواصل مع كامل المجتمع واحصل على إجابات فورية في ديسكوردنا.",
+  },
 };
 
 export function getDict(): Dict {

@@ -2,16 +2,20 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { products } from "@/data/products";
 import { categories, vehicleClasses, purchaseRules, paymentMethods } from "@/data/store";
+import { whyUs, features, jobs, newsPosts, faq } from "@/data/public";
+import { siteLinks, brand } from "@/data/site";
 import { assetUrl } from "@/utils/media";
 import type { Product } from "@hotpursuit/types";
 import { useState } from "react";
 import { ProductDetailModal } from "@/features/store/ProductDetailModal";
 import { useFavorites } from "@/hooks/useFavorites";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 export function HomePage() {
   const { t, lang } = useLanguage();
   const [selected, setSelected] = useState<Product | null>(null);
   const { isFavorite, toggleFavorite } = useFavorites();
+  usePageMeta();
 
   const popular = [...products]
     .filter((p) => p.popular && !p.sold)
@@ -20,6 +24,9 @@ export function HomePage() {
 
   const list =
     popular.length > 0 ? popular : products.filter((p) => !p.sold).slice(0, 6);
+
+  const realNews = newsPosts.filter((n) => !n.sample);
+  const newsPreview = realNews.length > 0 ? realNews.slice(0, 3) : [];
 
   return (
     <div>
@@ -52,6 +59,111 @@ export function HomePage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-mute">
             <span>{t("chipSafe")}</span>
             <span>{t("chipSupport")}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Server introduction */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <div className="grid gap-6 md:grid-cols-2 md:items-center">
+          <img
+            src={brand.logo}
+            alt={brand.name}
+            className="mx-auto w-64 rounded-lg border border-line bg-panel object-cover p-4"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
+          />
+          <div>
+            <h2 className="mb-3 text-2xl font-bold text-ink">
+              {t("serverIntroTitle")}
+            </h2>
+            <p className="mb-4 text-base leading-relaxed text-mute">
+              {t("serverIntroText")}
+            </p>
+            <Link
+              to="/server"
+              className="inline-block rounded-md bg-accent px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-accent-dark"
+            >
+              {t("pgServer")}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Why HOT PURSUIT */}
+      <section className="border-y border-line bg-bg-soft/50">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+          <h2 className="mb-6 text-2xl font-bold text-ink">{t("secWhy")}</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {whyUs.map((w) => (
+              <div
+                key={w.title}
+                className="rounded-lg border border-line bg-panel p-6"
+              >
+                <div className="mb-3 text-3xl">{w.icon}</div>
+                <h3 className="mb-2 text-lg font-bold text-ink">
+                  {lang === "ar" ? w.titleAr : w.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-mute">
+                  {lang === "ar" ? w.textAr : w.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Server features */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <h2 className="mb-6 text-2xl font-bold text-ink">{t("secFeatures")}</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((f) => (
+            <div
+              key={f.title}
+              className="rounded-lg border border-line bg-panel p-6 text-center"
+            >
+              <div className="mb-3 text-3xl">{f.icon}</div>
+              <h3 className="mb-2 text-base font-bold text-ink">
+                {lang === "ar" ? f.titleAr : f.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-mute">
+                {lang === "ar" ? f.textAr : f.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Jobs / Departments */}
+      <section className="border-y border-line bg-bg-soft/50">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+          <div className="mb-6 flex items-end justify-between">
+            <h2 className="text-2xl font-bold text-ink">{t("secJobsHome")}</h2>
+            <Link
+              to="/server"
+              className="text-sm font-semibold text-accent hover:underline"
+            >
+              {t("viewAllDepts")}
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {jobs.map((j) => (
+              <div
+                key={j.id}
+                className="rounded-lg border border-line bg-panel p-5"
+              >
+                <div className="mb-2 flex items-center gap-3">
+                  <span className="text-2xl">{j.emoji}</span>
+                  <h3 className="font-bold text-ink">
+                    {lang === "ar" ? j.nameAr ?? j.name : j.name}
+                  </h3>
+                </div>
+                <p className="text-sm leading-relaxed text-mute">
+                  {lang === "ar" ? j.descAr ?? j.desc ?? "" : j.desc ?? ""}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -187,17 +299,82 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6">
-        <h2 className="mb-3 text-3xl font-bold text-ink">{t("ctaTitle")}</h2>
-        <p className="mx-auto mb-6 max-w-xl text-mute">{t("ctaText")}</p>
-        <Link
-          to="/store"
-          className="inline-block rounded-md bg-accent px-8 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-accent-dark"
-        >
-          {t("viewStore")}
-        </Link>
+      {/* News preview (real content only; none → lightweight empty hint) */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <div className="mb-6 flex items-end justify-between">
+          <h2 className="text-2xl font-bold text-ink">{t("secNewsHome")}</h2>
+          <Link to="/news" className="text-sm font-semibold text-accent hover:underline">
+            {t("allNews")}
+          </Link>
+        </div>
+        {newsPreview.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {newsPreview.map((n) => (
+              <article
+                key={n.title}
+                className="rounded-lg border border-line bg-panel p-5"
+              >
+                <div className="mb-2 text-xs font-bold uppercase tracking-widest text-accent">
+                  {n.tag}
+                </div>
+                <h3 className="mb-2 font-bold text-ink">{n.title}</h3>
+                <p className="text-sm leading-relaxed text-mute">
+                  {lang === "ar" ? n.excerptAr ?? n.excerpt : n.excerpt}
+                </p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-dashed border-line bg-panel p-10 text-center text-sm text-mute">
+            {t("newsEmpty")}
+          </div>
+        )}
       </section>
+
+      {/* Community / Discord CTA */}
+      <section className="border-y border-line bg-bg-soft/50">
+        <div className="mx-auto max-w-7xl px-4 py-12 text-center sm:px-6">
+          <h2 className="mb-3 text-2xl font-bold text-ink">{t("ctaTitle")}</h2>
+          <p className="mx-auto mb-6 max-w-xl text-mute">{t("ctaText")}</p>
+          {siteLinks.discord ? (
+            <a
+              href={siteLinks.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-md bg-accent px-8 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-accent-dark"
+            >
+              {t("joinDiscord")}
+            </a>
+          ) : (
+            <p className="text-sm text-mute">{t("discordNotConfigured")}</p>
+          )}
+        </div>
+      </section>
+
+      {/* FAQ (where appropriate — collapsible) */}
+      {faq.length > 0 && (
+        <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+          <h2 className="mb-6 text-2xl font-bold text-ink">{t("faqTitle")}</h2>
+          <div className="space-y-3">
+            {faq.map((item) => (
+              <details
+                key={item.q}
+                className="group rounded-lg border border-line bg-panel"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 text-sm font-bold text-ink transition-colors hover:bg-panel-hover">
+                  <span>{lang === "ar" ? item.qAr : item.q}</span>
+                  <span className="text-accent transition-transform group-open:rotate-180" aria-hidden="true">
+                    ▾
+                  </span>
+                </summary>
+                <div className="border-t border-line px-5 py-4 text-sm leading-relaxed text-mute">
+                  {lang === "ar" ? item.aAr : item.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
 
       <ProductDetailModal
         product={selected}

@@ -5,13 +5,6 @@ const PAGE_KEYS: Record<
   string,
   { eyebrow: string; title: string; sub: string; comingSoon: boolean }
 > = {
-  server: { eyebrow: "serverEyebrow", title: "serverTitle", sub: "serverSub", comingSoon: true },
-  applications: { eyebrow: "appEyebrow", title: "appTitle", sub: "appSub", comingSoon: false },
-  community: { eyebrow: "comEyebrow", title: "comTitle", sub: "comSub", comingSoon: false },
-  media: { eyebrow: "mediaEyebrow", title: "mediaTitle", sub: "mediaSub", comingSoon: false },
-  news: { eyebrow: "newsEyebrow", title: "newsTitle", sub: "newsSub", comingSoon: false },
-  leaderboards: { eyebrow: "lbEyebrow", title: "lbTitle", sub: "lbSub", comingSoon: true },
-  support: { eyebrow: "supEyebrow", title: "supTitle", sub: "supSub", comingSoon: false },
   profile: { eyebrow: "loginEyebrow", title: "profileTitle", sub: "profileSub", comingSoon: true },
   notfound: { eyebrow: "404", title: "Page Not Found", sub: "The page you're looking for doesn't exist.", comingSoon: false },
 };
@@ -39,11 +32,7 @@ export function PlaceholderPage({ page }: { page: string }) {
             {t(meta.comingSoon ? "comingSoon" : "comingSoonTiny")}
           </div>
           <p className="text-sm text-mute">
-            {page === "profile"
-              ? t("loginNote")
-              : page === "server"
-                ? t("serverDemoNote")
-                : t("comingSoonDesc")}
+            {page === "profile" ? t("loginNote") : t("comingSoonDesc")}
           </p>
         </div>
       )}
