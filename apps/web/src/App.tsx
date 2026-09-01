@@ -3,7 +3,10 @@ import { AppLayout } from "./layouts/AppLayout";
 import { HomePage } from "./pages/Home";
 import { StorePage } from "./pages/Store";
 import { PlaceholderPage } from "./pages/Placeholder";
-import { AdminPage } from "./pages/Admin";
+import { AdminLayout } from "./features/admin/AdminLayout";
+import { AdminDashboard } from "./pages/admin/Dashboard";
+import { AdminsPage } from "./pages/admin/Admins";
+import { AdminComingSoon } from "./pages/admin/ComingSoon";
 import { RequireAdmin } from "./features/auth/RequireAdmin";
 
 export function App() {
@@ -25,10 +28,26 @@ export function App() {
           path="admin"
           element={
             <RequireAdmin>
-              <AdminPage />
+              <AdminLayout />
             </RequireAdmin>
           }
-        />
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="admins" element={<AdminsPage />} />
+          <Route path="store" element={<AdminComingSoon moduleKey="pgStore" />} />
+          <Route path="orders" element={<AdminComingSoon moduleKey="adminOrders" />} />
+          <Route
+            path="applications"
+            element={<AdminComingSoon moduleKey="adminApplications" />}
+          />
+          <Route path="tickets" element={<AdminComingSoon moduleKey="adminTickets" />} />
+          <Route path="news" element={<AdminComingSoon moduleKey="pgNews" />} />
+          <Route path="media" element={<AdminComingSoon moduleKey="pgMedia" />} />
+          <Route path="players" element={<AdminComingSoon moduleKey="adminPlayers" />} />
+          <Route path="server" element={<AdminComingSoon moduleKey="adminServer" />} />
+          <Route path="settings" element={<AdminComingSoon moduleKey="adminSettings" />} />
+          <Route path="*" element={<AdminComingSoon moduleKey="pgNews" />} />
+        </Route>
         <Route path="*" element={<PlaceholderPage page="notfound" />} />
       </Route>
     </Routes>

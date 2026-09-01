@@ -108,3 +108,22 @@ model Favorite {
   @@unique([userId, productId])
   @@index([userId])
 }
+
+/// Audit trail for privileged (admin) actions. Records who did what, to whom,
+/// when. Only safe identifiers are stored — never passwords, tokens or secrets.
+/// This is a foundation; actions are appended server-side by admin endpoints.
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorUser String
+  actorRole String?
+  action    String
+  targetUser String?
+  targetResource String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([actorUser])
+  @@index([action])
+  @@index([targetUser])
+  @@index([createdAt])
+}

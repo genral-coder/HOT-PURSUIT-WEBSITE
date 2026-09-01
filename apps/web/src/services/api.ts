@@ -64,3 +64,54 @@ export function logout(): Promise<{ ok: boolean }> {
 export function loginWithDiscord(): void {
   window.location.assign(`${API_BASE}/auth/discord`);
 }
+
+/* ── Admin API (all server-enforced; this client never decides authorization) ── */
+
+import type {
+  AddAdminInput,
+  AdminSummary,
+  AdminUser,
+  ChangeAdminInput,
+  Permission,
+  RoleName,
+} from "@hotpursuit/types";
+
+export interface AdminMeta {
+  roles: RoleName[];
+  permissions: Permission[];
+}
+
+export function fetchAdminSummary(): Promise<AdminSummary> {
+  return request<AdminSummary>("/admins/summary");
+}
+
+export function fetchAdmins(): Promise<{ admins: AdminUser[] }> {
+  return request<{ admins: AdminUser[] }>("/admins");
+}
+
+export function fetchAdminMeta(): Promise<AdminMeta> {
+  return request<AdminMeta>("/admins/meta");
+}
+
+export function addAdmin(input: AddAdminInput): Promise<{ admin: AdminUser }> {
+  return request<{ admin: AdminUser }>("/admins", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export function changeAdmin(
+  id: string,
+  input: ChangeAdminInput,
+): Promise<{ admin: AdminUser }> {
+  return request<{ admin: AdminUser }>(`/admins/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+}
+
+export function removeAdmin(id: string): Promise<{ id: string; removed: boolean }> {
+  return request<{ id: string; removed: boolean }>(`/admins/${id}`, {
+    method: "DELETE",
+  });
+}

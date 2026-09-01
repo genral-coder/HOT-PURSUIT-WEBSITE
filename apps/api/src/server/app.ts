@@ -6,6 +6,7 @@ import { env } from "../config/env.js";
 import { authRouter } from "../routes/auth.js";
 import { favoritesRouter } from "../routes/favorites.js";
 import { healthRouter } from "../routes/health.js";
+import { adminsRouter } from "../routes/admins.js";
 import { errorHandler } from "../lib/errors.js";
 
 /**
@@ -84,6 +85,9 @@ export function createApp(): Express {
   app.use("/api/auth", authRouter);
   // Store favorites require auth (self-originated, not a spoof-able path).
   app.use("/api/store/favorites", favoritesRouter);
+
+  // Admin management + summary. Every route enforces its own permission.
+  app.use("/api/admins", adminsRouter);
 
   // Placeholder-aware 404 for unknown API routes.
   app.use("/api", (_req, res) => {

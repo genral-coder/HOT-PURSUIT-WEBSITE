@@ -399,6 +399,77 @@ export interface Ticket {
   createdAt: string;
 }
 
+/* ───────────────────────────── Admin / Management ───────────────────────────── */
+
+/** Role hierarchy rank (higher = more privilege). Used for admin management. */
+export const ROLE_RANK: Record<RoleName, number> = {
+  CONTENT_MANAGER: 1,
+  MODERATOR: 2,
+  ADMIN: 3,
+  OWNER: 4,
+};
+
+/** An admin/staff user as listed by GET /api/admins. */
+export interface AdminUser {
+  id: string;
+  discordId: string;
+  username: string;
+  globalName?: string | null;
+  avatar?: string | null;
+  roles: RoleName[];
+  /** Highest role held (for quick rank display). */
+  primaryRole: RoleName | null;
+  permissions: Permission[];
+  createdAt: string;
+  updatedAt?: string;
+}
+
+/** Actions recorded in the audit log. */
+export type AuditAction =
+  | "ADMIN_ADDED"
+  | "ADMIN_REMOVED"
+  | "ROLE_CHANGED"
+  | "PERMISSION_CHANGED";
+
+/** One audit log entry. */
+export interface AuditLogEntry {
+  id: string;
+  actorUser: string;
+  actorRole?: string | null;
+  action: AuditAction | string;
+  targetUser?: string | null;
+  targetResource?: string | null;
+  metadata?: Record<string, unknown> | null;
+  createdAt: string;
+}
+
+/** Admin dashboard summary — only REAL backend-provided metrics. */
+export interface AdminSummary {
+  /** Number of authenticated (registered) site users. */
+  users: number;
+  /** Number of staff accounts (users holding a staff role). */
+  staff: number;
+  /** Server status from /api/health (may be unavailable). */
+  database: "connected" | "unavailable";
+  /** True when a metric in the UI is not yet backed by the backend. */
+  store: "coming-soon";
+  orders: "coming-soon";
+  applications: "coming-soon";
+  tickets: "coming-soon";
+  players: "coming-soon";
+}
+
+export interface AddAdminInput {
+  discordId: string;
+  role: RoleName;
+  permissions?: Permission[];
+}
+
+export interface ChangeAdminInput {
+  role?: RoleName;
+  permissions?: Permission[];
+}
+
 /* ───────────────────────────── Leaderboards (future) ───────────────────────────── */
 
 export interface LeaderboardEntry {
