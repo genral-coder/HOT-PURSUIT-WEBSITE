@@ -1,0 +1,1061 @@
+/**
+ * HOT PURSUIT RP — Product catalog (migrated verbatim from the legacy
+ * products.json source-of-truth). Arabic fields are preserved as-is.
+ */
+import type { Product } from "@hotpursuit/types";
+
+export const products: Product[] = [
+  {
+    "id": 1,
+    "category": "vip",
+    "name": "Verified Account",
+    "nameAr": "توثيق الحساب",
+    "short": "Get your account verified for only $1/Monthly.",
+    "shortAr": "احصل على توثيق حسابك مقابل دولار واحد فقط شهرياً.",
+    "description": "Get your account verified for only 1$/Monthly for each application.",
+    "descriptionAr": "احصل على توثيق حسابك مقابل دولار واحد فقط شهريًا لكل حساب.",
+    "features": [
+      "$1/Monthly per account",
+      "Instant verification",
+      "Official verified badge"
+    ],
+    "featuresAr": [
+      "دولار واحد شهرياً لكل حساب",
+      "توثيق فوري",
+      "شارة توثيق رسمية"
+    ],
+    "price": "$1/Monthly",
+    "image": "images/products/vip/Verified Accounts.webp",
+    "type": null,
+    "class": null,
+    "sold": false,
+    "popular": true,
+    "likes": 0
+  },
+  {
+    "id": 2,
+    "category": "mlo",
+    "name": "Bennys LSIA",
+    "nameAr": "بينيز LSIA",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "Bennys LSIA — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "بينيز LSIA — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Bennys LSIA.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 3,
+    "category": "mlo",
+    "name": "Bennys Docks",
+    "nameAr": "بينيز دوكس",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "Bennys Docks — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "بينيز دوكس — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Bennys Docks.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 4,
+    "category": "mlo",
+    "name": "Paleto Car Dealer",
+    "nameAr": "باليتو معرض سيارات",
+    "short": "A car dealership, ready for business.",
+    "shortAr": "معرض سيارات جاهز للشغل.",
+    "description": "Paleto Car Dealer — a car dealership. Costs 30$ Monthly.",
+    "descriptionAr": "باليتو معرض سيارات — معرض سيارات. التكلفة 30$ شهرياً.",
+    "features": [
+      "30$ Monthly",
+      "Dealership location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "30$ شهرياً",
+      "موقع معرض سيارات",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "30$ Monthly",
+    "image": "images/products/mlo/Paleto Car Dealer.webp",
+    "type": "dealership",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 5,
+    "category": "mlo",
+    "name": "Kebab King",
+    "nameAr": "كباب كينج",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Kebab King — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "كباب كينج — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Kebab King.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 6,
+    "category": "mlo",
+    "name": "Tropical Heights",
+    "nameAr": "تروبيكال هايتس",
+    "short": "A nightclub, ready for business.",
+    "shortAr": "نادي ليلي جاهز للشغل.",
+    "description": "Tropical Heights — a nightclub. Costs 10$ Monthly.",
+    "descriptionAr": "تروبيكال هايتس — نادي ليلي. التكلفة 10$ شهرياً.",
+    "features": [
+      "10$ Monthly",
+      "Nightclub location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "10$ شهرياً",
+      "موقع نادي ليلي",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "10$ Monthly",
+    "image": "images/products/mlo/Tropical Heights.webp",
+    "type": "nightclub",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 7,
+    "category": "mlo",
+    "name": "Leapfrog",
+    "nameAr": "ليفروج",
+    "short": "A cafe, ready for business.",
+    "shortAr": "كافيه جاهز للشغل.",
+    "description": "Leapfrog — a cafe. Costs 15$ Monthly.",
+    "descriptionAr": "ليفروج — كافيه. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Cafe location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع كافيه",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Leapfrog.webp",
+    "type": "cafe",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 8,
+    "category": "mlo",
+    "name": "Opium Nights",
+    "nameAr": "أوبيوم نايتس",
+    "short": "A hotel, ready for business.",
+    "shortAr": "فندق جاهز للشغل.",
+    "description": "Opium Nights — a hotel. Costs 20$ Monthly.",
+    "descriptionAr": "أوبيوم نايتس — فندق. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Hotel location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع فندق",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Opium Nights.webp",
+    "type": "hotel",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 9,
+    "category": "mlo",
+    "name": "Red's",
+    "nameAr": "ريدز",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "Red's — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "ريدز — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Red's.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 10,
+    "category": "mlo",
+    "name": "Vespucci PDM",
+    "nameAr": "فيسوتشي معرض سيارات",
+    "short": "A car dealership, ready for business.",
+    "shortAr": "معرض سيارات جاهز للشغل.",
+    "description": "Vespucci PDM — a car dealership. Costs 30$ Monthly.",
+    "descriptionAr": "فيسوتشي معرض سيارات — معرض سيارات. التكلفة 30$ شهرياً.",
+    "features": [
+      "30$ Monthly",
+      "Dealership location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "30$ شهرياً",
+      "موقع معرض سيارات",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "30$ Monthly",
+    "image": "images/products/mlo/Vespucci PDM.webp",
+    "type": "dealership",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 11,
+    "category": "mlo",
+    "name": "Pier 76",
+    "nameAr": "بير 76",
+    "short": "A car dealership, ready for business.",
+    "shortAr": "معرض سيارات جاهز للشغل.",
+    "description": "Pier 76 — a car dealership. Costs 30$ Monthly.",
+    "descriptionAr": "بير 76 — معرض سيارات. التكلفة 30$ شهرياً.",
+    "features": [
+      "30$ Monthly",
+      "Dealership location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "30$ شهرياً",
+      "موقع معرض سيارات",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "30$ Monthly",
+    "image": "images/products/mlo/Pier 76.webp",
+    "type": "dealership",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 12,
+    "category": "mlo",
+    "name": "Pearls",
+    "nameAr": "بيرلز",
+    "short": "A hotel business, ready for business.",
+    "shortAr": "فندق جاهز للشغل.",
+    "description": "Pearls — a hotel business. Costs 20$ Monthly.",
+    "descriptionAr": "بيرلز — فندق. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Hotel location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع فندق",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Pearls.webp",
+    "type": "hotel",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 13,
+    "category": "mlo",
+    "name": "LaMesa Mechanic",
+    "nameAr": "لاميسا ميكانيكا",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "LaMesa Mechanic — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "لاميسا ميكانيكا — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/LaMesa Mechanic.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 14,
+    "category": "mlo",
+    "name": "Koi",
+    "nameAr": "كوي",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Koi — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "كوي — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Koi.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 15,
+    "category": "mlo",
+    "name": "Horny's",
+    "nameAr": "هورنيز",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Horny's — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "هورنيز — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Horny's.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 16,
+    "category": "mlo",
+    "name": "Up n Atom",
+    "nameAr": "أب أند أتوم",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Up n Atom — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "أب أند أتوم — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Up n Atom.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 17,
+    "category": "mlo",
+    "name": "Vanilla Unicorn",
+    "nameAr": "فانيلا يونيكورن",
+    "short": "A nightclub, ready for business.",
+    "shortAr": "نادي ليلي جاهز للشغل.",
+    "description": "Vanilla Unicorn — a nightclub. Costs 10$ Monthly.",
+    "descriptionAr": "فانيلا يونيكورن — نادي ليلي. التكلفة 10$ شهرياً.",
+    "features": [
+      "10$ Monthly",
+      "Nightclub location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "10$ شهرياً",
+      "موقع نادي ليلي",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "10$ Monthly",
+    "image": "images/products/mlo/Vanilla Unicorn.webp",
+    "type": "nightclub",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 18,
+    "category": "mlo",
+    "name": "Exotic Dealership",
+    "nameAr": "إكزوتيك معرض سيارات",
+    "short": "A car dealership, ready for business.",
+    "shortAr": "معرض سيارات جاهز للشغل.",
+    "description": "Exotic Dealership — a car dealership. Costs 20$ Monthly.",
+    "descriptionAr": "إكزوتيك معرض سيارات — معرض سيارات. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Dealership location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع معرض سيارات",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Exotic Dealership.webp",
+    "type": "dealership",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 19,
+    "category": "mlo",
+    "name": "Pizzeria",
+    "nameAr": "بيتزيريا",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Pizzeria — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "بيتزيريا — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Pizzeria.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 20,
+    "category": "mlo",
+    "name": "Ottos Auto",
+    "nameAr": "أوتوز أوتو",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "Ottos Auto — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "أوتوز أوتو — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Ottos Auto.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 21,
+    "category": "mlo",
+    "name": "Bennys",
+    "nameAr": "بينيز",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "Bennys — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "بينيز — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Bennys.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 22,
+    "category": "mlo",
+    "name": "Hayes",
+    "nameAr": "هايز",
+    "short": "A mechanic workshop, ready for business.",
+    "shortAr": "ورشة ميكانيكا جاهزة للشغل.",
+    "description": "Hayes — a mechanic workshop. Costs 20$ Monthly.",
+    "descriptionAr": "هايز — ورشة ميكانيكا. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Workshop location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع ورشة",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Hayes.webp",
+    "type": "mechanic",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 23,
+    "category": "mlo",
+    "name": "Pops Dinner",
+    "nameAr": "بوبز دينر",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Pops Dinner — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "بوبز دينر — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Pops Dinner.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 24,
+    "category": "mlo",
+    "name": "Bean Machine",
+    "nameAr": "بين ماشين",
+    "short": "A cafe, ready for business.",
+    "shortAr": "كافيه جاهز للشغل.",
+    "description": "Bean Machine — a cafe. Costs 15$ Monthly.",
+    "descriptionAr": "بين ماشين — كافيه. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Cafe location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع كافيه",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Bean Machine.webp",
+    "type": "cafe",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 25,
+    "category": "mlo",
+    "name": "Bahamas",
+    "nameAr": "بهامس",
+    "short": "A nightclub, ready for business.",
+    "shortAr": "نادي ليلي جاهز للشغل.",
+    "description": "Bahamas — a nightclub. Costs 10$ Monthly.",
+    "descriptionAr": "بهامس — نادي ليلي. التكلفة 10$ شهرياً.",
+    "features": [
+      "10$ Monthly",
+      "Nightclub location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "10$ شهرياً",
+      "موقع نادي ليلي",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "10$ Monthly",
+    "image": "images/products/mlo/Bahamas.webp",
+    "type": "nightclub",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 26,
+    "category": "mlo",
+    "name": "Cat Cafe",
+    "nameAr": "كات كافيه",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Cat Cafe — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "كات كافيه — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Cat Cafe.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 27,
+    "category": "mlo",
+    "name": "Burgershot",
+    "nameAr": "برغرشوت",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Burgershot — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "برغرشوت — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Burgershot.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 28,
+    "category": "vip",
+    "name": "Car Radio",
+    "nameAr": "راديو السيارة",
+    "short": "A VIP car radio, ready for use.",
+    "shortAr": "راديو سيارة VIP جاهز للاستخدام.",
+    "description": "Car Radio — a VIP feature. Costs 10$ Monthly.",
+    "descriptionAr": "راديو السيارة — ميزة VIP. التكلفة 10$ شهرياً.",
+    "features": [
+      "10$ Monthly",
+      "VIP feature",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "10$ شهرياً",
+      "ميزة VIP",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "10$ Monthly",
+    "image": "images/products/vip/car radio.webp",
+    "type": null,
+    "class": null,
+    "sold": false,
+    "popular": true,
+    "likes": 0
+  },
+  {
+    "id": 29,
+    "category": "mlo",
+    "name": "Pearls Restaurant",
+    "nameAr": "مطعم بيرلز",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Pearls Restaurant — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "مطعم بيرلز — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/Pearls.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 30,
+    "category": "bundles",
+    "name": "Pearls Combo",
+    "nameAr": "كومبو بيرلز",
+    "short": "Hotel business & restaurant combo, costs 30$ instead of 35$.",
+    "shortAr": "كومبو الفندق والمطعم، بـ30$ بدل 35$.",
+    "description": "Pearls Combo — Hotel Business & Restaurant. Costs 30$ instead of 35$.",
+    "descriptionAr": "كومبو بيرلز — الفندق والمطعم. التكلفة 30$ بدل 35$.",
+    "features": [
+      "30$ Monthly (instead of 35$)",
+      "Hotel Business + Restaurant",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "30$ شهرياً (بدل 35$)",
+      "الفندق + المطعم",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "30$ Monthly",
+    "image": "images/products/mlo/Pearls.webp",
+    "type": null,
+    "class": null,
+    "sold": true,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 31,
+    "category": "mlo",
+    "name": "Ottos Auto Used Car Dealer",
+    "nameAr": "أوتوز أوتو معرض سيارات مستعملة",
+    "short": "A used car dealer, ready for business.",
+    "shortAr": "معرض سيارات مستعملة جاهز للشغل.",
+    "description": "Ottos Auto Used Car Dealer — a used car dealer. Costs 20$ Monthly.",
+    "descriptionAr": "أوتوز أوتو معرض سيارات مستعملة — معرض سيارات مستعملة. التكلفة 20$ شهرياً.",
+    "features": [
+      "20$ Monthly",
+      "Dealership location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "موقع معرض سيارات",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "images/products/mlo/Ottos Auto.webp",
+    "type": "dealership",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 32,
+    "category": "bundles",
+    "name": "Ottos Auto Combo",
+    "nameAr": "كومبو أوتوز أوتو",
+    "short": "Mechanic & used car dealer combo, costs 35$ instead of 40$.",
+    "shortAr": "كومبو الميكانيكا ومعرض السيارات، بـ35$ بدل 40$.",
+    "description": "Ottos Auto Combo — Mechanic & Used Car Dealer. Costs 35$ instead of 40$.",
+    "descriptionAr": "كومبو أوتوز أوتو — الميكانيكا ومعرض السيارات المستعملة. التكلفة 35$ بدل 40$.",
+    "features": [
+      "35$ Monthly (instead of 40$)",
+      "Mechanic + Used Car Dealer",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "35$ شهرياً (بدل 40$)",
+      "الميكانيكا + معرض السيارات المستعملة",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "35$ Monthly",
+    "image": "images/products/mlo/Ottos Auto.webp",
+    "type": null,
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 33,
+    "category": "vehicles",
+    "name": "Preview Class S",
+    "nameAr": "عرض كلاس S",
+    "short": "Vehicle preview for Class S.",
+    "shortAr": "عربية بريفيو لكلاس S.",
+    "description": "Preview vehicle — Class S. Replace with the real one.",
+    "descriptionAr": "عربية بريفيو — كلاس S. هتتستبدل بالحقيقية.",
+    "features": [
+      "20$ Monthly",
+      "100$ Per Season",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "20$ شهرياً",
+      "100$ للموسم",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "20$ Monthly",
+    "image": "",
+    "type": null,
+    "class": "S",
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 34,
+    "category": "vehicles",
+    "name": "Preview Class S+",
+    "nameAr": "عرض كلاس S+",
+    "short": "Vehicle preview for Class S+.",
+    "shortAr": "عربية بريفيو لكلاس S+.",
+    "description": "Preview vehicle — Class S+. Replace with the real one.",
+    "descriptionAr": "عربية بريفيو — كلاس S+. هتتستبدل بالحقيقية.",
+    "features": [
+      "25$ Monthly",
+      "150$ Per Season",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "25$ شهرياً",
+      "150$ للموسم",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "25$ Monthly",
+    "image": "",
+    "type": null,
+    "class": "S+",
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 35,
+    "category": "vehicles",
+    "name": "Preview Class S++",
+    "nameAr": "عرض كلاس S++",
+    "short": "Vehicle preview for Class S++.",
+    "shortAr": "عربية بريفيو لكلاس S++.",
+    "description": "Preview vehicle — Class S++. Replace with the real one.",
+    "descriptionAr": "عربية بريفيو — كلاس S++. هتتستبدل بالحقيقية.",
+    "features": [
+      "30$ Monthly",
+      "200$ Per Season",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "30$ شهرياً",
+      "200$ للموسم",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "30$ Monthly",
+    "image": "",
+    "type": null,
+    "class": "S++",
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 36,
+    "category": "vehicles",
+    "name": "Preview Class X",
+    "nameAr": "عرض كلاس X",
+    "short": "Vehicle preview for Class X.",
+    "shortAr": "عربية بريفيو لكلاس X.",
+    "description": "Preview vehicle — Class X. Replace with the real one.",
+    "descriptionAr": "عربية بريفيو — كلاس X. هتتستبدل بالحقيقية.",
+    "features": [
+      "40$ Monthly",
+      "250$ Per Season",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "40$ شهرياً",
+      "250$ للموسم",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "40$ Monthly",
+    "image": "",
+    "type": null,
+    "class": "X",
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  },
+  {
+    "id": 37,
+    "category": "vip",
+    "name": "Custom Car Plate",
+    "nameAr": "لوحة سيارة مخصصة",
+    "short": "A custom car plate, one-time purchase.",
+    "shortAr": "لوحة سيارة مخصصة، شراء لمرة واحدة.",
+    "description": "Custom Car Plate — get your own custom plate. Costs 5$ One Time.",
+    "descriptionAr": "لوحة سيارة مخصصة — احصل على لوحتك الخاصة. التكلفة 5$ لمرة واحدة.",
+    "features": [
+      "5$ One Time",
+      "Custom plate text",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "5$ لمرة واحدة",
+      "نص مخصص للوحة",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "5$ One Time",
+    "image": "images/products/vip/plat.webp",
+    "type": null,
+    "class": null,
+    "sold": false,
+    "popular": true,
+    "likes": 0
+  },
+  {
+    "id": 38,
+    "category": "vip",
+    "name": "Custom Phone Number",
+    "nameAr": "رقم تليفون مخصص",
+    "short": "A custom phone number, one-time purchase.",
+    "shortAr": "رقم تليفون مخصص، شراء لمرة واحدة.",
+    "description": "Custom Phone Number — get your own custom number. Costs 5$ One Time.",
+    "descriptionAr": "رقم تليفون مخصص — احصل على رقمك الخاص. التكلفة 5$ لمرة واحدة.",
+    "features": [
+      "5$ One Time",
+      "Custom number",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "5$ لمرة واحدة",
+      "رقم مخصص",
+      "جاهز داخل اللعبة"
+    ],
+    "price": "5$ One Time",
+    "image": "images/products/vip/custom phone numbers.webp",
+    "type": null,
+    "class": null,
+    "sold": false,
+    "popular": true,
+    "likes": 0
+  },
+  {
+    "id": 39,
+    "category": "mlo",
+    "name": "Al Dente's",
+    "nameAr": "أل دينتيز",
+    "short": "A restaurant, ready for business.",
+    "shortAr": "مطعم جاهز للشغل.",
+    "description": "Al Dente's restaurant — a restaurant. Costs 15$ Monthly.",
+    "descriptionAr": "أل دينتيز — مطعم. التكلفة 15$ شهرياً.",
+    "features": [
+      "15$ Monthly",
+      "Restaurant location",
+      "In-game ready"
+    ],
+    "featuresAr": [
+      "15$ شهرياً",
+      "موقع مطعم",
+      "جاهزة داخل اللعبة"
+    ],
+    "price": "15$ Monthly",
+    "image": "images/products/mlo/prod-1785937000094.webp",
+    "type": "restaurant",
+    "class": null,
+    "sold": false,
+    "popular": false,
+    "likes": 0
+  }
+];

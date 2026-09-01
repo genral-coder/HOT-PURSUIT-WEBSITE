@@ -1,0 +1,129 @@
+// HOT PURSUIT RP — PostgreSQL schema (Phase 3 foundation)
+//
+// This schema establishes the secure user/auth/authorization foundation:
+//   User, DiscordAccount, Role, Permission, UserRole, UserPermission, Favorite
+//
+// DELIBERATE DECISION (honors the "no fake data" + "keep catalog static" rules):
+//   * The Store product catalog remains static on the frontend (39 products,
+//     source of truth). We do NOT create a `Product` table or duplicate those
+//     products here. `Favorite.productId` is therefore a bare integer (no FK)
+//     that the frontend maps to the static catalog. A `Product` entity + FK
+//     will be added in the future Store/catalog-migration phase.
+//
+// Future-phase tables (Order, Purchase, Application, Ticket, News, Media,
+// Player, ...) are intentionally NOT created yet.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A site account. Created on first successful Discord login.
+model User {
+  id           String           @id @default(cuid())
+  discordId    String           @unique
+  discordAccount DiscordAccount?
+  roles        UserRole[]
+  permissions  UserPermission[]
+  favorites    Favorite[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([discordId])
+}
+
+/// Safe subset of Discord data stored for a user. Sensitive Discord data is
+/// intentionally not stored.
+model DiscordAccount {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String   @unique
+  discordId  String   @unique
+  username   String
+  globalName String?
+  avatar     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+/// A system role (OWNER, ADMIN, MODERATOR, CONTENT_MANAGER).
+model Role {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String?
+  permissions Permission[]
+  users       UserRole[]
+  createdAt   DateTime       @default(now())
+
+  @@index([name])
+}
+
+/// A granular permission (e.g. "store.manage"). Evolves over time.
+model Permission {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String?
+  roles       Role[]
+  users       UserPermission[]
+  createdAt   DateTime       @default(now())
+
+  @@index([name])
+}
+
+/// Association table: user → role.
+model UserRole {
+  userId String
+  roleId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([userId])
+}
+
+/// Association table: user → direct permission grant (additive per-user).
+model UserPermission {
+  userId       String
+  permissionId String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, permissionId])
+  @@index([userId])
+}
+
+/// A favorited product for an authenticated user.
+/// `productId` is the static-catalog integer id (no FK this phase — see header).
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  productId Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+/// Audit trail for privileged (admin) actions. Records who did what, to whom,
+/// when. Only safe identifiers are stored — never passwords, tokens or secrets.
+/// This is a foundation; actions are appended server-side by admin endpoints.
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorUser String
+  actorRole String?
+  action    String
+  targetUser String?
+  targetResource String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([actorUser])
+  @@index([action])
+  @@index([targetUser])
+  @@index([createdAt])
+}
