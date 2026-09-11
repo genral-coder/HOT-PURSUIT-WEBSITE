@@ -133,7 +133,7 @@ adminProductsRouter.delete(
   requirePermission("store.manage"),
   asyncHandler(async (req, res) => {
     const principal = req.authUser as AuthPrincipal;
-    const result = await setProductArchive(principal.access, req.params.id, true);
+    const result = await setProductArchive(principal.access, req.params.id, false);
 
     void recordAudit({
       actorUser: principal.userId,

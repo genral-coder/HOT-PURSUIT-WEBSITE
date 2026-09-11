@@ -30,6 +30,7 @@ function sqlTextArray(values: string[] | undefined): string {
 function productInsertSQL(): string {
   const rows = CATALOG_PRODUCTS.map((p) => {
     const cols: string[] = [];
+    cols.push(sqlStr(`prod_${p.id}`)); // id (deterministic PK)
     cols.push(String(p.id)); // productId
     cols.push(sqlStr(p.category)); // categoryId
     cols.push(sqlStr(p.name));
@@ -108,9 +109,9 @@ CREATE TABLE "Product" (
     "class" TEXT,
     "sold" BOOLEAN NOT NULL DEFAULT false,
     "popular" BOOLEAN NOT NULL DEFAULT false,
-    "new" BOOLEAN NOT NULL DEFAULT false,
-    "featured" BOOLEAN NOT NULL DEFAULT false,
-    "likes" INTEGER NOT NULL DEFAULT 0,
+    "new" BOOLEAN DEFAULT false,
+    "featured" BOOLEAN DEFAULT false,
+    "likes" INTEGER DEFAULT 0,
     "available" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -126,7 +127,7 @@ CREATE INDEX "Product_name_idx" ON "Product"("name");
 
 -- Reference catalog data (verbatim from the verified Store source).
 INSERT INTO "Product" (
-    "productId", "categoryId", "name", "nameAr", "short", "shortAr",
+    "id", "productId", "categoryId", "name", "nameAr", "short", "shortAr",
     "description", "descriptionAr", "features", "featuresAr", "price",
     "image", "type", "class", "sold", "popular", "likes"
 ) VALUES

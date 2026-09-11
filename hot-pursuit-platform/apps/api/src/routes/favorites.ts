@@ -11,8 +11,8 @@ favoritesRouter.use(requireAuth);
 
 /**
  * GET /api/store/favorites
- * Returns the authenticated user's favorite product ids. The ids map to the
- * static frontend catalog (the catalog is not in the DB this phase).
+ * Returns the authenticated user's favorite product ids. The ids reference the
+ * canonical Product catalog kept in PostgreSQL.
  */
 favoritesRouter.get(
   "/",
