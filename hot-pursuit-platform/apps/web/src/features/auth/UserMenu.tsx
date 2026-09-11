@@ -88,6 +88,11 @@ export function UserMenu() {
                 onClick={() => setOpen(false)}
                 label={t("pgProfile")}
               />
+              <MenuItem
+                to="/orders"
+                onClick={() => setOpen(false)}
+                label={t("pgOrders")}
+              />
               {isAdmin && (
                 <MenuItem
                   to="/admin"

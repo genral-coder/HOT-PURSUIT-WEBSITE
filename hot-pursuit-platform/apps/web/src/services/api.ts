@@ -69,9 +69,17 @@ export function loginWithDiscord(): void {
 
 import type {
   AddAdminInput,
+  AdminOrderRow,
   AdminSummary,
   AdminUser,
   ChangeAdminInput,
+  CheckoutItem,
+  CreateOrderResult,
+  Order,
+  OrderStatus,
+  OrderSummary,
+  PagedOrders,
+  PaymentStatus,
   Permission,
   RoleName,
 } from "@hotpursuit/types";
@@ -113,5 +121,63 @@ export function changeAdmin(
 export function removeAdmin(id: string): Promise<{ id: string; removed: boolean }> {
   return request<{ id: string; removed: boolean }>(`/admins/${id}`, {
     method: "DELETE",
+  });
+}
+
+/* ── Orders (user-facing) ── */
+
+export function createOrder(
+  items: CheckoutItem[],
+): Promise<CreateOrderResult> {
+  return request<CreateOrderResult>("/orders", {
+    method: "POST",
+    body: JSON.stringify({ items }),
+  });
+}
+
+export function fetchMyOrders(): Promise<{ orders: OrderSummary[] }> {
+  return request<{ orders: OrderSummary[] }>("/orders");
+}
+
+export function fetchOrder(id: string): Promise<{ order: Order }> {
+  return request<{ order: Order }>(`/orders/${id}`);
+}
+
+/* ── Admin orders ── */
+
+export interface AdminOrderQuery {
+  search?: string;
+  status?: string;
+  paymentStatus?: string;
+  provider?: string;
+  page?: number;
+  limit?: number;
+}
+
+export function fetchAdminOrders(
+  params: AdminOrderQuery = {},
+): Promise<PagedOrders> {
+  const q = new URLSearchParams();
+  if (params.search) q.set("search", params.search);
+  if (params.status) q.set("status", params.status);
+  if (params.paymentStatus) q.set("paymentStatus", params.paymentStatus);
+  if (params.provider) q.set("provider", params.provider);
+  if (params.page) q.set("page", String(params.page));
+  if (params.limit) q.set("limit", String(params.limit));
+  const qs = q.toString();
+  return request<PagedOrders>(`/admin/orders${qs ? `?${qs}` : ""}`);
+}
+
+export function fetchAdminOrder(id: string): Promise<{ order: AdminOrderRow }> {
+  return request<{ order: AdminOrderRow }>(`/admin/orders/${id}`);
+}
+
+export function updateAdminOrderStatus(
+  id: string,
+  body: { status?: OrderStatus; paymentStatus?: PaymentStatus },
+): Promise<{ ok: boolean; changed: unknown[]; order: { id: string; orderNumber: string; status: OrderStatus; paymentStatus: PaymentStatus } }> {
+  return request(`/admin/orders/${id}/status`, {
+    method: "PATCH",
+    body: JSON.stringify(body),
   });
 }

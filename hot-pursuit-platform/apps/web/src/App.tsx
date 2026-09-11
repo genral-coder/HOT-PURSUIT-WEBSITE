@@ -10,10 +10,13 @@ import { RulesPage } from "./pages/Rules";
 import { NewsPage } from "./pages/News";
 import { LeaderboardsPage } from "./pages/Leaderboards";
 import { SupportPage } from "./pages/Support";
+import { MyOrdersPage } from "./pages/Orders";
+import { OrderDetailPage } from "./pages/OrderDetail";
 import { PlaceholderPage } from "./pages/Placeholder";
 import { AdminLayout } from "./features/admin/AdminLayout";
 import { AdminDashboard } from "./pages/admin/Dashboard";
 import { AdminsPage } from "./pages/admin/Admins";
+import { AdminOrdersPage } from "./pages/admin/Orders";
 import { AdminComingSoon } from "./pages/admin/ComingSoon";
 import { RequireAdmin } from "./features/auth/RequireAdmin";
 
@@ -32,6 +35,8 @@ export function App() {
         <Route path="news" element={<NewsPage />} />
         <Route path="leaderboards" element={<LeaderboardsPage />} />
         <Route path="support" element={<SupportPage />} />
+        <Route path="orders" element={<MyOrdersPage />} />
+        <Route path="orders/:id" element={<OrderDetailPage />} />
         <Route path="profile" element={<PlaceholderPage page="profile" />} />
         <Route
           path="admin"
@@ -44,7 +49,7 @@ export function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="admins" element={<AdminsPage />} />
           <Route path="store" element={<AdminComingSoon moduleKey="pgStore" />} />
-          <Route path="orders" element={<AdminComingSoon moduleKey="adminOrders" />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
           <Route
             path="applications"
             element={<AdminComingSoon moduleKey="adminApplications" />}

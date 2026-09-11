@@ -308,6 +308,66 @@ const dict: Dict = {
     en: "Reach the whole community and get instant answers in our Discord.",
     ar: "تواصل مع كامل المجتمع واحصل على إجابات فورية في ديسكوردنا.",
   },
+
+  /* ── Phase 6: orders & payments ───────────────────────────────── */
+  pgOrders: { en: "My Orders", ar: "طلباتي" },
+  ordersEmpty: {
+    en: "You don't have any orders yet. Browse the store to get started.",
+    ar: "لا توجد لديك طلبات بعد. تصفح المتجر للبدء.",
+  },
+  ordersBackToList: { en: "Back to My Orders", ar: "رجوع إلى طلباتي" },
+  orderItem: { en: "Item", ar: "الصنف" },
+  orderItems: { en: "Items", ar: "الأصناف" },
+  orderNumber: { en: "Order", ar: "الطلب" },
+  orderCreated: { en: "Date", ar: "التاريخ" },
+  orderStatus: { en: "Status", ar: "الحالة" },
+  orderPayment: { en: "Payment", ar: "الدفع" },
+  orderSubtotal: { en: "Subtotal", ar: "المجموع الفرعي" },
+  orderDiscount: { en: "Discount", ar: "الخصم" },
+  orderTotal: { en: "Total", ar: "الإجمالي" },
+  orderProvider: { en: "Payment method", ar: "وسيلة الدفع" },
+  orderPaymentId: { en: "Payment ref", ar: "مرجع الدفع" },
+  continueCheckout: { en: "Continue to Checkout", ar: "متابعة إلى الدفع" },
+  orderPlacing: { en: "Placing order...", ar: "جاري إنشاء الطلب..." },
+  orderCheckoutOpened: {
+    en: "Order {order} created — complete payment in the new tab.",
+    ar: "تم إنشاء طلب {order} — أكمل الدفع في التبويب الجديد.",
+  },
+
+  /* Admin orders */
+  adminOrdersSearch: { en: "Search order # or username...", ar: "ابحث برقم الطلب أو اسم المستخدم..." },
+  adminOrdersStatusAll: { en: "All statuses", ar: "كل الحالات" },
+  adminOrdersPaymentAll: { en: "All payments", ar: "كل حالات الدفع" },
+  adminOrdersEmpty: { en: "No orders match.", ar: "لا توجد طلبات مطابقة." },
+  adminOrderUser: { en: "Customer", ar: "العميل" },
+  adminOrdersSaved: { en: "Saved", ar: "تم الحفظ" },
+  adminOrdersManageHint: {
+    en: "You can view this order. Status changes require the orders.manage permission.",
+    ar: "يمكنك عرض هذا الطلب. تغيير الحالة يتطلب صلاحية orders.manage.",
+  },
+  adminOrdersLoading: { en: "Loading order…", ar: "جاري تحميل الطلب…" },
+  paginationPrev: { en: "Previous", ar: "السابق" },
+  paginationNext: { en: "Next", ar: "التالي" },
+
+  /* Dynamic status/provider labels */
+  orderStatus_PENDING: { en: "Pending", ar: "قيد الانتظار" },
+  orderStatus_PAID: { en: "Paid", ar: "مدفوع" },
+  orderStatus_PROCESSING: { en: "Processing", ar: "قيد التنفيذ" },
+  orderStatus_COMPLETED: { en: "Completed", ar: "مكتمل" },
+  orderStatus_FAILED: { en: "Failed", ar: "فشل" },
+  orderStatus_CANCELLED: { en: "Cancelled", ar: "ملغى" },
+  orderStatus_REFUNDED: { en: "Refunded", ar: "مسترجع" },
+  paymentStatus_UNPAID: { en: "Unpaid", ar: "غير مدفوع" },
+  paymentStatus_PENDING: { en: "Payment pending", ar: "الدفع قيد الانتظار" },
+  paymentStatus_PAID: { en: "Paid", ar: "مدفوع" },
+  paymentStatus_FAILED: { en: "Payment failed", ar: "فشل الدفع" },
+  paymentStatus_REFUNDED: { en: "Refunded", ar: "مسترجع" },
+  paymentStatus_PARTIALLY_REFUNDED: { en: "Partially refunded", ar: "مسترجع جزئياً" },
+  provider_STRIPE: { en: "Stripe", ar: "Stripe" },
+  provider_PAYPAL: { en: "PayPal", ar: "PayPal" },
+  provider_TEBEX: { en: "Tebex", ar: "Tebex" },
+  provider_MOCK: { en: "Mock (dev)", ar: "Mock (تجريبي)" },
+  provider_MANUAL: { en: "Manual / Discord ticket", ar: "يدوي / تذكرة ديسكورد" },
 };
 
 export function getDict(): Dict {

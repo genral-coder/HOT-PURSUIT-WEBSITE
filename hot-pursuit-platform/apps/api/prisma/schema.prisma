@@ -1,17 +1,25 @@
-// HOT PURSUIT RP — PostgreSQL schema (Phase 3 foundation)
+// HOT PURSUIT RP — PostgreSQL schema (Phase 3 foundation + Phase 6 orders/payments)
 //
 // This schema establishes the secure user/auth/authorization foundation:
-//   User, DiscordAccount, Role, Permission, UserRole, UserPermission, Favorite
+//   User, DiscordAccount, Role, Permission, UserRole, UserPermission, Favorite,
+//   AuditLog
 //
-// DELIBERATE DECISION (honors the "no fake data" + "keep catalog static" rules):
+// Phase 6 adds the orders & payments foundation:
+//   Order, OrderItem, PaymentEvent, ProductPrice
+//
+// DELIBERATE DECISIONS (honors the "no fake data" + "keep catalog static" rules):
 //   * The Store product catalog remains static on the frontend (39 products,
-//     source of truth). We do NOT create a `Product` table or duplicate those
-//     products here. `Favorite.productId` is therefore a bare integer (no FK)
-//     that the frontend maps to the static catalog. A `Product` entity + FK
-//     will be added in the future Store/catalog-migration phase.
+//     source of truth). We do NOT create a full `Product` table or duplicate
+//     those products here. `Favorite.productId` and `OrderItem.productId` are
+//     therefore bare integers (no FK) mapped to the static catalog.
+//   * `ProductPrice` is the *trusted server-side pricing registry* used to
+//     re-price order lines at checkout/creation time. It stores name/image
+//     snapshots and numeric amounts (cents) derived once from the static
+//     catalog — the server NEVER trusts client-supplied prices/totals.
+//   * All monetary values are stored as integer cents (no floating point).
 //
-// Future-phase tables (Order, Purchase, Application, Ticket, News, Media,
-// Player, ...) are intentionally NOT created yet.
+// Future-phase tables (Application, Ticket, News, Media, Player, ...) are
+// intentionally NOT created yet.
 
 generator client {
   provider = "prisma-client-js"
@@ -30,6 +38,7 @@ model User {
   roles        UserRole[]
   permissions  UserPermission[]
   favorites    Favorite[]
+  orders       Order[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 
@@ -126,4 +135,131 @@ model AuditLog {
   @@index([action])
   @@index([targetUser])
   @@index([createdAt])
+}
+
+/// Lifecycle of an order. Transitions are enforced server-side only
+/// (see services/orders.ts — assertOrderTransition).
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+/// Payment state, tracked independently from the order lifecycle.
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+/// Which backend owns the payment (MANUAL = no provider configured, e.g. the
+/// legacy Discord-ticket flow; MOCK = development-only simulator).
+enum PaymentProviderType {
+  MANUAL
+  MOCK
+  STRIPE
+  PAYPAL
+  TEBEX
+}
+
+/// Billing model of a product line as priced in the registry.
+enum Billing {
+  MONTHLY
+  ONE_TIME
+}
+
+/// An order placed through checkout. Monetary values are integer cents.
+/// `providerOrderId`/`providerPaymentId` are the external gateway references.
+model Order {
+  id              String              @id @default(cuid())
+  orderNumber     String              @unique
+  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  status          OrderStatus         @default(PENDING)
+  paymentStatus   PaymentStatus       @default(UNPAID)
+  currency        String              @default("USD")
+  subtotalCents   Int
+  discountCents   Int                 @default(0)
+  totalCents      Int
+  provider        PaymentProviderType @default(MANUAL)
+  providerOrderId String?
+  providerPaymentId String?
+  items           OrderItem[]
+  paymentEvents   PaymentEvent[]
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([orderNumber])
+  @@index([userId])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([providerOrderId])
+  @@index([providerPaymentId])
+  @@index([createdAt])
+}
+
+/// A single line of an order. name/image/price are SNAPSHOTS taken at order
+/// time so historical orders stay correct even if the catalog or registry
+/// changes later.
+model OrderItem {
+  id             String  @id @default(cuid())
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId        String
+  productId      Int
+  productName    String
+  productNameAr  String?
+  productImage   String?
+  quantity       Int
+  unitPriceCents Int
+  totalCents     Int
+  billing        Billing @default(MONTHLY)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+/// Every incoming payment webhook event. `@@unique([provider, eventId])` is
+/// the database-level idempotency guard: a duplicated event cannot be applied
+/// twice (no double-payment / double-processing).
+model PaymentEvent {
+  id          String              @id @default(cuid())
+  provider    PaymentProviderType
+  eventId     String
+  eventType   String
+  order       Order?              @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId     String?
+  payloadHash String              @default("")
+  processed   Boolean             @default(false)
+  processedAt DateTime?
+  createdAt   DateTime            @default(now())
+
+  @@unique([provider, eventId])
+  @@index([orderId])
+  @@index([processed])
+}
+
+/// Trusted server-side pricing/snapshot registry derived from the static
+/// frontend catalog. Used to re-price every order line server-side. Not a
+/// full product catalog (no features/descriptions) — only what orders need.
+model ProductPrice {
+  id          String  @id @default(cuid())
+  productId   Int     @unique
+  name        String
+  nameAr      String?
+  image       String?
+  amountCents Int
+  billing     Billing @default(MONTHLY)
+  currency    String  @default("USD")
+  available   Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
 }

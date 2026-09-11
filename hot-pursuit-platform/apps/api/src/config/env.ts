@@ -6,6 +6,8 @@ export interface Env {
   isProd: boolean;
   /** Allowed frontend origin (CORS + OAuth redirect target). */
   clientOrigin: string;
+  /** Public API base URL (used to build absolute checkout/dev URLs). */
+  apiBaseUrl: string;
 
   /* Discord OAuth2 (server-side only — never exposed to the client). */
   discordClientId?: string;
@@ -30,6 +32,14 @@ export interface Env {
    * development-phase bridge until admin management moves into PostgreSQL.
    */
   ownerDiscordIds: string[];
+
+  /* Payments & orders (Phase 6). */
+  /** Configured backend: "", "mock", "stripe", "paypal" or "tebex". */
+  paymentProvider: string;
+  /** Currency used for order pricing (defaults to USD, matches the catalog). */
+  paymentCurrency: string;
+  /** Shared secret used to verify payment webhook signatures. */
+  paymentWebhookSecret?: string;
 }
 
 function int(value: string | undefined, fallback: number): number {
@@ -58,6 +68,7 @@ export const env: Env = {
   nodeEnv,
   isProd,
   clientOrigin: process.env.CLIENT_ORIGIN ?? "http://localhost:5173",
+  apiBaseUrl: process.env.API_BASE_URL ?? "http://localhost:4000",
 
   discordClientId: process.env.DISCORD_CLIENT_ID,
   discordClientSecret: process.env.DISCORD_CLIENT_SECRET,
@@ -74,6 +85,10 @@ export const env: Env = {
   databaseUrl: process.env.DATABASE_URL,
 
   ownerDiscordIds: parseOwnerIds(process.env.OWNER_DISCORD_IDS),
+
+  paymentProvider: process.env.PAYMENT_PROVIDER ?? "",
+  paymentCurrency: process.env.PAYMENT_CURRENCY || "USD",
+  paymentWebhookSecret: process.env.PAYMENT_WEBHOOK_SECRET,
 };
 
 /**

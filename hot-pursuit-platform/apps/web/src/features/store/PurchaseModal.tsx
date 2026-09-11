@@ -2,9 +2,11 @@ import { useState } from "react";
 import { interpolate } from "@hotpursuit/shared";
 import type { Product } from "@hotpursuit/types";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import { Modal } from "@/components/Modal";
 import { purchaseRules, paymentMethods } from "@/data/store";
 import { siteLinks } from "@/data/site";
+import { createOrder } from "@/services/api";
 import { PurchaseRulesModal } from "./PurchaseRulesModal";
 
 interface PurchaseModalProps {
@@ -17,24 +19,65 @@ interface PurchaseModalProps {
  * Purchase confirmation. Rules are shown and MUST be accepted before the user
  * can continue to Discord (preserves the legacy enforce-rules-first behavior).
  * The Discord target falls back discordTicket → discord, matching the original.
+ *
+ * When the user is authenticated the order goes through the real API
+ * (POST /api/orders): the server re-prices everything and, when a payment
+ * provider is configured, returns a checkout URL. When no provider exists the
+ * order is still recorded (provider MANUAL) and the legacy Discord ticket
+ * flow opens. An order is never marked paid from the client.
  */
 export function PurchaseModal({ open, onClose, product }: PurchaseModalProps) {
   const { t, lang } = useLanguage();
+  const { user } = useAuth();
   const [agreed, setAgreed] = useState(false);
-  const [toast, setToast] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const [placing, setPlacing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [rulesOpen, setRulesOpen] = useState(false);
 
   const label = lang === "ar" ? product.nameAr : product.name;
   const discordUrl = siteLinks.discordTicket || siteLinks.discord;
 
-  const handleContinue = () => {
-    if (!agreed) return;
+  const openDiscordLegacy = () => {
     if (discordUrl) {
-      setToast(true);
-      setTimeout(() => setToast(false), 2400);
-      setTimeout(() => window.open(discordUrl, "_blank", "noopener,noreferrer"), 250);
+      setToast(t("openingDiscord"));
+      setTimeout(() => setToast(null), 2400);
+      setTimeout(
+        () => window.open(discordUrl, "_blank", "noopener,noreferrer"),
+        250,
+      );
+    } else {
+      onClose();
     }
-    if (!discordUrl) onClose();
+  };
+
+  const handleContinue = async () => {
+    if (!agreed || placing) return;
+    setError(null);
+
+    // Not authenticated → legacy Discord-only purchase (no account to attach).
+    if (!user) {
+      openDiscordLegacy();
+      return;
+    }
+
+    // Authenticated → real order through the API (server re-prices).
+    setPlacing(true);
+    try {
+      const result = await createOrder([{ productId: product.id, quantity: 1 }]);
+      setPlacing(false);
+      if (result.checkoutUrl) {
+        setToast(t("orderCheckoutOpened", { order: result.order.orderNumber }));
+        setTimeout(() => setToast(null), 3200);
+        window.open(result.checkoutUrl, "_blank", "noopener,noreferrer");
+      } else {
+        // No payment provider configured → order recorded MANUAL + Discord flow.
+        openDiscordLegacy();
+      }
+    } catch (e) {
+      setPlacing(false);
+      setError((e as Error).message);
+    }
   };
 
   return (
@@ -113,13 +156,23 @@ export function PurchaseModal({ open, onClose, product }: PurchaseModalProps) {
             </div>
           )}
 
+          {error && (
+            <div className="rounded-lg border border-accent/40 bg-accent/5 p-3 text-xs leading-relaxed text-accent">
+              {error}
+            </div>
+          )}
+
           <button
             type="button"
-            disabled={!agreed}
-            onClick={handleContinue}
+            disabled={!agreed || placing}
+            onClick={() => void handleContinue()}
             className="w-full rounded-md bg-accent py-2.5 text-center text-sm font-bold text-white transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {t("continueDiscord")}
+            {placing
+              ? t("orderPlacing")
+              : user
+                ? t("continueCheckout")
+                : t("continueDiscord")}
           </button>
         </div>
       </Modal>
@@ -132,7 +185,7 @@ export function PurchaseModal({ open, onClose, product }: PurchaseModalProps) {
         }
         aria-live="polite"
       >
-        {t("openingDiscord")}
+        {toast}
       </div>
 
       <PurchaseRulesModal

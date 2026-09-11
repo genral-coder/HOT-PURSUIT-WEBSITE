@@ -7,6 +7,9 @@ import { authRouter } from "../routes/auth.js";
 import { favoritesRouter } from "../routes/favorites.js";
 import { healthRouter } from "../routes/health.js";
 import { adminsRouter } from "../routes/admins.js";
+import { ordersRouter } from "../routes/orders.js";
+import { paymentsRouter } from "../routes/payments.js";
+import { adminOrdersRouter } from "../routes/adminOrders.js";
 import { errorHandler } from "../lib/errors.js";
 
 /**
@@ -41,7 +44,15 @@ export function createApp(): Express {
     }),
   );
 
-  app.use(express.json());
+  app.use(
+    express.json({
+      // Capture the raw JSON buffer so the payment webhook can verify the
+      // HMAC signature over the exact bytes the gateway sent.
+      verify: (req, _res, buf) => {
+        (req as unknown as { rawBody?: Buffer }).rawBody = buf;
+      },
+    }),
+  );
 
   // Server-side sessions backed by PostgreSQL (connect-pg-simple). Only a
   // user id is stored; identity, roles and permissions are always resolved
@@ -86,8 +97,15 @@ export function createApp(): Express {
   // Store favorites require auth (self-originated, not a spoof-able path).
   app.use("/api/store/favorites", favoritesRouter);
 
+  // Orders (user-facing) + payments (webhook + dev-only mock simulator).
+  app.use("/api/orders", ordersRouter);
+  app.use("/api/payments", paymentsRouter);
+
   // Admin management + summary. Every route enforces its own permission.
   app.use("/api/admins", adminsRouter);
+
+  // Admin orders (RBAC orders.view / orders.manage).
+  app.use("/api/admin/orders", adminOrdersRouter);
 
   // Placeholder-aware 404 for unknown API routes.
   app.use("/api", (_req, res) => {

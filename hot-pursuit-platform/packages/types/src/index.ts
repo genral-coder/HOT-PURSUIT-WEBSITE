@@ -358,23 +358,106 @@ export interface Player {
   money?: number;
 }
 
-/* ───────────────────────────── Orders / Purchases ───────────────────────────── */
+/* ───────────────────────────── Orders / Payments ───────────────────────────── */
 
-export type OrderStatus = "pending" | "paid" | "processing" | "delivered" | "cancelled";
+/** Lifecycle of an order. Transitions are enforced server-side only. */
+export type OrderStatus =
+  | "PENDING"
+  | "PAID"
+  | "PROCESSING"
+  | "COMPLETED"
+  | "FAILED"
+  | "CANCELLED"
+  | "REFUNDED";
 
+/** Payment state, tracked independently from the order lifecycle. */
+export type PaymentStatus =
+  | "UNPAID"
+  | "PENDING"
+  | "PAID"
+  | "FAILED"
+  | "REFUNDED"
+  | "PARTIALLY_REFUNDED";
+
+/** Which backend owns the payment. MOCK is development-only. */
+export type PaymentProviderType = "MANUAL" | "MOCK" | "STRIPE" | "PAYPAL" | "TEBEX";
+
+/** Billing model of a priced product line. */
+export type Billing = "MONTHLY" | "ONE_TIME";
+
+/** One priced line of an order. name/image/price are snapshots at order time. */
 export interface OrderItem {
+  id: string;
+  orderId: string;
   productId: number;
-  price: string;
+  productName: string;
+  productNameAr: string | null;
+  productImage: string | null;
+  quantity: number;
+  unitPriceCents: number;
+  totalCents: number;
+  billing: Billing;
+}
+
+/** A full order as stored by the API. Money values are integer cents. */
+export interface Order {
+  id: string;
+  orderNumber: string;
+  userId: string;
+  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  currency: string;
+  subtotalCents: number;
+  discountCents: number;
+  totalCents: number;
+  provider: PaymentProviderType;
+  providerOrderId: string | null;
+  providerPaymentId: string | null;
+  items: OrderItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Order line as submitted by the client at checkout (the server re-prices). */
+export interface CheckoutItem {
+  productId: number;
   quantity: number;
 }
 
-export interface Order {
+/** Response of POST /api/orders. checkoutUrl is null when no provider exists. */
+export interface CreateOrderResult {
+  order: Order;
+  checkoutUrl: string | null;
+}
+
+/** Lightweight row for order lists (My Orders + Admin Orders). */
+export interface OrderSummary {
   id: string;
-  userId?: string;
-  items: OrderItem[];
+  orderNumber: string;
   status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  currency: string;
+  totalCents: number;
+  itemCount: number;
+  provider: PaymentProviderType;
   createdAt: string;
-  note?: string;
+}
+
+/** Paged response for GET /api/admin/orders. */
+export interface PagedOrders {
+  orders: OrderSummary[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+/** Admin detail: a full order plus the owning user's display identity. */
+export interface AdminOrderRow extends Order {
+  user: {
+    id: string;
+    discordUsername: string;
+    discordGlobalName: string | null;
+  };
 }
 
 /* ───────────────────────────── Applications / Tickets ───────────────────────────── */
@@ -429,7 +512,9 @@ export type AuditAction =
   | "ADMIN_ADDED"
   | "ADMIN_REMOVED"
   | "ROLE_CHANGED"
-  | "PERMISSION_CHANGED";
+  | "PERMISSION_CHANGED"
+  | "ORDER_STATUS_UPDATED"
+  | "PAYMENT_WEBHOOK_PROCESSED";
 
 /** One audit log entry. */
 export interface AuditLogEntry {

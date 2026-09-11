@@ -78,13 +78,101 @@ export async function seed() {
       });
     }
   }
+
+  // Sync the trusted server-side pricing/snapshot registry from the static
+  // frontend catalog (39 products).
+  await seedProductPrices();
+}
+
+/**
+ * Server-side ProductPrice rows derived from the static frontend catalog
+ * (39 products). Amounts are integer cents; `available` mirrors the catalog's
+ * `sold` field so sold-out products cannot be ordered. Prices here are the
+ * ONLY source the orders API trusts.
+ *
+ * Idempotent: upserts by productId (never deletes).
+ */
+const CATALOG_PRICES: Array<{
+  productId: number;
+  name: string;
+  nameAr: string | null;
+  image: string | null;
+  amountCents: number;
+  billing: "MONTHLY" | "ONE_TIME";
+  available: boolean;
+}> = [
+  // prettier-ignore
+  { productId: 1,  name: "Verified Account",              nameAr: "توثيق الحساب",               image: "images/products/vip/Verified Accounts.webp",           amountCents: 100,  billing: "MONTHLY",  available: true  },
+  { productId: 2,  name: "Bennys LSIA",                   nameAr: "بينيز LSIA",                  image: "images/products/mlo/Bennys LSIA.webp",                 amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 3,  name: "Bennys Docks",                  nameAr: "بينيز دوكس",                  image: "images/products/mlo/Bennys Docks.webp",                amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 4,  name: "Paleto Car Dealer",             nameAr: "باليتو معرض سيارات",          image: "images/products/mlo/Paleto Car Dealer.webp",            amountCents: 3000, billing: "MONTHLY",  available: true  },
+  { productId: 5,  name: "Kebab King",                    nameAr: "كباب كينج",                   image: "images/products/mlo/Kebab King.webp",                  amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 6,  name: "Tropical Heights",              nameAr: null,                          image: "images/products/mlo/Tropical Heights.webp",            amountCents: 1000, billing: "MONTHLY",  available: false },
+  { productId: 7,  name: "Leapfrog",                      nameAr: null,                          image: "images/products/mlo/Leapfrog.webp",                    amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 8,  name: "Opium Nights",                  nameAr: null,                          image: "images/products/mlo/Opium Nights.webp",                amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 9,  name: "Red's",                         nameAr: null,                          image: "images/products/mlo/Red's.webp",                       amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 10, name: "Vespucci PDM",                  nameAr: null,                          image: "images/products/mlo/Vespucci PDM.webp",                amountCents: 3000, billing: "MONTHLY",  available: false },
+  { productId: 11, name: "Pier 76",                       nameAr: null,                          image: "images/products/mlo/Pier 76.webp",                     amountCents: 3000, billing: "MONTHLY",  available: false },
+  { productId: 12, name: "Pearls",                        nameAr: null,                          image: "images/products/mlo/Pearls.webp",                      amountCents: 2000, billing: "MONTHLY",  available: false },
+  { productId: 13, name: "LaMesa Mechanic",               nameAr: null,                          image: "images/products/mlo/LaMesa Mechanic.webp",             amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 14, name: "Koi",                           nameAr: null,                          image: "images/products/mlo/Koi.webp",                         amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 15, name: "Horny's",                       nameAr: null,                          image: "images/products/mlo/Horny's.webp",                     amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 16, name: "Up n Atom",                     nameAr: null,                          image: "images/products/mlo/Up n Atom.webp",                   amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 17, name: "Vanilla Unicorn",               nameAr: null,                          image: "images/products/mlo/Vanilla Unicorn.webp",             amountCents: 1000, billing: "MONTHLY",  available: true  },
+  { productId: 18, name: "Exotic Dealership",             nameAr: null,                          image: "images/products/mlo/Exotic Dealership.webp",           amountCents: 2000, billing: "MONTHLY",  available: false },
+  { productId: 19, name: "Pizzeria",                      nameAr: null,                          image: "images/products/mlo/Pizzeria.webp",                    amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 20, name: "Ottos Auto",                    nameAr: null,                          image: "images/products/mlo/Ottos Auto.webp",                  amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 21, name: "Bennys",                        nameAr: null,                          image: "images/products/mlo/Bennys.webp",                      amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 22, name: "Hayes",                         nameAr: null,                          image: "images/products/mlo/Hayes.webp",                       amountCents: 2000, billing: "MONTHLY",  available: false },
+  { productId: 23, name: "Pops Dinner",                   nameAr: null,                          image: "images/products/mlo/Pops Dinner.webp",                 amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 24, name: "Bean Machine",                  nameAr: null,                          image: "images/products/mlo/Bean Machine.webp",                amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 25, name: "Bahamas",                       nameAr: null,                          image: "images/products/mlo/Bahamas.webp",                     amountCents: 1000, billing: "MONTHLY",  available: true  },
+  { productId: 26, name: "Cat Cafe",                      nameAr: null,                          image: "images/products/mlo/Cat Cafe.webp",                    amountCents: 1500, billing: "MONTHLY",  available: false },
+  { productId: 27, name: "Burgershot",                    nameAr: null,                          image: "images/products/mlo/Burgershot.webp",                  amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 28, name: "Car Radio",                     nameAr: null,                          image: "images/products/vip/car radio.webp",                   amountCents: 1000, billing: "MONTHLY",  available: true  },
+  { productId: 29, name: "Pearls Restaurant",             nameAr: null,                          image: "images/products/mlo/Pearls.webp",                      amountCents: 1500, billing: "MONTHLY",  available: true  },
+  { productId: 30, name: "Pearls Combo",                  nameAr: null,                          image: "images/products/mlo/Pearls.webp",                      amountCents: 3000, billing: "MONTHLY",  available: false },
+  { productId: 31, name: "Ottos Auto Used Car Dealer",    nameAr: null,                          image: "images/products/mlo/Ottos Auto.webp",                  amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 32, name: "Ottos Auto Combo",              nameAr: null,                          image: "images/products/mlo/Ottos Auto.webp",                  amountCents: 3500, billing: "MONTHLY",  available: true  },
+  { productId: 33, name: "Preview Class S",               nameAr: null,                          image: null,                                                   amountCents: 2000, billing: "MONTHLY",  available: true  },
+  { productId: 34, name: "Preview Class S+",              nameAr: null,                          image: null,                                                   amountCents: 2500, billing: "MONTHLY",  available: true  },
+  { productId: 35, name: "Preview Class S++",             nameAr: null,                          image: null,                                                   amountCents: 3000, billing: "MONTHLY",  available: true  },
+  { productId: 36, name: "Preview Class X",               nameAr: null,                          image: null,                                                   amountCents: 4000, billing: "MONTHLY",  available: true  },
+  { productId: 37, name: "Custom Car Plate",              nameAr: "لوحة أرقام مخصصة",           image: "images/products/vip/plat.webp",                        amountCents: 500,  billing: "ONE_TIME", available: true  },
+  { productId: 38, name: "Custom Phone Number",           nameAr: "رقم هاتف مخصص",              image: "images/products/vip/custom phone numbers.webp",        amountCents: 500,  billing: "ONE_TIME", available: true  },
+  { productId: 39, name: "Al Dente's",                    nameAr: null,                          image: "images/products/mlo/prod-1785937000094.webp",          amountCents: 1500, billing: "MONTHLY",  available: true  },
+];
+
+export async function seedProductPrices(): Promise<void> {
+  for (const p of CATALOG_PRICES) {
+    await prisma.productPrice.upsert({
+      where: { productId: p.productId },
+      update: {
+        name: p.name,
+        nameAr: p.nameAr,
+        image: p.image,
+        amountCents: p.amountCents,
+        billing: p.billing,
+        available: p.available,
+      },
+      create: {
+        productId: p.productId,
+        name: p.name,
+        nameAr: p.nameAr,
+        image: p.image,
+        amountCents: p.amountCents,
+        billing: p.billing,
+        available: p.available,
+      },
+    });
+  }
 }
 
 // Allow running directly: `npm run db:seed` / `npx tsx src/database/seed.ts`
 if (process.argv[1].endsWith("seed.ts") || process.argv[1].endsWith("seed.js")) {
   seed()
     .then(() => {
-      console.log("[seed] roles and permissions synced.");
+      console.log("[seed] roles, permissions and product prices synced.");
       return prisma.$disconnect();
     })
     .catch(async (e) => {

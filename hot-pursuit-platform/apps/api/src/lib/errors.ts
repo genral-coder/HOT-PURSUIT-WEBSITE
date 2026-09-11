@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 /** Structured API error sent to clients. Never leaks internals. */
 export interface ApiErrorBody {
@@ -38,6 +39,11 @@ export class ApiError extends Error {
   static conflict(code = "conflict", message?: string) {
     return new ApiError(409, code, message);
   }
+}
+
+/** True when a thrown error is a Prisma unique-constraint violation (P2002). */
+export function isUniqueConstraintError(e: unknown): boolean {
+  return e instanceof PrismaClientKnownRequestError && e.code === "P2002";
 }
 
 /** Wrap an async route handler so thrown errors reach the error middleware. */
