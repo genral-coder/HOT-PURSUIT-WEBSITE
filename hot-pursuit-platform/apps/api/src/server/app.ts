@@ -10,6 +10,8 @@ import { adminsRouter } from "../routes/admins.js";
 import { ordersRouter } from "../routes/orders.js";
 import { paymentsRouter } from "../routes/payments.js";
 import { adminOrdersRouter } from "../routes/adminOrders.js";
+import { adminProductsRouter } from "../routes/adminProducts.js";
+import { storeRouter } from "../routes/store.js";
 import { errorHandler } from "../lib/errors.js";
 
 /**
@@ -97,6 +99,9 @@ export function createApp(): Express {
   // Store favorites require auth (self-originated, not a spoof-able path).
   app.use("/api/store/favorites", favoritesRouter);
 
+  // Public Store catalog (no auth) — the database is the source of truth.
+  app.use("/api/store/products", storeRouter);
+
   // Orders (user-facing) + payments (webhook + dev-only mock simulator).
   app.use("/api/orders", ordersRouter);
   app.use("/api/payments", paymentsRouter);
@@ -106,6 +111,9 @@ export function createApp(): Express {
 
   // Admin orders (RBAC orders.view / orders.manage).
   app.use("/api/admin/orders", adminOrdersRouter);
+
+  // Admin products (RBAC store.view / store.manage).
+  app.use("/api/admin/products", adminProductsRouter);
 
   // Placeholder-aware 404 for unknown API routes.
   app.use("/api", (_req, res) => {

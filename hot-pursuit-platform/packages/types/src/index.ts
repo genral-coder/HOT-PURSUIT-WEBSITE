@@ -93,6 +93,64 @@ export interface PaymentMethod {
   icon: string;
 }
 
+/* ───────────────────────────── Store catalog (DB-backed, Phase 7) ───────────────────────────── */
+
+/**
+ * Admin view of a product — the public `Product` shape plus management fields
+ * (archive flag, machine-readable price, timestamps). The public Store API
+ * returns the legacy `Product` shape exactly; these extra fields stay internal.
+ */
+export interface AdminProductRow extends Product {
+  /** False = archived/hidden from the store (soft delete — never a hard delete). */
+  available: boolean;
+  /** Machine-readable price (integer cents) for purchase/checkout. */
+  amountCents: number;
+  billing: Billing;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Paged response for the Admin products list (GET /api/admin/products). */
+export interface PagedAdminProducts {
+  products: AdminProductRow[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+/** Client input for creating a product (the server derives the new id). */
+export interface CreateProductInput {
+  category: ProductCategoryId;
+  name: string;
+  nameAr?: string;
+  short?: string;
+  shortAr?: string;
+  description?: string;
+  descriptionAr?: string;
+  features?: string[];
+  featuresAr?: string[];
+  /** Display price as a raw string (e.g. "20$ Monthly"). */
+  price: string;
+  image?: string;
+  /** Business subtype, only for category === "mlo". */
+  type?: BusinessTypeId | null;
+  /** Vehicle class, only for category === "vehicles". */
+  class?: VehicleClassId | null;
+  sold?: boolean;
+  popular?: boolean;
+  new?: boolean;
+  featured?: boolean;
+  likes?: number;
+  /** False immediately hides the product from the store (admin only). */
+  available?: boolean;
+  /** Machine-readable price the orders API trusts (integer cents, > 0). */
+  amountCents: number;
+  billing: Billing;
+}
+
+/** Client input for updating a product (PATCH — every field optional). */
+export type UpdateProductInput = Partial<CreateProductInput>;
+
 /* ───────────────────────────── Server ───────────────────────────── */
 
 export interface ServerStatus {
@@ -514,7 +572,10 @@ export type AuditAction =
   | "ROLE_CHANGED"
   | "PERMISSION_CHANGED"
   | "ORDER_STATUS_UPDATED"
-  | "PAYMENT_WEBHOOK_PROCESSED";
+  | "PAYMENT_WEBHOOK_PROCESSED"
+  | "PRODUCT_CREATED"
+  | "PRODUCT_UPDATED"
+  | "PRODUCT_ARCHIVED";
 
 /** One audit log entry. */
 export interface AuditLogEntry {

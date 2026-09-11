@@ -17,6 +17,7 @@ import { AdminLayout } from "./features/admin/AdminLayout";
 import { AdminDashboard } from "./pages/admin/Dashboard";
 import { AdminsPage } from "./pages/admin/Admins";
 import { AdminOrdersPage } from "./pages/admin/Orders";
+import { AdminProductsPage } from "./pages/admin/Products";
 import { AdminComingSoon } from "./pages/admin/ComingSoon";
 import { RequireAdmin } from "./features/auth/RequireAdmin";
 
@@ -48,8 +49,8 @@ export function App() {
         >
           <Route index element={<AdminDashboard />} />
           <Route path="admins" element={<AdminsPage />} />
-          <Route path="store" element={<AdminComingSoon moduleKey="pgStore" />} />
           <Route path="orders" element={<AdminOrdersPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
           <Route
             path="applications"
             element={<AdminComingSoon moduleKey="adminApplications" />}

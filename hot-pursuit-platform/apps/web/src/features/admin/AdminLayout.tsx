@@ -32,7 +32,7 @@ const NAV_SECTIONS: Array<{ titleKey: string; items: AdminNavItem[] }> = [
   {
     titleKey: "adminNavModules",
     items: [
-      { to: "/admin/store", key: "pgStore", permission: "store.view", comingSoon: true },
+      { to: "/admin/products", key: "adminProducts", permission: "store.view" },
       { to: "/admin/orders", key: "adminOrders", permission: "orders.view" },
       { to: "/admin/applications", key: "adminApplications", permission: "applications.view", comingSoon: true },
       { to: "/admin/tickets", key: "adminTickets", permission: "tickets.view", comingSoon: true },

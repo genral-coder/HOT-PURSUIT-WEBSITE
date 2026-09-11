@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Product, ProductCategoryId } from "@hotpursuit/types";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cn } from "@hotpursuit/shared";
-import { products } from "@/data/products";
+import { products as staticProducts } from "@/data/products";
+import { fetchStoreProducts } from "@/services/api";
 import { businessTypes, categories, vehicleClasses } from "@/data/store";
 import { useFavorites } from "@/hooks/useFavorites";
 import { ProductCard } from "@/features/store/ProductCard";
@@ -30,8 +31,31 @@ export function StorePage() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [rulesOpen, setRulesOpen] = useState(false);
 
+  // Live catalog from the API (the DB is the single source of truth in
+  // Phase 7). Renders from the static source instantly, then swaps to the
+  // authoritative live list once loaded. On failure the static catalog stays
+  // visible with a non-blocking notice (never a blank page).
+  const [liveCatalog, setLiveCatalog] = useState<Product[] | null>(null);
+  const [catalogError, setCatalogError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetchStoreProducts()
+      .then(({ products }) => {
+        if (active) setLiveCatalog(products);
+      })
+      .catch(() => {
+        if (active) setCatalogError(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const catalog = liveCatalog ?? staticProducts;
+
   const filtered = useMemo(() => {
-    let list = products.filter(
+    let list = catalog.filter(
       (p) => activeCat === "all" || p.category === activeCat,
     );
     if (activeCat === "mlo" && businessFilter !== "all") {
@@ -51,7 +75,7 @@ export function StorePage() {
       );
     }
     return list;
-  }, [activeCat, businessFilter, classFilter, query, showFavorites, favorites]);
+  }, [activeCat, businessFilter, classFilter, query, showFavorites, favorites, catalog]);
 
   const searchActive = query.trim().length > 0;
   const isEmptyFavoritesView = showFavorites && favorites.length === 0;
@@ -217,6 +241,14 @@ export function StorePage() {
           ? t("resultsFor", { q: query.trim() })
           : `${filtered.length} ${filtered.length === 1 ? t("product") : t("products")}`}
       </div>
+
+      {/* Non-blocking notice when the live catalog API is unreachable */}
+      {catalogError && !liveCatalog && (
+        <div className="mb-4 flex items-start gap-2 rounded-md border border-gold/40 bg-gold/5 px-4 py-3 text-sm text-gold">
+          <span aria-hidden="true">⚠️</span>
+          <span>{t("storeLiveUnavailable")}</span>
+        </div>
+      )}
 
       {/* Empty states */}
       {isEmptyFavoritesView ? (

@@ -13,6 +13,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
     "db:seed": "tsx src/database/seed.ts",
+    "db:generate-products-migration": "tsx scripts/generate-store-migration.ts",
+    "verify:catalog": "tsx scripts/verify-catalog.ts",
     "test": "node --import tsx --test test/**/*.test.ts"
   },
   "dependencies": {

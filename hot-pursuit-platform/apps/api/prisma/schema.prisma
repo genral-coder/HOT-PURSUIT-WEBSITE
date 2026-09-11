@@ -1,4 +1,4 @@
-// HOT PURSUIT RP — PostgreSQL schema (Phase 3 foundation + Phase 6 orders/payments)
+// HOT PURSUIT RP — PostgreSQL schema (Phase 3 foundation + Phase 6 orders/payments + Phase 7 store)
 //
 // This schema establishes the secure user/auth/authorization foundation:
 //   User, DiscordAccount, Role, Permission, UserRole, UserPermission, Favorite,
@@ -7,16 +7,23 @@
 // Phase 6 adds the orders & payments foundation:
 //   Order, OrderItem, PaymentEvent, ProductPrice
 //
-// DELIBERATE DECISIONS (honors the "no fake data" + "keep catalog static" rules):
-//   * The Store product catalog remains static on the frontend (39 products,
-//     source of truth). We do NOT create a full `Product` table or duplicate
-//     those products here. `Favorite.productId` and `OrderItem.productId` are
-//     therefore bare integers (no FK) mapped to the static catalog.
-//   * `ProductPrice` is the *trusted server-side pricing registry* used to
-//     re-price order lines at checkout/creation time. It stores name/image
-//     snapshots and numeric amounts (cents) derived once from the static
-//     catalog — the server NEVER trusts client-supplied prices/totals.
-//   * All monetary values are stored as integer cents (no floating point).
+// Phase 7 makes PostgreSQL the canonical Store catalog:
+//   Product, ProductCategory
+//   * `Product` now IS the catalog source of truth (39 products, migrated from
+//     the verified Store source). `Product.available=false` is the archive
+//     state (soft delete — never removed).
+//   * `ProductPrice` remains the trusted server-side pricing registry and is
+//     FK'd to `Product` by the legacy numeric `productId`; it is kept in sync
+//     by product edits/seed so orders keep re-pricing server-side.
+//   * `Favorite.productId` / `OrderItem.productId` deliberately stay bare
+//     integers (no FK): historical orders and user favorites must remain valid
+//     even if a product is later archived.
+//
+// Legacy static files (products.json, apps/web/src/data/products.ts, the
+// legacy store/admin pages and images) are preserved as migration source /
+// reference backups. Runtime reads the database.
+//
+//  * All monetary values are stored as integer cents (no floating point).
 //
 // Future-phase tables (Application, Ticket, News, Media, Player, ...) are
 // intentionally NOT created yet.
@@ -106,7 +113,8 @@ model UserPermission {
 }
 
 /// A favorited product for an authenticated user.
-/// `productId` is the static-catalog integer id (no FK this phase — see header).
+/// `productId` is the legacy numeric catalog id (bare int, no FK on purpose —
+/// favorites stay valid even if a product is later archived).
 model Favorite {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -116,6 +124,64 @@ model Favorite {
 
   @@unique([userId, productId])
   @@index([userId])
+}
+
+/// Store product category (vehicles / mlo / vip / bundles). Seeded reference
+/// data. Frontend display metadata (emoji/color) continues to live in the
+/// legacy apps/web/src/data/store.ts — this table anchors category identity so
+/// the public API and Admin management validate categories server-side.
+model ProductCategory {
+  id        String    @id
+  name      String
+  nameAr    String?
+  emoji     String?
+  color     String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+/// Store catalog product. PostgreSQL is the canonical catalog source of truth
+/// since Phase 7. `productId` keeps the legacy numeric id (also used by
+/// OrderItem and Favorite as a bare reference). `available=false` marks an
+/// archived/hidden product — never a hard delete. Images are stored as path
+/// references (legacy paths under images/products/…), never blobs.
+model Product {
+  id            String           @id @default(cuid())
+  productId     Int              @unique
+  category      ProductCategory  @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  name          String
+  nameAr        String?
+  short         String?
+  shortAr       String?
+  description   String?
+  descriptionAr String?
+  features      String[]         @default([])
+  featuresAr    String[]         @default([])
+  /// Display price as a raw string (e.g. "20$ Monthly") — same as the legacy catalog.
+  price         String
+  /// Asset path reference (e.g. "images/products/mlo/Bennys LSIA.webp").
+  image         String?
+  /// Business subtype (only meaningful for category === "mlo").
+  type          String?
+  /// Vehicle class (only meaningful for category === "vehicles").
+  class         String?
+  sold          Boolean          @default(false)
+  popular       Boolean          @default(false)
+  new           Boolean?         @default(false)
+  featured      Boolean?         @default(false)
+  likes         Int?             @default(0)
+  /// True = visible in the store. Archive sets this to false (soft delete).
+  available     Boolean          @default(true)
+  priceReg      ProductPrice?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([productId])
+  @@index([categoryId])
+  @@index([available])
+  @@index([sold])
+  @@index([name])
 }
 
 /// Audit trail for privileged (admin) actions. Records who did what, to whom,
@@ -245,21 +311,26 @@ model PaymentEvent {
   @@index([processed])
 }
 
-/// Trusted server-side pricing/snapshot registry derived from the static
-/// frontend catalog. Used to re-price every order line server-side. Not a
-/// full product catalog (no features/descriptions) — only what orders need.
+/// Trusted server-side pricing/snapshot registry. Used to re-price every order
+/// line server-side. Kept in sync with the canonical `Product` catalog (FK by
+/// the legacy numeric productId — one registry row per product). Not a full
+/// product catalog (no features/descriptions) — only what orders need.
 model ProductPrice {
-  id          String  @id @default(cuid())
-  productId   Int     @unique
+  id          String   @id @default(cuid())
+  product     Product? @relation(fields: [productId], references: [productId])
+  productId   Int      @unique
   name        String
   nameAr      String?
   image       String?
   amountCents Int
-  billing     Billing @default(MONTHLY)
-  currency    String  @default("USD")
-  available   Boolean @default(true)
+  billing     Billing  @default(MONTHLY)
+  currency    String   @default("USD")
+  /// False when the product is sold out OR archived — such lines are rejected
+  /// at checkout (server-side), never silently skipped.
+  available   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([productId])
+  @@index([available])
 }

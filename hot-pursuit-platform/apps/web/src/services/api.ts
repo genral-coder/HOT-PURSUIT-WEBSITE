@@ -70,18 +70,23 @@ export function loginWithDiscord(): void {
 import type {
   AddAdminInput,
   AdminOrderRow,
+  AdminProductRow,
   AdminSummary,
   AdminUser,
   ChangeAdminInput,
   CheckoutItem,
   CreateOrderResult,
+  CreateProductInput,
   Order,
   OrderStatus,
   OrderSummary,
+  PagedAdminProducts,
   PagedOrders,
   PaymentStatus,
   Permission,
+  Product,
   RoleName,
+  UpdateProductInput,
 } from "@hotpursuit/types";
 
 export interface AdminMeta {
@@ -180,4 +185,71 @@ export function updateAdminOrderStatus(
     method: "PATCH",
     body: JSON.stringify(body),
   });
+}
+
+/* ── Store catalog (public; no auth — the DB is the source of truth) ── */
+
+export function fetchStoreProducts(): Promise<{ products: Product[]; total: number }> {
+  return request<{ products: Product[]; total: number }>("/store/products");
+}
+
+export function fetchStoreProduct(id: number): Promise<{ product: Product }> {
+  return request<{ product: Product }>(`/store/products/${id}`);
+}
+
+/* ── Admin products (server-enforced store.view / store.manage) ── */
+
+export interface AdminProductQuery {
+  search?: string;
+  status?: "active" | "archived" | "all";
+  category?: string;
+  sold?: boolean;
+  page?: number;
+  limit?: number;
+}
+
+export function fetchAdminProducts(
+  params: AdminProductQuery = {},
+): Promise<PagedAdminProducts> {
+  const q = new URLSearchParams();
+  if (params.search) q.set("search", params.search);
+  if (params.status && params.status !== "all") q.set("status", params.status);
+  if (params.category) q.set("category", params.category);
+  if (params.sold !== undefined) q.set("sold", String(params.sold));
+  if (params.page) q.set("page", String(params.page));
+  if (params.limit) q.set("limit", String(params.limit));
+  const qs = q.toString();
+  return request<PagedAdminProducts>(`/admin/products${qs ? `?${qs}` : ""}`);
+}
+
+export function fetchAdminProduct(id: number): Promise<{ product: AdminProductRow }> {
+  return request<{ product: AdminProductRow }>(`/admin/products/${id}`);
+}
+
+export function createAdminProduct(
+  input: CreateProductInput,
+): Promise<{ product: AdminProductRow }> {
+  return request<{ product: AdminProductRow }>("/admin/products", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export function updateAdminProduct(
+  id: number,
+  input: UpdateProductInput,
+): Promise<{ product: AdminProductRow }> {
+  return request<{ product: AdminProductRow }>(`/admin/products/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+}
+
+export function archiveAdminProduct(
+  id: number,
+): Promise<{ ok: boolean; productId: number; available: boolean }> {
+  return request<{ ok: boolean; productId: number; available: boolean }>(
+    `/admin/products/${id}`,
+    { method: "DELETE" },
+  );
 }
